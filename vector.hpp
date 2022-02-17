@@ -4,6 +4,7 @@
 #include <memory>
 #include <cstddef>
 #include <algorithm>
+#include <cmath>
 
 namespace ft {
   template<class T, class Allocator = std::allocator<T> >
@@ -35,20 +36,20 @@ namespace ft {
 	public:
 
     // construct/copy/destroy
-    explicit vector (const allocator_type& alloc = allocator_type())
+    explicit vector(const allocator_type& alloc = allocator_type())
 	{
 
 	}
 
-	explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : allocator(alloc)
+	explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc)
 	{
 	
-		_ptr = allocator.allocate(n);
+		_ptr = _allocator.allocate(n);
 		
 		size_type i = 0;
 		while (i < n)
 		{
-			allocator.construct(_ptr + i, val);
+			_allocator.construct(_ptr + i, val);
 			i++;
 		}
 		_size = n;
@@ -69,15 +70,15 @@ namespace ft {
 
     ~vector()
 	{
-		allocator.destroy(_ptr);
+		_allocator.destroy(_ptr);
 	}
 
     vector& operator=(const vector& x)
 	{
-		if (this != &x)
-		{
-			ptr = ;
-		}
+		// if (this != &x)
+		// {
+		// 	ptr = ;
+		// }
 		return *this;
 	}
 
@@ -124,7 +125,7 @@ namespace ft {
 
     size_type	max_size() const
 	{
-		return allocator.max_size();
+		return _allocator.max_size();
 	}
 
     size_type	capacity() const
@@ -149,13 +150,13 @@ namespace ft {
 		{
 			size_type c = 0;
 			while (pow(c, 2) < n)
-				i = pow(c, 2);
-			value_type *tmp = allocator.allocate(c);
+				c = pow(c, 2);
+			value_type *tmp = _allocator.allocate(c);
 			_cap = c;
 			for (size_type i = 0; i < _size; i++)
-				allocator.construct(_tmp + i, _ptr[i]);
-			allocator.destroy(_ptr);
-			_ptr = _tmp;
+				_allocator.construct(tmp + i, _ptr[i]);
+			_allocator.destroy(_ptr);
+			_ptr = tmp;
 		}
 	}
 	
@@ -203,10 +204,10 @@ namespace ft {
 	
  
     // modifiers
-    void push_back(const value_type& val);
+    void push_back(const value_type& val)
 	{
 		reserve(_size + 1);
-		allocator.construct(_ptr + _size, val);
+		_allocator.construct(_ptr + _size, val);
 		_size++;
 	}
 	
@@ -257,10 +258,10 @@ namespace ft {
   template<class T, class Allocator>
     void swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
 	{
-		value_type		*_tmpPtr = x._ptr;
-		size_type		_tmpSize = x._size;
-		size_type		_tmpCap = x._cap;
-		allocator_type	_tmpAllocator = x._allocator;
+		T				*_tmpPtr = x._ptr;
+		size_t			_tmpSize = x._size;
+		size_t			_tmpCap = x._cap;
+		Allocator		_tmpAllocator = x._allocator;
 
 		x._ptr = y._ptr;
 		x._size = y._size;
