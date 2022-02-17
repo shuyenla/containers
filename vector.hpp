@@ -127,58 +127,38 @@ namespace ft {
 	{
 		return _cap;
 	}
-	
-    void resize (size_type n, value_type val = value_type())
+
+    void resize(size_type n, value_type val = value_type())
 	{
+		size_type i;
 		if (n <= _size)
-		{
-			size_type i = n;
-			while (i < _size)
-			{
-				allocator.construct(_tmp + i, 0);
-				i++;
-			}
-		}
-		else if (n <= _cap)
-		{
-			size_type i = _size;
-			while (i < n)
-			{
-				allocator.construct(_tmp + i, val);
-				i++;
-			}
-		}
+			i = n;
 		else
+			i = _size;
+		while (i < n)
 		{
-			value_type *_tmp = allocator.allocate(2 * _cap);
-			size_type i = 0;
-			while (i < n)
-			{
-				if (i < _size)
-					allocator.construct(_tmp + i, _ptr[i]);
-				else
-					allocator.construct(_tmp + i, val);
-				i++;
-			}
-			_cap *= 2;
-			allocator.destroy(_ptr);
-			_ptr = _tmp;
+			push_back(val);
+			i++;
 		}
-		_size = n;
 	}
 	
     void     	reserve(size_type n)
 	{
 		if (n > _cap)
 		{
-			value_type *tmp = allocator.allocate(n);
-			_cap = n;
+			size_type c = 0;
+			while (pow(c, 2) < n)
+				i = pow(c, 2);
+			value_type *tmp = allocator.allocate(c);
+			_cap = c;
 			size_type i = 0;
 			while (i < _size)
 			{
 				allocator.construct(_tmp + i, _ptr[i]);
 				i++;
 			}
+			allocator.destroy(_ptr);
+			_ptr = _tmp;
 		}
 	}
 	
@@ -226,14 +206,17 @@ namespace ft {
 	
  
     // modifiers
-    void push_back(const T& x)
+    void push_back(const value_type& val);
 	{
-		
+		reserve(_size + 1);
+		allocator.construct(_ptr + _size, val);
+		_size++;
 	}
 	
     void pop_back()
 	{
-		
+		_ptr[_size - 1] = 0;
+		_size--;
 	}
 	
    	// iterator insert(const_iterator position, const T& x);
