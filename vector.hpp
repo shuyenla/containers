@@ -155,19 +155,31 @@ namespace ft {
 			while (i < n)
 			{
 				if (i < _size)
-					allocator.construct(_tmp + i, ptr[i]);
+					allocator.construct(_tmp + i, _ptr[i]);
 				else
 					allocator.construct(_tmp + i, val);
 				i++;
 			}
 			_cap *= 2;
+			allocator.destroy(_ptr);
+			_ptr = _tmp;
 		}
 		_size = n;
 	}
 	
     void     	reserve(size_type n)
 	{
-		
+		if (n > _cap)
+		{
+			value_type *tmp = allocator.allocate(n);
+			_cap = n;
+			size_type i = 0;
+			while (i < _size)
+			{
+				allocator.construct(_tmp + i, _ptr[i]);
+				i++;
+			}
+		}
 	}
 	
  
