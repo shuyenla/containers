@@ -69,7 +69,7 @@ namespace ft {
 
     ~vector()
 	{
-		delete _ptr;
+		allocator.destroy(_ptr);
 	}
 
     vector& operator=(const vector& x)
@@ -86,10 +86,14 @@ namespace ft {
 	  {
 
 	  }
-	
-    void assign(size_type n, const T& u)
-	{
 
+    void assign(size_type n, const value_type& val)
+	{
+		reserve(n);
+		while (_size > 0)
+			pop_back();
+		for (size_type i = 0; i < n; i++)
+			push_back(val);
 	}
 
     allocator_type get_allocator() const
@@ -117,12 +121,12 @@ namespace ft {
 	{
 		return _size;
 	}
-	
+
     size_type	max_size() const
 	{
 		return allocator.max_size();
 	}
-	
+
     size_type	capacity() const
 	{
 		return _cap;
@@ -135,11 +139,8 @@ namespace ft {
 			i = n;
 		else
 			i = _size;
-		while (i < n)
-		{
+		for ( ; i < n; i++)
 			push_back(val);
-			i++;
-		}
 	}
 	
     void     	reserve(size_type n)
@@ -151,12 +152,8 @@ namespace ft {
 				i = pow(c, 2);
 			value_type *tmp = allocator.allocate(c);
 			_cap = c;
-			size_type i = 0;
-			while (i < _size)
-			{
+			for (size_type i = 0; i < _size; i++)
 				allocator.construct(_tmp + i, _ptr[i]);
-				i++;
-			}
 			allocator.destroy(_ptr);
 			_ptr = _tmp;
 		}
@@ -166,42 +163,42 @@ namespace ft {
     // element access
     reference       operator[](size_type n)
 	{
-		
+		return _ptr + n - 1;
 	}
 	
     const_reference operator[](size_type n) const
 	{
-		
+		return _ptr + n - 1;
 	}
 	
     const_reference at(size_type n) const
 	{
-		
+		return _ptr + n - 1;
 	}
 	
     reference       at(size_type n)
 	{
-		
+		return _ptr + n - 1;
 	}
 	
     reference       front()
 	{
-		
+		return _ptr;
 	}
 	
 	const_reference front() const
 	{
-		
+		return _ptr;
 	}
 	
     reference       back()
 	{
-		
+		return _ptr + _size - 1;
 	}
 	
     const_reference back() const
 	{
-		
+		return _ptr + _size - 1;
 	}
 	
  
@@ -228,7 +225,7 @@ namespace ft {
     // iterator insert(const_iterator position, initializer_list<T> il);
     // iterator erase(const_iterator position);
     // iterator erase(const_iterator first, const_iterator last);
-    void     swap(vector&)
+    void     swap(vector& x)
 	{
 		
 	}
@@ -250,7 +247,6 @@ namespace ft {
 	{
 		
 	}
-	
 }
 
 #endif
