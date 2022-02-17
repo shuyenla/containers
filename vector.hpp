@@ -27,10 +27,10 @@ namespace ft {
  
 	private:
 
-		value_type *_ptr;
-		size_type 	_size;
-		size_type	_count;
-		allocator_type allocator;
+		value_type		*_ptr;
+		size_type		_size;
+		size_type		_cap;
+		allocator_type	allocator;
 
 	public:
 
@@ -52,7 +52,7 @@ namespace ft {
 			i++;
 		}
 		_size = n;
-		_count = n;
+		_cap = n;
 
 	}
 
@@ -74,7 +74,11 @@ namespace ft {
 
     vector& operator=(const vector& x)
 	{
-
+		if (this != &x)
+		{
+			ptr = ;
+		}
+		return *this;
 	}
 
     template<class InputIt>
@@ -111,27 +115,54 @@ namespace ft {
 
     size_type	size() const
 	{
-		return _count;
+		return _size;
 	}
 	
     size_type	max_size() const
 	{
-		return 0;
+		return allocator.max_size();
 	}
 	
     size_type	capacity() const
 	{
-		return _size;
+		return _cap;
 	}
 	
-    void     	resize(size_type sz)
+    void resize (size_type n, value_type val = value_type())
 	{
-		
-	}
-	
-    void     	resize(size_type sz, const T& c)
-	{
-		
+		if (n <= _size)
+		{
+			size_type i = n;
+			while (i < _size)
+			{
+				allocator.construct(_tmp + i, 0);
+				i++;
+			}
+		}
+		else if (n <= _cap)
+		{
+			size_type i = _size;
+			while (i < n)
+			{
+				allocator.construct(_tmp + i, val);
+				i++;
+			}
+		}
+		else
+		{
+			value_type *_tmp = allocator.allocate(2 * _cap);
+			size_type i = 0;
+			while (i < n)
+			{
+				if (i < _size)
+					allocator.construct(_tmp + i, ptr[i]);
+				else
+					allocator.construct(_tmp + i, val);
+				i++;
+			}
+			_cap *= 2;
+		}
+		_size = n;
 	}
 	
     void     	reserve(size_type n)
