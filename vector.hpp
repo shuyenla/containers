@@ -1,43 +1,33 @@
 namespace ft {
-  template<class T, class Allocator = allocator<T>>
+  template<class T, class Allocator = std::allocator<T>>
   class vector {
   public:
     // types
-    typedef value_type              T;
-    typedef allocator_type          Allocator;
-    typedef pointer                 typename allocator_traits<Allocator>::pointer;
-    typedef const_pointer           typename allocator_traits<Allocator>::const_pointer;
-    typedef reference               value_type&;
-    typedef const_reference         const value_type&;
-    typedef size_type               /* implementation-defined */;
-    typedef difference_type         /* implementation-defined */;
-    typedef iterator                /* implementation-defined */;
-    typedef const_iterator          /* implementation-defined */;
-    typedef reverse_iterator        std::reverse_iterator<iterator>;
-    typedef const_reverse_iterator  std::reverse_iterator<const_iterator>;
+    typedef T value_type;
+    typedef Allocator allocator_type;
+    typedef typename allocator_traits<Allocator>::pointer pointer;
+    typedef typename allocator_traits<Allocator>::const_pointer const_pointer;
+    typedef value_type& reference;
+    typedef const value_type& const_reference;
+    typedef /* implementation-defined */ size_type;
+    typedef /* implementation-defined */ difference_type;
+    typedef /* implementation-defined */ iterator;
+    typedef /* implementation-defined */ const_iterator;
+    typedef std::reverse_iterator<iterator> reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
  
     // construct/copy/destroy
-    vector()((Allocator())) : vector(Allocator()) { }
-    explicit vector(const Allocator&);
-    explicit vector(size_type n, const Allocator& = Allocator());
-    vector(size_type n, const T& value, const Allocator& = Allocator());
-    template<class InputIt>
-      vector(InputIt first, InputIt last, const Allocator& = Allocator());
-    vector(const vector& x);
-    vector(vector&&);
-    vector(const vector&, const Allocator&);
-    vector(vector&&, const Allocator&);
-    vector(initializer_list<T>, const Allocator& = Allocator());
+    explicit vector (const allocator_type& alloc = allocator_type());
+	explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
+	template <class InputIterator>
+	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+	vector (const vector& x);
+
     ~vector();
     vector& operator=(const vector& x);
-    vector& operator=(vector&& x)
-     (allocator_traits<Allocator>::propagate_on_container_move_assignment::value ||
-               allocator_traits<Allocator>::is_always_equal::value);
-    vector& operator=(initializer_list<T>);
     template<class InputIt>
       void assign(InputIt first, InputIt last);
     void assign(size_type n, const T& u);
-    void assign(initializer_list<T>);
     allocator_type get_allocator() const;
  
     // iterators
