@@ -30,7 +30,7 @@ namespace ft {
 		value_type		*_ptr;
 		size_type		_size;
 		size_type		_cap;
-		allocator_type	allocator;
+		allocator_type	_allocator;
 
 	public:
 
@@ -94,7 +94,7 @@ namespace ft {
 
     allocator_type get_allocator() const
 	{
-
+		return _allocator;
 	}
  
     // iterators
@@ -240,7 +240,11 @@ namespace ft {
 	
     void     clear()
 	{
-		
+		while (_size > 0)
+		{
+			_ptr[_size] = 0;
+			_size--;
+		}
 	}
 	
   };
