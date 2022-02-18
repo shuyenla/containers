@@ -1,43 +1,45 @@
+#ifndef _REVERSE_ITERATOR_H_
+# define _REVERSE_ITERATOR_H_
+
 namespace ft {
-  template<class Iter>
-  class reverse_iterator {
-  public:
-    using iterator_type     = Iter;
-    using iterator_concept  = /* see description */;
-    using iterator_category = /* see description */;
-    using value_type        = iter_value_t<Iter>;
-    using difference_type   = iter_difference_t<Iter>;
-    using pointer           = typename iterator_traits<Iter>::pointer;
-    using reference         = iter_reference_t<Iter>;
- 
-    constexpr reverse_iterator();
-    constexpr explicit reverse_iterator(Iter x);
-    template<class U> constexpr reverse_iterator(const reverse_iterator<U>& u);
-    template<class U> constexpr reverse_iterator& operator=(const reverse_iterator<U>& u);
- 
-    constexpr Iter base() const;
-    constexpr reference operator*() const;
-    constexpr pointer   operator->() const requires /* see description */;
- 
-    constexpr reverse_iterator& operator++();
-    constexpr reverse_iterator  operator++(int);
-    constexpr reverse_iterator& operator--();
-    constexpr reverse_iterator  operator--(int);
- 
-    constexpr reverse_iterator  operator+ (difference_type n) const;
-    constexpr reverse_iterator& operator+=(difference_type n);
-    constexpr reverse_iterator  operator- (difference_type n) const;
-    constexpr reverse_iterator& operator-=(difference_type n);
-    constexpr /* unspecified */ operator[](difference_type n) const;
- 
-    friend constexpr iter_rvalue_reference_t<Iter>
-      iter_move(const reverse_iterator& i) noexcept(/* see description */);
-    template<indirectly_swappable<Iter> Iter2>
-      friend constexpr void
-        iter_swap(const reverse_iterator& x,
-                  const reverse_iterator<Iter2>& y) noexcept(/* see description */);
- 
-  protected:
-    Iter current;
-  };
+  template <class Iterator>
+    class reverse_iterator : public
+        iterator<typename iterator_traits<Iterator>::iterator_category,
+        typename iterator_traits<Iterator>::value_type,
+        typename iterator_traits<Iterator>::difference_type,
+        typename iterator_traits<Iterator>::pointer,
+        typename iterator_traits<Iterator>::reference> {
+    public:
+        typedef Iterator                                            iterator_type;
+        typedef typename iterator_traits<Iterator>::difference_type difference_type;
+        typedef typename iterator_traits<Iterator>::reference       reference;
+        typedef typename iterator_traits<Iterator>::pointer         pointer;
+
+        reverse_iterator();
+        explicit reverse_iterator(Iterator x);
+        template <class U> reverse_iterator(const reverse_iterator<U>& u);
+        template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u);
+
+        Iterator base() const; // explicit
+        reference operator*() const;
+        pointer operator->() const;
+
+        reverse_iterator& operator++();
+        reverse_iterator  operator++(int);
+        reverse_iterator& operator--();
+        reverse_iterator  operator--(int);
+
+        reverse_iterator  operator+ (difference_type n) const;
+        reverse_iterator& operator+=(difference_type n);
+        reverse_iterator  operator- (difference_type n) const;
+        reverse_iterator& operator-=(difference_type n);
+
+        /*unspecified*/ operator[](difference_type n) const;
+    protected:
+        Iterator current;
+    private:
+        Iterator deref_tmp; // exposition only
+    };
 }
+
+#endif

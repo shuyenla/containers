@@ -1,10 +1,11 @@
 #ifndef _VECTOR_H_
 # define _VECTOR_H_
 
-#include <memory>
-#include <cstddef>
-#include <algorithm>
-#include <cmath>
+# include <initializer_list>
+# include <memory>
+# include <cstddef>
+# include <algorithm>
+# include <cmath>
 
 namespace ft {
   template<class T, class Allocator = std::allocator<T> >
@@ -13,18 +14,20 @@ namespace ft {
 
   public:
     // types
-    typedef T 														value_type;
-    typedef Allocator 												allocator_type;
-    typedef typename allocator_type::pointer						pointer;
-    typedef typename allocator_type::const_pointer					const_pointer;
-    typedef value_type& 											reference;
-    typedef const value_type&										const_reference;
-    typedef size_t													size_type;
-    typedef size_t						 							difference_type;
-    // typedef std::iterator<T> 											iterator;
-    // typedef std::iterator<T>									const_iterator;
-    // typedef std::reverse_iterator<std::iterator<T> >					reverse_iterator;
-    // typedef std::reverse_iterator<std::const_iterator<T> >				const_reverse_iterator;
+    typedef T 													value_type;
+    typedef Allocator 											allocator_type;
+    typedef typename allocator_type::pointer					pointer;
+    typedef typename allocator_type::const_pointer				const_pointer;
+    typedef value_type& 										reference;
+    typedef const value_type&									const_reference;
+    typedef size_t												size_type;
+    typedef size_t						 						difference_type;
+    typedef pointer						 						iterator;
+    typedef const_pointer										const_iterator;
+	
+
+    // typedef ft::reverse_iterator<std::iterator>					reverse_iterator;
+    // typedef ft::reverse_iterator<std::const_iterator>			const_reverse_iterator;
  
 	private:
 
@@ -36,10 +39,10 @@ namespace ft {
 	public:
 
     // construct/copy/destroy
-    explicit vector(const allocator_type& alloc = allocator_type())
-	{
+    // explicit vector(const allocator_type& alloc = allocator_type())
+	// {
 
-	}
+	// }
 
 	explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc)
 	{
@@ -57,30 +60,30 @@ namespace ft {
 
 	}
 
-	template <class InputIterator>
-	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-	{
-
-	}
-
-	vector (const vector& x)
-	{
-
-	}
+	// template <class InputIterator>
+	// vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+	// {
+		// 
+	// }
+// 
+	// vector(const vector& x)
+	// {
+// 
+	// }
 
     ~vector()
 	{
 		_allocator.destroy(_ptr);
 	}
 
-    vector& operator=(const vector& x)
-	{
-		// if (this != &x)
-		// {
-		// 	ptr = ;
-		// }
-		return *this;
-	}
+    // vector& operator=(const vector& x)
+	// {
+	// 	// if (this != &x)
+	// 	// {
+	// 	// 	ptr = ;
+	// 	// }
+	// 	return *this;
+	// }
 
     template<class InputIt>
       void assign(InputIt first, InputIt last)
@@ -101,17 +104,17 @@ namespace ft {
 	{
 		return _allocator;
 	}
- 
+
     // iterators
-    // iterator               begin();
-    // const_iterator         begin() const;
-    // iterator               end();
-    // const_iterator         end() const;
-    // reverse_iterator       rbegin();
-    // const_reverse_iterator rbegin() const;
-    // reverse_iterator       rend();
-    // const_reverse_iterator rend() const;
- 
+    iterator               begin() { return _ptr; }
+    const_iterator         begin() const { return _ptr; }
+    iterator               end() { return _ptr + _size; }
+    const_iterator         end() const { return _ptr + _size; }
+    // reverse_iterator       rbegin() {}
+    // const_reverse_iterator rbegin() const {}
+    // reverse_iterator       rend() {}
+    // const_reverse_iterator rend() const {}
+
     // capacity
     bool		empty() const
 	{
@@ -272,6 +275,29 @@ namespace ft {
 		y._cap = _tmpCap;
 		y._allocator = _tmpAllocator;
 	}
+
+
+
+	
+    template <class T, class Allocator>
+        bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+    template <class T, class Allocator>
+        bool operator< (const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+    template <class T, class Allocator>
+        bool operator!=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+    template <class T, class Allocator>
+        bool operator> (const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+    template <class T, class Allocator>
+        bool operator>=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+    template <class T, class Allocator>
+        bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+
+    template <class T, class Allocator>
+        void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
+
+    template <class Allocator> class vector<bool,Allocator>;
+
+	
 }
 
 #endif
