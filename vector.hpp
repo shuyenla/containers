@@ -44,10 +44,7 @@ namespace ft {
 	public:
 
     // construct/copy/destroy
-    // explicit vector(const allocator_type& alloc = allocator_type())
-	// {
-
-	// }
+    explicit vector(const allocator_type& alloc = allocator_type()):_ptr(NULL), _size(0), _cap(0), _allocator(alloc) {}
 
 	explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc)
 	{
@@ -106,7 +103,7 @@ namespace ft {
 	{
 		this->resize(n, val);
 		for (size_type i = 0; i < n; i++)
-			;
+			_ptr[i] = val;
 	}
 
     allocator_type get_allocator() const
@@ -147,7 +144,6 @@ namespace ft {
 
     void resize(size_type n, value_type val = value_type())
 	{
-		std::cout << "haloo" << std::endl;
 		if (n < _size)
 		{
 			while (n < _size)
@@ -158,21 +154,16 @@ namespace ft {
 			while (n > _size)
 			{
 				push_back(val);
-				std::cout << "badddd" << std::endl;
 			}
 		}
-		std::cout << "haloo" << std::endl;
 	}
 
     void     	reserve(size_type n)
 	{
 		if (n > _cap)
 		{
-			size_type c = 0;
-			while (pow(c, 2) < n)
-				c = pow(c, 2);
-			value_type *tmp = _allocator.allocate(c);
-			_cap = c;
+			value_type *tmp = _allocator.allocate(n);
+			_cap = n;
 			for (size_type i = 0; i < _size; i++)
 				_allocator.construct(tmp + i, _ptr[i]);
 			_allocator.destroy(_ptr);
@@ -184,42 +175,50 @@ namespace ft {
     // element access
     reference       operator[](size_type n)
 	{
-		return _ptr + n - 1;
+		if (n > _size)
+			throw("out of range");
+		return _ptr[n - 1];
 	}
 	
     const_reference operator[](size_type n) const
 	{
-		return _ptr + n - 1;
+		if (n > _size)
+			throw("out of range");
+		return _ptr[n - 1];
 	}
 	
     const_reference at(size_type n) const
 	{
-		return _ptr + n;
+		if (n > _size)
+			throw("out of range");
+		return _ptr[n];
 	}
 	
     reference       at(size_type n)
 	{
-		return _ptr + n;
+		if (n > _size)
+			throw("out of range");
+		return _ptr[n];
 	}
 	
     reference       front()
 	{
-		return _ptr;
+		return _ptr[0];
 	}
 	
 	const_reference front() const
 	{
-		return _ptr;
+		return _ptr[0];
 	}
 	
     reference       back()
 	{
-		return _ptr + _size - 1;
+		return _ptr[_size - 1];
 	}
 	
     const_reference back() const
 	{
-		return _ptr + _size - 1;
+		return _ptr[_size - 1];
 	}
 	
  
