@@ -1,11 +1,14 @@
 #ifndef _VECTOR_H_
 # define _VECTOR_H_
 
-# include <initializer_list>
 # include <memory>
 # include <cstddef>
 # include <algorithm>
 # include <cmath>
+
+#include "iterator.hpp"
+#include "iterator_traits.hpp"
+
 
 namespace ft {
   template<class T, class Allocator = std::allocator<T> >
@@ -106,7 +109,9 @@ namespace ft {
 	}
 
     // iterators
-    iterator               begin() { return _ptr; }
+    iterator               begin() {
+		return iterator(_ptr);
+		 }
     const_iterator         begin() const { return _ptr; }
     iterator               end() { return _ptr + _size; }
     const_iterator         end() const { return _ptr + _size; }
