@@ -5,6 +5,8 @@
 # include <cstddef>
 # include <algorithm>
 # include <cmath>
+# include <iostream>
+# include <ostream>
 
 #include "iterator.hpp"
 #include "iterator_traits.hpp"
@@ -88,19 +90,23 @@ namespace ft {
 	// 	return *this;
 	// }
 
-    template<class InputIt>
-      void assign(InputIt first, InputIt last)
-	  {
-
-	  }
+    // template<class InputIt>
+    //   void assign(InputIt first, InputIt last)
+	//   {
+	// 	size_type n = 1;
+	// 	for (; first != last; first++)
+	// 	{
+	// 		this->resize(n, first);
+	// 		std::cout << first << std::endl;
+	// 		n++;
+	// 	}
+	//   }
 
     void assign(size_type n, const value_type& val)
 	{
-		reserve(n);
-		while (_size > 0)
-			pop_back();
+		this->resize(n, val);
 		for (size_type i = 0; i < n; i++)
-			push_back(val);
+			;
 	}
 
     allocator_type get_allocator() const
@@ -109,12 +115,10 @@ namespace ft {
 	}
 
     // iterators
-    iterator               begin() {
-		return iterator(_ptr);
-		 }
-    const_iterator         begin() const { return _ptr; }
-    iterator               end() { return _ptr + _size; }
-    const_iterator         end() const { return _ptr + _size; }
+    iterator               begin() { return iterator(_ptr); }
+    const_iterator         begin() const { return const_iterator(_ptr); }
+    iterator               end() { return iterator(_ptr + _size); }
+    const_iterator         end() const { return const_iterator(_ptr + _size); }
     // reverse_iterator       rbegin() {}
     // const_reverse_iterator rbegin() const {}
     // reverse_iterator       rend() {}
@@ -123,7 +127,7 @@ namespace ft {
     // capacity
     bool		empty() const
 	{
-		return (_size == 0 ? 1 : 0);
+		return (_size == 0);
 	}
 
     size_type	size() const
@@ -143,15 +147,23 @@ namespace ft {
 
     void resize(size_type n, value_type val = value_type())
 	{
-		size_type i;
-		if (n <= _size)
-			i = n;
+		std::cout << "haloo" << std::endl;
+		if (n < _size)
+		{
+			while (n < _size)
+				pop_back();
+		}
 		else
-			i = _size;
-		for ( ; i < n; i++)
-			push_back(val);
+		{
+			while (n > _size)
+			{
+				push_back(val);
+				std::cout << "badddd" << std::endl;
+			}
+		}
+		std::cout << "haloo" << std::endl;
 	}
-	
+
     void     	reserve(size_type n)
 	{
 		if (n > _cap)
@@ -182,12 +194,12 @@ namespace ft {
 	
     const_reference at(size_type n) const
 	{
-		return _ptr + n - 1;
+		return _ptr + n;
 	}
 	
     reference       at(size_type n)
 	{
-		return _ptr + n - 1;
+		return _ptr + n;
 	}
 	
     reference       front()
