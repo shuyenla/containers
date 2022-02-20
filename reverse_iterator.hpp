@@ -34,7 +34,7 @@ namespace ft {
         reverse_iterator  operator- (difference_type n) const;
         reverse_iterator& operator-=(difference_type n);
 
-        /*unspecified*/ operator[](difference_type n) const;
+        reverse_iterator& operator[](difference_type n) const;
     protected:
         Iterator current;
     private:

@@ -3,7 +3,7 @@
 
 namespace ft {
     // primitives:
-    template<class Iterator> struct iterator_traits;
+    template<class iterator> struct iterator_traits;
     template<class T> struct iterator_traits<T*>;
 	template<class T> struct iterator_traits<const T*>;
     template<class Category, class T, class Distance = ptrdiff_t,
