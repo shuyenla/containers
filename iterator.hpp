@@ -18,7 +18,7 @@ namespace ft {
 	
 			iterator() { _ptr = NULL; }
 
-    	    // explicit iterator(pointer x) { _ptr = x; }
+    	    explicit iterator(pointer x) { _ptr = x; }
     	    // template <class U> iterator(const iterator<iterator_category, U> & u) {}
     	    // template <class U> iterator& operator=(const iterator<iterator_category, U> & u) {}
 

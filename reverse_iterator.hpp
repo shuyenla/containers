@@ -15,30 +15,34 @@ namespace ft {
         typedef typename iterator_traits<Iterator>::reference       reference;
         typedef typename iterator_traits<Iterator>::pointer         pointer;
 
-        reverse_iterator();
-        explicit reverse_iterator(Iterator x);
-        template <class U> reverse_iterator(const reverse_iterator<U>& u);
-        template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u);
+        reverse_iterator() { _ptr = NULL; }
+        explicit reverse_iterator(Iterator x) { _ptr = x; }
+        // template <class U> reverse_iterator(const reverse_iterator<U>& u);
+        // template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u);
 
         Iterator base() const; // explicit
-        reference operator*() const;
-        pointer operator->() const;
+        reference operator*() const { return *_ptr; }
+        pointer operator->() const { return _ptr; }
 
-        reverse_iterator& operator++();
-        reverse_iterator  operator++(int);
-        reverse_iterator& operator--();
-        reverse_iterator  operator--(int);
+        reverse_iterator& operator++() { _ptr--; return *this; }
+        reverse_iterator  operator++(int) {
+			iterator it = *this;
+			--(*this);
+			return it; }
+        reverse_iterator& operator--() { _ptr++; return *this; }
+        reverse_iterator  operator--(int) {
+			iterator it = *this;
+			++(*this);
+			return it; }
+        reverse_iterator  operator+ (difference_type n) const {	return _ptr - n; }
+        reverse_iterator& operator+=(difference_type n) { _ptr -= n; return *this; }
+        reverse_iterator  operator- (difference_type n) const {	return _ptr + n; }
+        reverse_iterator& operator-=(difference_type n) { _ptr += n; return *this; }
 
-        reverse_iterator  operator+ (difference_type n) const;
-        reverse_iterator& operator+=(difference_type n);
-        reverse_iterator  operator- (difference_type n) const;
-        reverse_iterator& operator-=(difference_type n);
-
-        reverse_iterator& operator[](difference_type n) const;
+        reverse_iterator& operator[](difference_type n) const { return _ptr - n; }
     protected:
-        Iterator current;
+        Iterator *_ptr;
     private:
-        Iterator deref_tmp; // exposition only
     };
 }
 
