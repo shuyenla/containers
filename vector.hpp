@@ -9,6 +9,7 @@
 # include <ostream>
 
 #include "enable_if.hpp"
+#include "equal.hpp"
 #include "iterator.hpp"
 #include "const_iterator.hpp"
 #include "iterator_traits.hpp"
@@ -312,17 +313,23 @@ namespace ft {
 
 
 	    template <class T, class Allocator>
-	        bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return equal(x.begin(), x.end(), y.begin()); }
 	    template <class T, class Allocator>
-	        bool operator< (const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator< (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 	    template <class T, class Allocator>
-	        bool operator!=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator!=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return !equal(x.begin(), x.end(), y.begin()); }
 	    template <class T, class Allocator>
-	        bool operator> (const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator> (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return !lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 	    template <class T, class Allocator>
-	        bool operator>=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator>=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return !lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 	    template <class T, class Allocator>
-	        bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y);
+	        bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+			{ return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
 
 	    template <class T, class Allocator>
 	        void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
