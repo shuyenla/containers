@@ -11,7 +11,6 @@
 #include "enable_if.hpp"
 #include "equal.hpp"
 #include "iterator.hpp"
-// #include "const_iterator.hpp"
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
 
@@ -211,9 +210,9 @@ namespace ft {
 
    		iterator insert(const_iterator position, const T& x)
 		{
+			std::cout << "0" << std::endl;
 			reserve(_size + 1);
 			size_type pos = 0;
-			std::cout << "0" << std::endl;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			std::cout << "here!!" << std::endl;

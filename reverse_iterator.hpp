@@ -31,9 +31,9 @@ namespace ft {
     			iterator it = *this;
     			++(*this);
     			return it; }
-            reverse_iterator  operator+ (difference_type n) const {	return _rit - n; }
+            reverse_iterator  operator+ (difference_type n) const {	return reverse_iterator(base()-n); }
             reverse_iterator& operator+=(difference_type n) { _rit -= n; return *this; }
-            reverse_iterator  operator- (difference_type n) const {	return _rit + n; }
+            reverse_iterator  operator- (difference_type n) const {	return reverse_iterator(base()+n); }
             reverse_iterator& operator-=(difference_type n) { _rit += n; return *this; }
 
             reverse_iterator& operator[](difference_type n) const { return _rit - n; }
