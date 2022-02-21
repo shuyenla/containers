@@ -2,47 +2,44 @@
 # define _REVERSE_ITERATOR_H_
 
 namespace ft {
-  template <class Iterator>
-    class reverse_iterator : public
-        iterator<typename iterator_traits<Iterator>::iterator_category,
-        typename iterator_traits<Iterator>::value_type,
-        typename iterator_traits<Iterator>::difference_type,
-        typename iterator_traits<Iterator>::pointer,
-        typename iterator_traits<Iterator>::reference> {
-    public:
-        typedef Iterator                                            iterator_type;
-        typedef typename iterator_traits<Iterator>::difference_type difference_type;
-        typedef typename iterator_traits<Iterator>::reference       reference;
-        typedef typename iterator_traits<Iterator>::pointer         pointer;
+    template <class iterator>
+    class reverse_iterator {
+        public:
+            typedef iterator                                                iterator_type;
+            typedef typename iterator_traits<iterator>::iterator_category   iterator_category;
+            typedef typename iterator_traits<iterator>::value_type          value_type;
+            typedef typename iterator_traits<iterator>::difference_type     difference_type;
+            typedef typename iterator_traits<iterator>::reference           reference;
+            typedef typename iterator_traits<iterator>::pointer             pointer;
 
-        reverse_iterator() { _ptr = NULL; }
-        explicit reverse_iterator(Iterator x) { _ptr = x; }
-        // template <class U> reverse_iterator(const reverse_iterator<U>& u);
-        // template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u);
+            reverse_iterator() { _rit = NULL; }
+            explicit reverse_iterator(iterator x) { _rit = x; }
+            template <class U> reverse_iterator(const reverse_iterator<U>& u) { _rit = u._rit; }
+            template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u) { _rit = u.rit; }
 
-        Iterator base() const; // explicit
-        reference operator*() const { return *_ptr; }
-        pointer operator->() const { return _ptr; }
+            iterator base() const {return _rit + 1;}
+            reference operator*() const { return *_rit; }
+            pointer operator->() const { return _rit; }
 
-        reverse_iterator& operator++() { _ptr--; return *this; }
-        reverse_iterator  operator++(int) {
-			iterator it = *this;
-			--(*this);
-			return it; }
-        reverse_iterator& operator--() { _ptr++; return *this; }
-        reverse_iterator  operator--(int) {
-			iterator it = *this;
-			++(*this);
-			return it; }
-        reverse_iterator  operator+ (difference_type n) const {	return _ptr - n; }
-        reverse_iterator& operator+=(difference_type n) { _ptr -= n; return *this; }
-        reverse_iterator  operator- (difference_type n) const {	return _ptr + n; }
-        reverse_iterator& operator-=(difference_type n) { _ptr += n; return *this; }
+            reverse_iterator& operator++() { _rit--; return *this; }
+            reverse_iterator  operator++(int) {
+    			iterator it = *this;
+    			--(*this);
+    			return it; }
+            reverse_iterator& operator--() { _rit++; return *this; }
+            reverse_iterator  operator--(int) {
+    			iterator it = *this;
+    			++(*this);
+    			return it; }
+            reverse_iterator  operator+ (difference_type n) const {	return _rit - n; }
+            reverse_iterator& operator+=(difference_type n) { _rit -= n; return *this; }
+            reverse_iterator  operator- (difference_type n) const {	return _rit + n; }
+            reverse_iterator& operator-=(difference_type n) { _rit += n; return *this; }
 
-        reverse_iterator& operator[](difference_type n) const { return _ptr - n; }
-    protected:
-        Iterator *_ptr;
-    private:
+            reverse_iterator& operator[](difference_type n) const { return _rit - n; }
+        protected:
+            iterator *_rit;
+
     };
 }
 
