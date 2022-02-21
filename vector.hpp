@@ -11,7 +11,7 @@
 #include "enable_if.hpp"
 #include "equal.hpp"
 #include "iterator.hpp"
-#include "const_iterator.hpp"
+// #include "const_iterator.hpp"
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
 
@@ -32,10 +32,10 @@ namespace ft {
     	typedef const value_type&																		const_reference;
     	typedef size_t																					size_type;
     	typedef size_t						 															difference_type;
-    	typedef pointer						 															iterator;
-    	typedef const_pointer																			const_iterator;
-    	typedef ft::reverse_iterator<ft::iterator<std::random_access_iterator_tag, T> >					reverse_iterator;
-    	typedef ft::reverse_iterator<ft::const_iterator<std::random_access_iterator_tag, T> >			const_reverse_iterator;
+    	typedef ft::iterator<T>						 													iterator;
+    	typedef ft::iterator<const T>																	const_iterator;
+    	typedef ft::reverse_iterator<iterator>					reverse_iterator;
+    	typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 	
 		private:
 
@@ -211,31 +211,57 @@ namespace ft {
 
    		iterator insert(const_iterator position, const T& x)
 		{
-			value_type v;
 			reserve(_size + 1);
-			for (iterator it = position + 1; it < this->end(); it++)
+			size_type pos = 0;
+			std::cout << "0" << std::endl;
+			for (const_iterator cit = this->begin(); cit != position; cit++)
+				pos++;
+			std::cout << "here!!" << std::endl;
+			for (iterator it = this->begin() + pos; it < this->end(); it++)
 				*it = *(it - 1);
-			*position = x;
+			*(this->begin() + pos) = x;
 			_size++;
+			return this->begin() + pos;
 		}
 
     	iterator insert(const_iterator position, size_type n, const T& x)
 		{
-			value_type v;
 			reserve(_size + n);
-			for (iterator pos = position, it = position + n; pos < this->end(); pos++, it++)
-				*it = *pos;
-			for (iterator pos = position; pos < pos + n; pos++)
-				*pos = x;
+			size_type pos = 0;
+						std::cout << "1" << std::endl;
+			for (const_iterator cit = this->begin(); cit != position; cit++)
+				pos++;
+						std::cout << "here!! 2 " << std::endl;
+			for (iterator it = this->begin() + pos; it < this->end(); it++)
+			{
+				*(it + n) = *it;
+				*it = x;
+			}
 			_size += n;
+			return this->begin() + pos;
 		}
 
-    	// template<class InputIt>
-    	// iterator insert(const_iterator position,
-    	// 	typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last)
-		// {
-
-		// }
+    	template<class InputIt>
+    	iterator insert(const_iterator position,
+    	typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last)
+		{
+			size_type n = 0;
+						std::cout << "2" << std::endl;
+			for (iterator it = first; it != last; it++)
+				n++;
+							std::cout << "here!! 3 " << std::endl;
+			reserve(_size + n);
+			size_type pos = 0;
+			for (const_iterator cit = this->begin(); cit != position; cit++)
+				pos++;
+			for (iterator it = this->begin() + pos; it < this->end(); it++)
+			{
+				*(it + n) = *it;
+				*it = *first;
+			}
+			_size += n;
+			return this->begin() + pos;
+		}
 
     	// iterator erase(const_iterator position);
     	// iterator erase(const_iterator first, const_iterator last);
