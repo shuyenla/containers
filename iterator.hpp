@@ -25,7 +25,7 @@ namespace ft {
     	    template <class U> iterator(const iterator<U> & u):_it(u.base()) {}
     	    
 
-			const iterator& base() const { return _it; }
+			const pointer& base() const { return _it; }
 
 			template <class U>
 			iterator& operator=(const iterator<U> & u)
@@ -87,13 +87,13 @@ namespace ft {
     const iterator<iterator2>& rhs ) { return &(*lhs) >= &(*rhs); }
 
 	template<class T>
-	iterator<T>  operator+ (ptrdiff_t n, iterator<T> it) { return iterator<T>(it.base() + n); }
+	iterator<T>  operator+ (ptrdiff_t n, iterator<T> &lhs) { return iterator<T>(lhs.base() + n); }
 	template<class T>
-    iterator<T>  operator- (ptrdiff_t n, iterator<T> it) { return iterator<T>(it.base() - n); }
+    iterator<T>  operator- (ptrdiff_t n, iterator<T> &lhs) { return iterator<T>(lhs.base() - n); }
 	template<class T>
-    iterator<T> operator- (iterator<T> it, iterator<T> it2) { return iterator<T>(it.base() - it2.base()); }
+    typename iterator<T>::difference_type operator- (iterator<T> &lhs, iterator<T> &rhs) { return lhs.base() - rhs.base(); }
 	template<class T, class U>
-    iterator<T> operator- (iterator<T> it, iterator<U> it2) { return iterator<T>(it.base() - it2.base()); }
+    typename iterator<T>::difference_type operator- (iterator<T> &lhs, iterator<U> &rhs) { return lhs.base() - rhs.base(); }
 
 	template<class T>
 	std::ostream &operator<<( std::ostream& os, iterator<T> const it ) { std::cout << it.base(); return os; }
