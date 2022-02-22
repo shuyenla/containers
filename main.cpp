@@ -35,19 +35,10 @@ int main()
 	stdv.pop_back();
 	std::cout << stdv.size() << std::endl << std::endl;
 
-	
-	// std::cout << *(v2.begin() + 3) << std::endl ;
-	// v2.assign(3, 20);
-	// std::cout << *(v2.begin()) << std::endl;
-	// std::cout << v2.at(2) << std::endl;
-	// std::cout << v2.front() << std::endl;
-	// std::cout << v2.back() << std::endl;
-	// std::cout << v2.size() << std::endl;
-	// v2.push_back(25);
-	// std::cout << v2.back() << std::endl;
-	// v2.pop_back();
-	// v2.pop_back();
-	// std::cout << v2.size() << std::endl << std::endl;
-
+	std::vector<int> vct(5);
+	std::vector<int>::iterator it = vct.begin(), ite = vct.end();
+	std::cout << "len: " << (ite - it) << std::endl;
+	for (; it != ite; ++it)
+		*it = (ite - it);
 	return 0;
 }

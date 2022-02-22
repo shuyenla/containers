@@ -24,7 +24,15 @@ namespace ft {
     	    explicit iterator(pointer x):_it(x) { }
     	    template <class U> iterator(const iterator<U> & u):_it(u._it) {}
     	    template <class U>
-			iterator& operator=(const iterator<U> & u) { _it = u._it; }
+			iterator& operator=(const iterator<U> & u)
+			{
+				if (u != *this)
+				{
+					delete _it;
+					_it = u._it;
+				}
+				return *this;
+			}
     	    reference operator*() const { return *_it; }
     	    pointer operator->() const { return _it; }
     	    iterator& operator++() { _it++; return *this; }
@@ -37,11 +45,11 @@ namespace ft {
 				iterator it = *this;
 				--(*this);
 				return it; }
-    	    iterator  operator+ (difference_type n) const {	return iterator(_it + n); }
+    	    iterator  operator+ (difference_type n) const {	return iterator((_it + n)); }
     	    iterator& operator+=(difference_type n) { _it += n; return *this; }
     	    iterator  operator- (difference_type n) const {	return iterator(_it - n); }
     	    iterator& operator-=(difference_type n) { _it -= n; return *this; }
-    	    iterator& operator[](difference_type n) const { return (_it + n); }
+    	    iterator& operator[](difference_type n) const { return _it + n; }
 
     	protected:
     	    pointer _it;
