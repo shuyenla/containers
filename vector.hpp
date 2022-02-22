@@ -156,7 +156,7 @@ namespace ft {
 				{
 					for (size_type i = 0; i < _size; i++)
 						_allocator.construct(tmp + i, _ptr[i]);
-					_allocator.destroy(_ptr);
+					_allocator.deallocate(_ptr, _cap);
 				}
 				_ptr = tmp;
 			}
