@@ -260,11 +260,13 @@ namespace ft {
     	iterator erase(iterator position)
 		{
 			size_type pos = 0;
-			for (iterator cit = this->begin(); cit != position; cit++)
+			for (iterator it = this->begin(); it != position; it++)
 				pos++;
 			_allocator.destroy(_ptr + pos);
+			for (iterator it = this->begin() + pos; it != this->end(); it++)
+				*(it) = *(it + 1);
 			_size--;
-			return iterator(_ptr + pos + 1);
+			return iterator(_ptr + pos);
 		}
 
     	iterator erase(iterator first, iterator last)
@@ -282,7 +284,7 @@ namespace ft {
 				_size -= n;
 				if (iterator(_ptr + pos) == this->end())
 					return this->end();
-				return (iterator(_ptr + pos + 1));
+				return (iterator(_ptr + pos));
 			}
 			return last;
 		}
