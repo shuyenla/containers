@@ -84,7 +84,7 @@ namespace ft {
 			if (this != &x)
 			{
 				if (_ptr)
-					_allocator.destroy(_ptr);
+					_allocator.deallocate(_ptr, _cap);
 				_allocator = x.get_allocator();
 				_size = x.size();
 				_cap = x.capacity();
