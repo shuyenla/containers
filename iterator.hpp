@@ -55,24 +55,23 @@ namespace ft {
 
     template< class iterator1, class iterator2 >
     bool operator!=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { /*std::cout <<  &(*lhs) << " " << &(*rhs)<< std::endl;*/
-		return &(*lhs) != &(*rhs); }
+    const iterator<iterator2>& rhs ) { return &(*lhs) != &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator<( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return &(*lhs) > &(*rhs); }
-
-    template< class iterator1, class iterator2 >
-    bool operator<=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return &(*lhs) >= &(*rhs); }
-
-    template< class iterator1, class iterator2 >
-    bool operator>( const iterator<iterator1>& lhs,
     const iterator<iterator2>& rhs ) { return &(*lhs) < &(*rhs); }
 
     template< class iterator1, class iterator2 >
-    bool operator>=( const iterator<iterator1>& lhs,
+    bool operator<=( const iterator<iterator1>& lhs,
     const iterator<iterator2>& rhs ) { return &(*lhs) <= &(*rhs); }
+
+    template< class iterator1, class iterator2 >
+    bool operator>( const iterator<iterator1>& lhs,
+    const iterator<iterator2>& rhs ) { return &(*lhs) > &(*rhs); }
+
+    template< class iterator1, class iterator2 >
+    bool operator>=( const iterator<iterator1>& lhs,
+    const iterator<iterator2>& rhs ) { return &(*lhs) >= &(*rhs); }
 
 
 }

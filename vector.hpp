@@ -216,10 +216,12 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + 1);
-			for (iterator it = this->begin() + pos; it < this->end(); it++)
-				*it = *(it - 1);
-			*(this->begin() + pos) = x;
 			_size++;
+			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; ite--)
+			{
+				*(ite) = *(ite - 1);
+			}
+			*(this->begin() + pos) = x;
 			return this->begin() + pos;
 		}
 
@@ -229,12 +231,17 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + n);
-			for (iterator it = this->begin() + pos; it < this->end(); it++)
-			{
-				*(it + n) = *it;
-				*it = x;
-			}
 			_size += n;
+			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; it++)
+			{
+				
+				*(it + n) = *it;
+	
+			}
+			size_type n_ = n;
+			for (iterator it = this->begin() + pos; n_ > 0; it++, n_--)
+				*it = x;
+		
 			return this->begin() + pos;
 		}
 
@@ -249,7 +256,7 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + n);
-			for (iterator it = this->begin() + pos; it < this->end(); it++)
+			for (iterator it = this->begin() + pos; it < this->end(); it++, first++)
 			{
 				*(it + n) = *it;
 				*it = *first;
