@@ -53,8 +53,8 @@ namespace ft {
     	    iterator& operator+=(difference_type n) { _it += n; return *this; }
     	    iterator  operator- (difference_type n) const {	return iterator(_it - n); }
     	    iterator& operator-=(difference_type n) { _it -= n; return *this; }
-    	    iterator& operator[](difference_type n) const { return _it + n; }
-
+    	    reference operator[](difference_type n) const { return _it[n]; }
+			iterator& operator= (value_type v) { *_it = v; return *this; }
 
     	protected:
     	    pointer _it;
