@@ -91,9 +91,9 @@ namespace ft {
 	template<class T>
     iterator<T>  operator- (ptrdiff_t n, iterator<T> &lhs) { return iterator<T>(lhs.base() - n); }
 	template<class T>
-    typename iterator<T>::difference_type operator- (iterator<T> &lhs, iterator<T> &rhs) { return lhs.base() - rhs.base(); }
+    typename iterator<T>::difference_type operator- (const iterator<T> &lhs, const iterator<T> &rhs) { return lhs.base() - rhs.base(); }
 	template<class T, class U>
-    typename iterator<T>::difference_type operator- (iterator<T> &lhs, iterator<U> &rhs) { return lhs.base() - rhs.base(); }
+    typename iterator<T>::difference_type operator- (const iterator<T> &lhs, const iterator<U> &rhs) { return lhs.base() - rhs.base(); }
 
 	template<class T>
 	std::ostream &operator<<( std::ostream& os, iterator<T> const it ) { std::cout << it.base(); return os; }
