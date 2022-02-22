@@ -23,16 +23,16 @@ namespace ft {
 
   	public:
     	// types
-    	typedef T 																						value_type;
-    	typedef Allocator 																				allocator_type;
-    	typedef typename allocator_type::pointer														pointer;
-    	typedef typename allocator_type::const_pointer													const_pointer;
-    	typedef value_type& 																			reference;
-    	typedef const value_type&																		const_reference;
-    	typedef size_t																					size_type;
-    	typedef size_t						 															difference_type;
-    	typedef ft::iterator<T>						 													iterator;
-    	typedef ft::iterator<const T>																	const_iterator;
+    	typedef T 												value_type;
+    	typedef Allocator 										allocator_type;
+    	typedef typename allocator_type::pointer				pointer;
+    	typedef typename allocator_type::const_pointer			const_pointer;
+    	typedef value_type& 									reference;
+    	typedef const value_type&								const_reference;
+    	typedef size_t											size_type;
+    	typedef size_t						 					difference_type;
+    	typedef ft::iterator<T>						 			iterator;
+    	typedef ft::iterator<const T>							const_iterator;
     	typedef ft::reverse_iterator<iterator>					reverse_iterator;
     	typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 	
@@ -46,7 +46,9 @@ namespace ft {
 		public:
 
     	// construct/copy/destroy
-    	explicit vector(const allocator_type& alloc = allocator_type()):_ptr(NULL), _size(0), _cap(0), _allocator(alloc) {}
+    	explicit vector(const allocator_type& alloc = allocator_type()):_ptr(NULL), _size(0), _cap(0), _allocator(alloc) {
+			_ptr = _allocator.allocate(0);
+		}
 
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc)
 		{
@@ -210,12 +212,10 @@ namespace ft {
 
    		iterator insert(const_iterator position, const T& x)
 		{
-			std::cout << "0" << std::endl;
-			reserve(_size + 1);
 			size_type pos = 0;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
-			std::cout << "here!!" << std::endl;
+			reserve(_size + 1);
 			for (iterator it = this->begin() + pos; it < this->end(); it++)
 				*it = *(it - 1);
 			*(this->begin() + pos) = x;
@@ -225,12 +225,10 @@ namespace ft {
 
     	iterator insert(const_iterator position, size_type n, const T& x)
 		{
-			reserve(_size + n);
 			size_type pos = 0;
-						std::cout << "1" << std::endl;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
-						std::cout << "here!! 2 " << std::endl;
+			reserve(_size + n);
 			for (iterator it = this->begin() + pos; it < this->end(); it++)
 			{
 				*(it + n) = *it;
@@ -245,14 +243,12 @@ namespace ft {
     	typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last)
 		{
 			size_type n = 0;
-						std::cout << "2" << std::endl;
 			for (iterator it = first; it != last; it++)
 				n++;
-							std::cout << "here!! 3 " << std::endl;
-			reserve(_size + n);
 			size_type pos = 0;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
+			reserve(_size + n);
 			for (iterator it = this->begin() + pos; it < this->end(); it++)
 			{
 				*(it + n) = *it;

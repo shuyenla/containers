@@ -7,7 +7,7 @@ namespace ft {
     template<class T> struct iterator_traits<T*>;
 	template<class T> struct iterator_traits<const T*>;
 
-    template< class T, class Category = std::random_access_iterator_tag,class Distance = ptrdiff_t,
+    template< class T, class Category = std::random_access_iterator_tag, class Distance = ptrdiff_t,
     class Pointer = T*, class Reference = T&> class iterator
 	{
 		public:
@@ -21,8 +21,8 @@ namespace ft {
 
 			iterator() { _it = NULL; }
 
-    	    explicit iterator(pointer x) { _it = x; }
-    	    template <class U> iterator(const iterator<U> & u) { _it = u._it; }
+    	    explicit iterator(pointer x):_it(x) { }
+    	    template <class U> iterator(const iterator<U> & u):_it(u._it) {}
     	    template <class U>
 			iterator& operator=(const iterator<U> & u) { _it = u._it; }
     	    reference operator*() const { return *_it; }
@@ -55,7 +55,8 @@ namespace ft {
 
     template< class iterator1, class iterator2 >
     bool operator!=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return !(lhs == rhs); }
+    const iterator<iterator2>& rhs ) { /*std::cout <<  &(*lhs) << " " << &(*rhs)<< std::endl;*/
+		return &(*lhs) != &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator<( const iterator<iterator1>& lhs,
