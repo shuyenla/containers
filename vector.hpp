@@ -216,11 +216,9 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + 1);
-			_size++;
-			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; ite--)
-			{
+			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; --ite)
 				*(ite) = *(ite - 1);
-			}
+			_size++;
 			*(this->begin() + pos) = x;
 			return this->begin() + pos;
 		}
@@ -231,17 +229,12 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + n);
-			_size += n;
 			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; it++)
-			{
-				
 				*(it + n) = *it;
-	
-			}
 			size_type n_ = n;
+			_size += n;
 			for (iterator it = this->begin() + pos; n_ > 0; it++, n_--)
 				*it = x;
-		
 			return this->begin() + pos;
 		}
 
@@ -250,23 +243,50 @@ namespace ft {
     	typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last)
 		{
 			size_type n = 0;
-			for (iterator it = first; it != last; it++)
-				n++;
 			size_type pos = 0;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
+			for (iterator it = first; it != last; it++)
+				n++;
 			reserve(_size + n);
-			for (iterator it = this->begin() + pos; it < this->end(); it++, first++)
-			{
+			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; it++)
 				*(it + n) = *it;
-				*it = *first;
-			}
 			_size += n;
+			for (iterator it = this->begin() + pos; first != last; it++, first++)
+				*it = *first;
 			return this->begin() + pos;
 		}
 
-    	// iterator erase(const_iterator position);
-    	// iterator erase(const_iterator first, const_iterator last);
+    	iterator erase(iterator position)
+		{
+			size_type pos = 0;
+			for (iterator cit = this->begin(); cit != position; cit++)
+				pos++;
+			_allocator.destroy(_ptr + pos);
+			_size--;
+			return iterator(_ptr + pos + 1);
+		}
+
+    	iterator erase(iterator first, iterator last)
+		{
+			size_type pos = 0;
+			size_type n = 0;
+			for (iterator cit = this->begin(); cit != first; cit++)
+				pos++;
+			for (iterator cit = first; cit != last; cit++)
+				n++;
+			if (n > 0)
+			{
+				for (size_type n_ = n; n_ > 0; n_--, pos++)
+					_allocator.destroy(_ptr + pos);
+				_size -= n;
+				if (iterator(_ptr + pos) == this->end())
+					return this->end();
+				return (iterator(_ptr + pos + 1));
+			}
+			return last;
+		}
+
     	void     swap(vector& x)
 		{
 			value_type		*_tmpPtr = _ptr;
@@ -286,8 +306,8 @@ namespace ft {
 
     	void     clear()
 		{
-			for (; _size > 0; _size--)
-				_ptr[_size] = 0;
+			while (_size > 0)
+				erase(iterator(_ptr + _size));
 		}
   	};	
 	
