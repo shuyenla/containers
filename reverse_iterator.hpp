@@ -17,7 +17,7 @@ namespace ft {
             template <class U> reverse_iterator(const reverse_iterator<U>& u) { _rit = u._rit; }
             template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u) { _rit = u.rit; }
 
-            iterator base() const {return _rit;}
+            iterator_type base() const {return _rit;}
             reference operator*() const { return *_rit; }
             pointer operator->() const { return _rit; }
 

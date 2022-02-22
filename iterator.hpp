@@ -22,14 +22,18 @@ namespace ft {
 			iterator() { _it = NULL; }
 
     	    explicit iterator(pointer x):_it(x) { }
-    	    template <class U> iterator(const iterator<U> & u):_it(u._it) {}
-    	    template <class U>
+    	    template <class U> iterator(const iterator<U> & u):_it(u.base()) {}
+    	    
+
+			const iterator& base() const { return _it; }
+
+			template <class U>
 			iterator& operator=(const iterator<U> & u)
 			{
 				if (u != *this)
 				{
 					delete _it;
-					_it = u._it;
+					_it = u.base();
 				}
 				return *this;
 			}
@@ -50,6 +54,7 @@ namespace ft {
     	    iterator  operator- (difference_type n) const {	return iterator(_it - n); }
     	    iterator& operator-=(difference_type n) { _it -= n; return *this; }
     	    iterator& operator[](difference_type n) const { return _it + n; }
+
 
     	protected:
     	    pointer _it;
@@ -80,6 +85,18 @@ namespace ft {
     template< class iterator1, class iterator2 >
     bool operator>=( const iterator<iterator1>& lhs,
     const iterator<iterator2>& rhs ) { return &(*lhs) >= &(*rhs); }
+
+	template<class T>
+	iterator<T>  operator+ (ptrdiff_t n, iterator<T> it) { return iterator<T>(it.base() + n); }
+	template<class T>
+    iterator<T>  operator- (ptrdiff_t n, iterator<T> it) { return iterator<T>(it.base() - n); }
+	template<class T>
+    iterator<T> operator- (iterator<T> it, iterator<T> it2) { return iterator<T>(it.base() - it2.base()); }
+	template<class T, class U>
+    iterator<T> operator- (iterator<T> it, iterator<U> it2) { return iterator<T>(it.base() - it2.base()); }
+
+	template<class T>
+	std::ostream &operator<<( std::ostream& os, iterator<T> const it ) { std::cout << it.base(); return os; }
 
 
 }
