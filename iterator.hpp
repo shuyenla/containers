@@ -12,10 +12,10 @@ namespace ft {
 	{
 		public:
     		typedef std::random_access_iterator_tag    		iterator_category;
-			typedef T           		value_type;
-    		typedef Distance    		difference_type;
-    		typedef Pointer     		pointer;
-    		typedef Reference   		reference;
+			typedef T           							value_type;
+    		typedef Distance    							difference_type;
+    		typedef Pointer     							pointer;
+    		typedef Reference   							reference;
 
 			operator iterator<T const>() const { return iterator<T const>(_it); }
 
@@ -51,27 +51,27 @@ namespace ft {
 
     template< class iterator1, class iterator2 >
     bool operator==( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs == rhs; }
+    const iterator<iterator2>& rhs ) { return &(*lhs) == &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator!=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs != rhs; }
+    const iterator<iterator2>& rhs ) { return !(lhs == rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator<( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs > rhs; }
+    const iterator<iterator2>& rhs ) { return &(*lhs) > &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator<=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs >= rhs; }
+    const iterator<iterator2>& rhs ) { return &(*lhs) >= &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator>( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs < rhs; }
+    const iterator<iterator2>& rhs ) { return &(*lhs) < &(*rhs); }
 
     template< class iterator1, class iterator2 >
     bool operator>=( const iterator<iterator1>& lhs,
-    const iterator<iterator2>& rhs ) { return lhs <= rhs; }
+    const iterator<iterator2>& rhs ) { return &(*lhs) <= &(*rhs); }
 
 
 }
