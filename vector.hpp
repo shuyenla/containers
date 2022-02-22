@@ -279,8 +279,11 @@ namespace ft {
 				n++;
 			if (n > 0)
 			{
-				for (size_type n_ = n; n_ > 0; n_--, pos++)
-					_allocator.destroy(_ptr + pos);
+				for (size_type n_ = n, pos_ = pos; n_ > 0; n_--, pos_++)
+					_allocator.destroy(_ptr + pos_);
+				
+				for (iterator it = this->begin() + pos; it != this->end(); it++)
+				*(it) = *(it + n);
 				_size -= n;
 				if (iterator(_ptr + pos) == this->end())
 					return this->end();
