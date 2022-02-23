@@ -19,22 +19,26 @@ namespace ft {
             template <class U>
             reverse_iterator(const reverse_iterator<U>& u):_rit(u.base()) {}
             template <class U>
-            reverse_iterator& operator=(const reverse_iterator<U>& u) { _rit = u.rit; }
+            reverse_iterator& operator=(const reverse_iterator<U>& u) {
+                if (*this != u)
+                    _rit = u.base();
+                return *this;
+            }
 
-            iterator_type base() const { return _rit;}
+            iterator_type base() const { return _rit; }
             reference operator*() const { return *(_rit - 1); }
-            pointer operator->() const { return _rit; }
+            pointer operator->() const { return (base() - 1).operator->(); }
 
             reverse_iterator& operator++() { _rit--; return *this; }
             reverse_iterator  operator++(int) {
-    			iterator it = *this;
-    			--(*this);
-    			return it; }
+    			reverse_iterator rit = *this;
+    			++(*this);
+    			return rit; }
             reverse_iterator& operator--() { _rit++; return *this; }
             reverse_iterator  operator--(int) {
-    			iterator it = *this;
-    			++(*this);
-    			return it; }
+    			reverse_iterator rit = *this;
+    			--(*this);
+    			return rit; }
             reverse_iterator  operator+ (difference_type n) const {	return reverse_iterator(base()-n); }
             reverse_iterator& operator+=(difference_type n) { _rit -= n; return *this; }
             reverse_iterator  operator- (difference_type n) const {	return reverse_iterator(base()+n); }
