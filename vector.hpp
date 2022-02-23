@@ -254,14 +254,11 @@ namespace ft {
 
     	iterator erase(iterator position)
 		{
-			size_type pos = 0;
-			for (iterator it = this->begin(); it != position; it++)
-				pos++;
-			_allocator.destroy(_ptr + pos);
-			for (iterator it = this->begin() + pos; it != this->end(); it++)
-				*(it) = *(it + 1);
+			_allocator.destroy(&(*position));
 			_size--;
-			return iterator(_ptr + pos);
+			for (iterator it = position; it != this->end(); it++)
+				*(it) = *(it + 1);
+			return position;
 		}
 
     	iterator erase(iterator first, iterator last)
@@ -293,19 +290,12 @@ namespace ft {
 			std::swap(_allocator, x._allocator);
 		}
 
-    	void     clear()
-		{
-			while (_size > 0)
-				erase(iterator(_ptr + _size));
-		}
+    	void     clear() { erase(this->begin(), this->end()); }
   	};	
 	
   		//	 swap
   		template<class T, class Allocator>
-    	void swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
-		{
-			std::swap(x, y);
-		}
+    	void swap(vector<T, Allocator>& x, vector<T, Allocator>& y) { std::swap(x, y); }
 
 		// overload operator
 	    template <class T, class Allocator>
