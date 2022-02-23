@@ -17,13 +17,12 @@ namespace ft {
     		typedef Pointer     							pointer;
     		typedef Reference   							reference;
 
-			operator iterator<T const>() const { return iterator<T const>(_it); }
+			operator iterator<const T>() const { return iterator<const T>(_it); }
 
-			iterator() { _it = NULL; }
-
-    	    explicit iterator(pointer x):_it(x) { }
-    	    template <class U> iterator(const iterator<U> & u):_it(u.base()) {}
-    	    
+			iterator():_it(NULL) {}
+    	    explicit iterator(pointer x):_it(x) {}
+    	    template <class U>
+			iterator(const iterator<U> & u):_it(u.base()) {}
 
 			const pointer& base() const { return _it; }
 
