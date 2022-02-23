@@ -206,7 +206,7 @@ namespace ft {
 
     	void pop_back()
 		{
-			_allocator.destroy(_ptr + _size);
+			_allocator.destroy(_ptr + _size - 1);
 			_size--;
 		}
 
@@ -216,9 +216,8 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + 1);
-			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; --ite)
-				*(ite) = *(ite - 1);
 			_size++;
+			std::copy_backward(begin() + pos, end() - 1, end());
 			*(this->begin() + pos) = x;
 			return this->begin() + pos;
 		}
@@ -229,12 +228,9 @@ namespace ft {
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + n);
-			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; it++)
-				*(it + n) = *it;
-			size_type n_ = n;
 			_size += n;
-			for (iterator it = this->begin() + pos; n_ > 0; it++, n_--)
-				*it = x;
+			std::copy_backward(begin() + pos, end() - n, end());
+			std::fill_n(begin() + pos, n, x);
 			return this->begin() + pos;
 		}
 
@@ -249,9 +245,8 @@ namespace ft {
 			for (iterator it = first; it != last; it++)
 				n++;
 			reserve(_size + n);
-			for (iterator it = this->begin() + pos, ite = this->end(); it != ite; it++)
-				*(it + n) = *it;
 			_size += n;
+			std::copy_backward(begin() + pos , end() - n, end());
 			for (iterator it = this->begin() + pos; first != last; it++, first++)
 				*it = *first;
 			return this->begin() + pos;
@@ -281,7 +276,6 @@ namespace ft {
 			{
 				for (size_type n_ = n, pos_ = pos; n_ > 0; n_--, pos_++)
 					_allocator.destroy(_ptr + pos_);
-				
 				for (iterator it = this->begin() + pos; it != this->end(); it++)
 				*(it) = *(it + n);
 				_size -= n;
