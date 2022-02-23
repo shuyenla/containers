@@ -242,7 +242,7 @@ namespace ft {
 			size_type pos = 0;
 			for (const_iterator cit = this->begin(); cit != position; cit++)
 				pos++;
-			for (iterator it = first; it != last; it++)
+			for (InputIt it = first; it != last; it++)
 				n++;
 			reserve(_size + n);
 			_size += n;
@@ -286,7 +286,12 @@ namespace ft {
 			return last;
 		}
 
-    	void     swap(vector& x) { std::swap(this, x); }
+    	void     swap(vector& x) {
+			std::swap(_ptr, x._ptr);
+			std::swap(_size, x._size);
+			std::swap(_cap, x._cap);
+			std::swap(_allocator, x._allocator);
+		}
 
     	void     clear()
 		{
@@ -297,7 +302,10 @@ namespace ft {
 	
   		//	 swap
   		template<class T, class Allocator>
-    	void swap(vector<T, Allocator>& x, vector<T, Allocator>& y) { std::swap(x, y); }
+    	void swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
+		{
+			std::swap(x, y);
+		}
 
 		// overload operator
 	    template <class T, class Allocator>
