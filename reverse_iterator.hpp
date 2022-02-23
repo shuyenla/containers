@@ -13,7 +13,7 @@ namespace ft {
             typedef typename iterator_traits<iterator>::pointer             pointer;
 
             reverse_iterator() { _rit = NULL; }
-            explicit reverse_iterator(iterator x) { _rit = x; }
+            explicit reverse_iterator(iterator x):_rit(x) { }
             template <class U> reverse_iterator(const reverse_iterator<U>& u) { _rit = u._rit; }
             template <class U> reverse_iterator& operator=(const reverse_iterator<U>& u) { _rit = u.rit; }
 
@@ -38,7 +38,7 @@ namespace ft {
 
             reverse_iterator& operator[](difference_type n) const { return _rit - n; }
         protected:
-            iterator *_rit;
+            iterator _rit;
 
     };
 

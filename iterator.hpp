@@ -31,10 +31,7 @@ namespace ft {
 			iterator& operator=(const iterator<U> & u)
 			{
 				if (u != *this)
-				{
-					delete _it;
 					_it = u.base();
-				}
 				return *this;
 			}
     	    reference operator*() const { return *_it; }
