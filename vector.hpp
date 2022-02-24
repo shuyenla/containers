@@ -22,7 +22,7 @@ namespace ft {
   	class vector {
 
   	public:
-    	// types
+    	
     	typedef T 												value_type;
     	typedef Allocator 										allocator_type;
     	typedef typename allocator_type::pointer				pointer;
@@ -36,16 +36,15 @@ namespace ft {
     	typedef ft::reverse_iterator<ft::iterator<T> >					reverse_iterator;
     	typedef ft::reverse_iterator<ft::iterator<const T> >			const_reverse_iterator;
 	
-		private:
+	private:
 
-			value_type		*_ptr;
-			size_type		_size;
-			size_type		_cap;
-			allocator_type	_allocator;
+		value_type		*_ptr;
+		size_type		_size;
+		size_type		_cap;
+		allocator_type	_allocator;
 
-		public:
+	public:
 
-    	// construct/copy/destroy
     	explicit vector(const allocator_type& alloc = allocator_type()):_ptr(NULL), _size(0), _cap(0), _allocator(alloc) {
 			_ptr = _allocator.allocate(0);
 		}
@@ -296,6 +295,7 @@ namespace ft {
   	//	 swap
   	template<class T, class Allocator>
     void swap(vector<T, Allocator>& x, vector<T, Allocator>& y) { std::swap(x, y); }
+
 	// overload operator
 	template <class T, class Allocator>
 	    bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
@@ -316,8 +316,6 @@ namespace ft {
 	    bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
 		{ return x < y || x == y; }
 	template <class Allocator> class vector<bool,Allocator>;
-
-	
 }
 
 #endif
