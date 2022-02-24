@@ -293,31 +293,29 @@ namespace ft {
     	void     clear() { erase(this->begin(), this->end()); }
   	};	
 	
-  		//	 swap
-  		template<class T, class Allocator>
-    	void swap(vector<T, Allocator>& x, vector<T, Allocator>& y) { std::swap(x, y); }
-
-		// overload operator
-	    template <class T, class Allocator>
-	        bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
-	    template <class T, class Allocator>
-	        bool operator< (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
-	    template <class T, class Allocator>
-	        bool operator!=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return !(x == y); }
-	    template <class T, class Allocator>
-	        bool operator> (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return !(x <= y); }
-	    template <class T, class Allocator>
-	        bool operator>=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return !(x < y) || x == y; }
-	    template <class T, class Allocator>
-	        bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
-			{ return x < y || x == y; }
-
-	    template <class Allocator> class vector<bool,Allocator>;
+  	//	 swap
+  	template<class T, class Allocator>
+    void swap(vector<T, Allocator>& x, vector<T, Allocator>& y) { std::swap(x, y); }
+	// overload operator
+	template <class T, class Allocator>
+	    bool operator==(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
+	template <class T, class Allocator>
+	    bool operator< (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
+	template <class T, class Allocator>
+	    bool operator!=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return !(x == y); }
+	template <class T, class Allocator>
+	    bool operator> (const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return !(x <= y); }
+	template <class T, class Allocator>
+	    bool operator>=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return !(x < y) || x == y; }
+	template <class T, class Allocator>
+	    bool operator<=(const vector<T,Allocator>& x,const vector<T,Allocator>& y)
+		{ return x < y || x == y; }
+	template <class Allocator> class vector<bool,Allocator>;
 
 	
 }
