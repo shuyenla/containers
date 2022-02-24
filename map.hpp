@@ -18,29 +18,29 @@
 
 namespace ft {
 
-	template<class Key, class T, class Compare = less<Key>,
-        class Allocator = allocator<pair<const Key, T>>>
+	template<class Key, class T, class Compare = std::less<Key>,
+        class Allocator = std::allocator<ft::pair<const Key, T> > >
     class map
 	{
 		public:
 	    	// types
 	    	typedef Key															key_type;
-	    	typedef nT															mapped_type;
+	    	typedef T															mapped_type;
 	    	typedef pair<const Key, T>											value_type ;
 	    	typedef Compare														key_compare;
 	    	typedef Allocator													allocator_type;
-	    	typedef typename allocator_traits<Allocator>::pointer				pointer;
-	    	typedef typename allocator_traits<Allocator>::const_pointer			const_pointer;
+	    	typedef typename allocator_type::pointer							pointer;
+	    	typedef typename allocator_type::const_pointer						const_pointer;
 	    	typedef value_type&													reference;
 	    	typedef const value_type& 											const_reference;
-	    	typedef /* implementation-defined */ 								size_type;
-	    	typedef /* implementation-defined */ 								difference_type;
-	    	typedef /* implementation-defined */ 								iterator;
-	    	typedef /* implementation-defined */ 								const_iterator;
+	    	typedef size_t 														size_type;
+	    	typedef size_t 														difference_type;
+	    	typedef ft::iterator<T>						 						iterator;
+	    	typedef ft::iterator<const T>										const_iterator;
 	    	typedef ft::reverse_iterator<iterator>								reverse_iterator;
 	    	typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
-	    	typedef /* unspecified */											node_type;
-	    	typedef /*insert-return-type*/<iterator, node_type>					insert_return_type;
+	    	// typedef /* unspecified */											node_type;
+	    	// typedef /*insert-return-type*/<iterator, node_type>					insert_return_type;
 	
 	    class value_compare {
 	    	friend class map;
@@ -114,7 +114,7 @@ namespace ft {
 	// swap
 	template<class Key, class T, class Compare, class Allocator>
 	  void swap(map<Key, T, Compare, Allocator>& x,
-	    		map<Key, T, Compare, Allocator>& y)((x.swap(y))) {}
+	    		map<Key, T, Compare, Allocator>& y);
 
 	template<class Key, class T, class Compare, class Allocator>
 	  bool operator==(const map<Key, T, Compare, Allocator>& x,
