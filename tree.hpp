@@ -36,21 +36,59 @@ namespace ft {
 				n->color = 1;
 			}
 
-			nodePtr		move(nodePtr n, nodePtr *y, nodePtr x)
+			nodePtr		move(nodePtr newbee, nodePtr *parent, nodePtr target)
 			{
-				while (x != _TNULL)
+				while (target != _TNULL)
 				{
-					*y = x;
-					if (n->data < x->data)
-						x = x->left;
+					*parent = target;
+					if (newbee->data > target->data)
+						target = target->right;
 					else
-						x = x->right;
+						target = target->left;
 				}
-				return x;
+				newbee->parent = *parent;
+				return target;
 			}
-			void		leftRotate(nodePtr n);
-			void		rightRotate(nodePtr n);
-			void		insertFix(nodePtr n);
+
+			void		leftRotate(nodePtr x)
+			{
+				nodePtr		y = x->right;
+				x->right = y->left;
+				if (y->left != nullptr)
+					y->left->parent = x;
+				y->parent = x->parent;
+				if (x->parent == nullptr)
+					_root = y;
+				else if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+				y->left = x;
+				x->parent = y;
+			}
+
+			void		rightRotate(nodePtr x)
+			{
+				nodePtr		y = x->left;
+				x->left = y->right;
+				if (y->right != nullptr)
+					y->right->parent = x;
+				y->parent = x->parent;
+				if (x->parent == nullptr)
+					_root = y;
+				else if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+				y->right = x;
+				x->parent = y;
+			}
+
+			void		insertFix(nodePtr newbee)
+			{
+				
+			}
+
 			void		deleteFix(nodePtr n);
 
 
@@ -66,12 +104,28 @@ namespace ft {
 
 			void		insert(T data)
 			{
-				nodePtr n = newNode(data);
-				nodePtr y = nullPtr;
-				nodePtr x = move(n, &y, _root);
+				nodePtr newbee = newNode(data);
+				nodePtr parent = nullPtr;
+				nodePtr target = move(newbee, &parent, _root);
 				
-				
-				
+				if (target == nullptr)
+					_root = newbee;
+				else if (newbee->data > parent->data)
+					parent->right = newbee;
+				else
+					parent->left = newbee;
+
+				if (parent == nullptr)
+				{
+					newbee->color = 0;
+					return ;
+				}
+
+				// why
+				if (newbee->parent->parent == nullptr)
+					return ;
+
+				insertFix(newbee);
 			}
 
 			void		deleteNode(T data);
