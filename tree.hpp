@@ -84,9 +84,49 @@ namespace ft {
 				x->parent = y;
 			}
 
-			void		insertFix(nodePtr newbee)
+			void		insertFix(nodePtr x)
 			{
-				
+				nodePtr		gx;
+				while (x != _root && x->parent->color == 1)
+				{
+					gx = x->parent->parent;
+					if (x->parent == gx->left)
+					{
+						if (gx->right->color == 1)
+						{
+							gx->left->color = 0;
+							gx->right->color = 0;
+							x = gx;
+						}
+						else if (x == x->parent->right)
+						{
+							x = x->parent;
+							leftRotate(x);
+						}
+						x->parent->color = 0;
+						x->parent->parent->color = 1;
+						rightRotate(x->parent->parent);
+					}
+					else
+					{
+						if (gx->left->color == 1)
+						{
+							gx->left->color = 0;
+							gx->right->color = 0;
+							gx->color = 1;
+							x = gx;
+						}
+						else if (x == x->parent->left)
+						{
+							x = x->parent;
+							rightRotate(x);
+						}
+						x->parent->color = 0;
+						x->parent->parent->color = 1;
+						leftRotate(x->parent->parent);
+					}
+				}
+				_root->color = 0;
 			}
 
 			void		deleteFix(nodePtr n);
