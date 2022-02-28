@@ -23,16 +23,19 @@ namespace ft {
     class map
 	{
 		public:
-	    	// types
+
 	    	typedef Key															key_type;
 	    	typedef T															mapped_type;
-	    	typedef pair<const Key, T>											value_type ;
+	    	typedef pair<const Key, T>											value_type;
 	    	typedef Compare														key_compare;
 	    	typedef Allocator													allocator_type;
 	    	typedef typename allocator_type::pointer							pointer;
 	    	typedef typename allocator_type::const_pointer						const_pointer;
+
+
 	    	typedef value_type&													reference;
 	    	typedef const value_type& 											const_reference;
+
 	    	typedef size_t 														size_type;
 	    	typedef size_t 														difference_type;
 	    	typedef ft::iterator<T>						 						iterator;
@@ -41,7 +44,7 @@ namespace ft {
 	    	typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 	    	// typedef /* unspecified */											node_type;
 	    	// typedef /*insert-return-type*/<iterator, node_type>					insert_return_type;
-	
+
 	    	class value_compare {
 	    		friend class map;
 	    		protected:
@@ -59,7 +62,7 @@ namespace ft {
 	    	    const Compare& comp = Compare(), const Allocator& = Allocator());
 	    	map(const map& x);
 
-	    	~map();
+	    	~map() {}
 	    	map& operator=(const map& x);
 	    	allocator_type get_allocator() const;
 
