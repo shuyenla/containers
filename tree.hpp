@@ -142,6 +142,18 @@ namespace ft {
 				_root = _TNULL;
 			}
 
+			nodePtr min(nodePtr x) {
+				while (x->left != _TNULL)
+					x = x->left;
+				return x;
+			}
+
+			nodePtr	max(nodePtr x) {
+				while (x->right != _TNULL)
+					x = x->right;
+				return x;
+			}
+
 			void		insert(T data)
 			{
 				nodePtr newbee = newNode(data);
@@ -161,14 +173,36 @@ namespace ft {
 					return ;
 				}
 
-				// why
 				if (newbee->parent->parent == nullptr)
 					return ;
 
 				insertFix(newbee);
 			}
 
-			void		deleteNode(T data);
+			void		deleteNode(T data)
+			{
+				nodePtr		x = search(data);
+				int			color = x->color;
+				if (x->left == nullptr)
+				{
+					x = x->right;
+					transPlant();
+				}
+				else if (x->right == nullptr)
+				{
+					x = x->left;
+					transPlant();
+				}
+				else
+				{
+					minimum();
+
+				}
+
+				if (color == 0)
+					deleteFix(x);
+			}
+
 			nodePtr		search(T data);
 			nodePtr		getRoot() { return _root; }
 			void		printTree();
