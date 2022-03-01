@@ -3,13 +3,12 @@
 
 #include <iostream>
 
-
 namespace ft {
 
-	template<class T>
+	template<class Value>
 	struct node {
 
-		T		data;
+		Value		data;
 		node	*parent;
 		node	*left;
 		node	*right;
@@ -29,7 +28,7 @@ namespace ft {
 	    	typedef typename const iterator								const_iterator;
 	    	typedef typename reverse_iterator							reverse_iterator;
 	    	typedef typename const reverse_iterator						const_reverse_iterator;
-	    	typedef typename node<T>									node_type;
+	    	typedef typename node<Value>								node_type;
 	    	typedef nodePtr												insert_return_type;
 
 		private:
@@ -38,7 +37,7 @@ namespace ft {
 			nodePtr		_TNULL;
 			size_type	_size;
 
-			nodePtr		newNode(T data)
+			nodePtr		newNode(Value data)
 			{
 				nodePtr		n = new node;
 				n->data = data;
@@ -216,31 +215,35 @@ namespace ft {
 				x->color = 0;
 			}
 
+			nodePtr		_upper_bound(nodePtr x)
+			{
+				if (x->right != _TNULL)
+				return min(x->right);
 
-		public:
-
-			RedBlackTree() {
-				_TNULL = new node;
-				_TNULL->color = 0;
-				_TNULL->left = nullptr;
-				_TNULL->right = nullptr;
-				_root = _TNULL;
-				_size = 0;
+				nodePtr y = x->parent;
+				while (y != _TNULL && x == y->right)
+				{
+					x = y;
+					y = y->parent;
+				}
+				return y;
 			}
 
-			nodePtr min(nodePtr x) {
-				while (x->left != _TNULL)
-					x = x->left;
-				return x;
+			nodePtr		_lower_bound(nodePtr x)
+			{
+				if (x->left != _TNULL)
+					return max(x->left);
+
+				nodePtr y = x->parent;
+				while (y != _TNULL && x == y->left)
+				{
+					x = y;
+					y = y->parent;
+				}
+				return y;
 			}
 
-			nodePtr	max(nodePtr x) {
-				while (x->right != _TNULL)
-					x = x->right;
-				return x;
-			}
-
-			void		insert(T data)
+			void		_insert(Value data)
 			{
 				nodePtr newbee = newNode(data);
 				nodePtr parent = nullPtr;
@@ -266,7 +269,7 @@ namespace ft {
 				insertFix(newbee);
 			}
 
-			void		deleteNode(T data)
+			void		_deleteNode(Value data)
 			{
 				nodePtr		d = searchR(_root, data);
 				if (d = _TNULL) {
@@ -309,7 +312,7 @@ namespace ft {
 					deleteFix(x);
 			}
 
-			nodePtr		searchR(nodePtr x, T data)
+			nodePtr		_searchR(nodePtr x, Value data)
 			{
 				if (x != _TNULL || data == x->data)
 					return x;
@@ -319,49 +322,66 @@ namespace ft {
 					return searchR(x->right, data);
 			}
 
+
+		public:
+
+			RedBlackTree() {
+				_TNULL = new node;
+				_TNULL->color = 0;
+				_TNULL->left = nullptr;
+				_TNULL->right = nullptr;
+				_root = _TNULL;
+				_size = 0;
+			}
+
+			nodePtr min(nodePtr x) {
+				while (x->left != _TNULL)
+					x = x->left;
+				return x;
+			}
+
+			nodePtr	max(nodePtr x) {
+				while (x->right != _TNULL)
+					x = x->right;
+				return x;
+			}
+
+
 			nodePtr		getRoot() { return _root; }
 
-			nodePtr		successor(nodePtr x)
-			{
-				if (x->right != _TNULL)
-				return min(x->right);
 
-				nodePtr y = x->parent;
-				while (y != _TNULL && x == y->right)
-				{
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
 
-			nodePtr		predecessor(nodePtr x)
-			{
-				if (x->left != _TNULL)
-					return max(x->left);
+			size_type				size() { return _size; }
+			size_type				max_size() { return Allocator.max_size(); }
 
-				nodePtr y = x->parent;
-				while (y != _TNULL && x == y->left)
-				{
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
+			iterator				begin() { return iterator(_root); }
+	    	const_iterator			begin() const { return iterator(_root); }
+	    	iterator				end() { return iterator(_TNULL); }
+	    	const_iterator			end() const { return iterator(_TNULL); }
 
-			size_type	size() { return _size; }
-			size_type	max_size() { return Allocator.max_size(); }
+			reverse_iterator		rbegin() { return reverse_iterator(iterator(_TNULL)); }
+    		const_reverse_iterator	rbegin() const { return reverse_iterator(iterator(_TNULL)); }
+    		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
+    		const_reverse_iterator	rend() const { return reverse_iterator(iterator(_root)); }
 
-			iterator               begin() { return iterator(_root); }
-	    	const_iterator         begin() const { return iterator(_root); }
-	    	iterator               end() { return iterator(_TNULL); }
-	    	const_iterator         end() const { return iterator(_TNULL); }
+			pair<iterator, bool>	insert(const value_type& x) { return _rbt.insert(x); }
+	    	iterator				insert(const_iterator position, const value_type& x) { return _rbt.insert(position, x); }
+	    	template<class InputIt>
+	    		void				insert(InputIt first, InputIt last) { return _rbt.insert(first, last); }
+	    	iterator				erase(iterator position) { return _rbt.erase(position); }
+	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
+	    	iterator				erase(iterator first, iterator last) { return _rbt.erase(first, last); }
+	    	// void					swap(map& x);
+	    	// void					clear();
 
-			reverse_iterator       rbegin() { return reverse_iterator(iterator(_TNULL)); }
-    		const_reverse_iterator rbegin() const { return reverse_iterator(iterator(_TNULL)); }
-    		reverse_iterator       rend() { return reverse_iterator(iterator(_root)); }
-    		const_reverse_iterator rend() const { return reverse_iterator(iterator(_root)); }
-
+	    	iterator				find(const key_type& x) { return _rbt.find(x); }
+	    	const_iterator			find(const key_type& x) const { return _rbt.find(x); }
+	    	iterator				lower_bound(const key_type& x) { return iterator(_rbt._lower_bound(x)); }
+	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_rbt._lower_bound(x)); }
+	    	iterator				upper_bound(const key_type& x) { return iterator(_rbt._upper_bound(x)); }
+	    	const_iterator			upper_bound(const key_type& x) const { return iterator(_rbt._upper_bound(x)); }
+	    	// pair<iterator, iterator>				equal_range(const key_type& x) { return ; }
+	    	// pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ; }
 
 			void		printTree();
 	};
