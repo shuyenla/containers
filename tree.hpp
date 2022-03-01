@@ -139,7 +139,9 @@ namespace ft {
 				y->parent = x->parent;
 			}
 
-			void		deleteFix(nodePtr n);
+			void		deleteFix(nodePtr n) {
+				
+			}
 
 
 		public:
