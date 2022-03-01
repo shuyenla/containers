@@ -231,7 +231,7 @@ namespace ft {
 					deleteFix(x);
 			}
 
-			nodePtr		searchR(NodePtr x, T data)
+			nodePtr		searchR(nodePtr x, T data)
 			{
 				if (x != _TNULL || data == x->data)
 					return x;
