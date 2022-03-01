@@ -5,29 +5,29 @@
 
 namespace ft {
 
-	template<class Value>
+	template<class P>
 	struct node {
 
-		Value	data;
+		P		data;
 		node	*parent;
 		node	*left;
 		node	*right;
 		int		color;
 	};
 
-	template<class Key, class Value, class Compare, class Allocator>
+	template<class Key, class P, class Compare, class Allocator>
 	class RedBlackTree {
 
 		public:
 
 			typedef size_t 												size_type;
 	    	typedef ptrdiff_t					 						difference_type;
-	    	typedef ft::rbt_iterator<Value>								iterator;
-	    	typedef ft::iterator<const Value>							const_iterator;
-	    	typedef ft::reverse_iterator<Value>							reverse_iterator;
-	    	typedef ft::reverse_iterator<const Value>					const_reverse_iterator;
-	    	typedef node<Value>											node_type;
-			typedef node<Value>*										nodePtr;
+	    	typedef ft::rbt_iterator<P>									iterator;
+	    	typedef ft::iterator<const P>								const_iterator;
+	    	typedef ft::reverse_iterator<P>								reverse_iterator;
+	    	typedef ft::reverse_iterator<const P>						const_reverse_iterator;
+	    	typedef node<P>												node_type;
+			typedef node<P>*											nodePtr;
 	    	typedef nodePtr												insert_return_type;
 
 		private:
@@ -36,7 +36,7 @@ namespace ft {
 			nodePtr		_TNULL;
 			size_type	_size;
 
-			nodePtr		newNode(Value data)
+			nodePtr		newNode(P data)
 			{
 				nodePtr		n = new node;
 				n->data = data;
@@ -242,7 +242,7 @@ namespace ft {
 				return y;
 			}
 
-			iterator		_insert(iterator start, Value data)
+			iterator		_insert(iterator start, P data)
 			{
 				nodePtr newbee = newNode(data);
 				nodePtr parent = nullPtr;
@@ -269,7 +269,7 @@ namespace ft {
 				return iterator(newbee);
 			}
 
-			void		_deleteNode(Value data)
+			void		_deleteNode(P data)
 			{
 				nodePtr		d = searchR(_root, data);
 				if (d = _TNULL) {
@@ -312,7 +312,7 @@ namespace ft {
 					deleteFix(x);
 			}
 
-			nodePtr		_searchR(nodePtr x, Value data)
+			nodePtr		_searchR(nodePtr x, P data)
 			{
 				if (x != _TNULL || data == x->data)
 					return x;

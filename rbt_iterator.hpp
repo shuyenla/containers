@@ -1,36 +1,36 @@
 #ifndef _RBT_ITERATOR_H_
-# define _RBY_ITERATOR_H_
+# define _RBT_ITERATOR_H_
 
 namespace ft {
 
-	template<typename N>
+	template<typename P>
 	struct rbt_iterator
 	{
 		typedef bidirectional_iterator_tag 				iterator_category;
-		typedef N           							value_type;
+		typedef P           							value_type;
     	typedef ptrdiff_t    							difference_type;
-    	typedef N*		     							pointer;
-    	typedef N&			   							reference;
-		typedef rbt_iterator<N>							iterator;
-		typedef node<N>*								nodePtr;
+    	typedef P*		     							pointer;
+    	typedef P&			   							reference;
+		typedef rbt_iterator<P>							iterator;
+		typedef node<P>*								nodePtr;
 
 		nodePtr		_it;
 
 		rbt_iterator():_it(NULL) {}
-		explicit rbt_iterator(nodePtr N):_it(N) {}
+		explicit rbt_iterator(nodePtr N):_it(P) {}
 		
 
-		reference operator*() const { return *_it; }
-    	pointer operator->() const { return _it; }
-    	iterator& operator++() { _it++; return *this; }
+		reference operator*() const { return *(_it->data); }
+    	pointer operator->() const { return _it->data; }
+    	iterator& operator++() { _it = upper_bound(_it); return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
-			++(*this);
+			it = upper_bound(_it);
 			return it; }
-    	iterator& operator--() { _it--; return *this; }
+    	iterator& operator--() { _it = lower_bound(_it); return *this; }
     	iterator  operator--(int) {
 			iterator it = *this;
-			--(*this);
+			it = lower_bound(_it);
 			return it; }
 
 
