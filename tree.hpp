@@ -18,13 +18,25 @@ namespace ft {
 
 	typedef node *nodePtr;
 
-	template<class T>
+	template<class Key, class Value, class Compare, class Allocator>
 	class RedBlackTree {
+
+		public:
+
+			typedef size_t 												size_type;
+	    	typedef size_t					 							difference_type;
+	    	typedef typename iterator									iterator;
+	    	typedef typename const iterator								const_iterator;
+	    	typedef typename reverse_iterator							reverse_iterator;
+	    	typedef typename const reverse_iterator						const_reverse_iterator;
+	    	typedef typename node<T>									node_type;
+	    	typedef nodePtr												insert_return_type;
 
 		private:
 
 			nodePtr		_root;
 			nodePtr		_TNULL;
+			size_type	_size;
 
 			nodePtr		newNode(T data)
 			{
@@ -139,8 +151,69 @@ namespace ft {
 				y->parent = x->parent;
 			}
 
-			void		deleteFix(nodePtr n) {
-				
+			void		deleteFix(nodePtr x) {
+				nodePtr		y;
+				while (x != _root && x->color == 0)
+				{
+					if (x == x->parent->left)
+					{
+						y = x->parent->right;
+						if (y->color == 1)
+						{
+							y->color = 0;
+							x->parent->color = 1;
+							leftRotate(x->parent);
+							y = x->parent->right;
+						}
+						if (y->left->color == 0 && y->right->color == 0) {
+							y->color = 1;
+							x = x->parent;
+						}
+						else {
+							if (y->right->color == 0) {
+								y->left->color = 0;
+								y->color = 1;
+								rightRotate(y);
+								y = x->parent->right;
+							}
+							y->color = x->parent->color;
+							x->parent->color = 0;
+							y->right->color = 0;
+							leftRotate(x->parent);
+							x = _root;
+						}
+					}
+					else
+					{
+						y = x->parent->left;
+						if (y->color == 1) {
+							y->color = 0;
+							x->parent->color = 1;
+							rightRotate(x->parent);
+							y = x->parent->left;
+						}
+						if (y->right->color == 0 && y->right->color == 0) {
+							y->color = 1;
+							x = x->parent;
+						}
+						else
+						{
+							if (y->left->color == 0)
+							{
+								y->right->color = 0;
+								y->color = 1;
+								leftRotate(y);
+								y = x->parent->left;
+							}
+							y->color = x->parent->color;
+							x->parent->color = 0;
+							y->left->color = 0;
+							rightRotate(x->parent);
+							x = _root;
+						}
+					}
+				}
+				x->color = 0;
 			}
 
 
@@ -152,6 +225,7 @@ namespace ft {
 				_TNULL->left = nullptr;
 				_TNULL->right = nullptr;
 				_root = _TNULL;
+				_size = 0;
 			}
 
 			nodePtr min(nodePtr x) {
@@ -172,6 +246,7 @@ namespace ft {
 				nodePtr parent = nullPtr;
 				nodePtr target = move(newbee, &parent, _root);
 				
+				_size++;
 				if (target == nullptr)
 					_root = newbee;
 				else if (newbee->data > parent->data)
@@ -198,6 +273,7 @@ namespace ft {
 					std::cout << "Key to be deleted not found in the tree" << std::endl;
 					return ;
 				}
+				_size--;
 				nodePtr		x, y;
 				int			color = d->color;
 				if (d->left == _TNULL)
@@ -244,6 +320,49 @@ namespace ft {
 			}
 
 			nodePtr		getRoot() { return _root; }
+
+			nodePtr		successor(nodePtr x)
+			{
+				if (x->right != _TNULL)
+				return min(x->right);
+
+				nodePtr y = x->parent;
+				while (y != _TNULL && x == y->right)
+				{
+					x = y;
+					y = y->parent;
+				}
+				return y;
+			}
+
+			nodePtr		predecessor(nodePtr x)
+			{
+				if (x->left != _TNULL)
+					return max(x->left);
+
+				nodePtr y = x->parent;
+				while (y != _TNULL && x == y->left)
+				{
+					x = y;
+					y = y->parent;
+				}
+				return y;
+			}
+
+			size_type	size() { return _size; }
+			size_type	max_size() { return Allocator.max_size(); }
+
+			iterator               begin() { return iterator(_root); }
+	    	const_iterator         begin() const { return iterator(_root); }
+	    	iterator               end() { return iterator(_TNULL); }
+	    	const_iterator         end() const { return iterator(_TNULL); }
+
+			reverse_iterator       rbegin() { return reverse_iterator(iterator(_TNULL)); }
+    		const_reverse_iterator rbegin() const { return reverse_iterator(iterator(_TNULL)); }
+    		reverse_iterator       rend() { return reverse_iterator(iterator(_root)); }
+    		const_reverse_iterator rend() const { return reverse_iterator(iterator(_root)); }
+
+
 			void		printTree();
 	};
 

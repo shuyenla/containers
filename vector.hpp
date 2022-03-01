@@ -23,16 +23,16 @@ namespace ft {
 
   	public:
     	
-    	typedef T 												value_type;
-    	typedef Allocator 										allocator_type;
-    	typedef typename allocator_type::pointer				pointer;
-    	typedef typename allocator_type::const_pointer			const_pointer;
-    	typedef value_type& 									reference;
-    	typedef const value_type&								const_reference;
-    	typedef size_t											size_type;
-    	typedef size_t						 					difference_type;
-    	typedef ft::iterator<T>						 			iterator;
-    	typedef ft::iterator<const T>							const_iterator;
+    	typedef T 														value_type;
+    	typedef Allocator 												allocator_type;
+    	typedef typename allocator_type::pointer						pointer;
+    	typedef typename allocator_type::const_pointer					const_pointer;
+    	typedef value_type& 											reference;
+    	typedef const value_type&										const_reference;
+    	typedef size_t													size_type;
+    	typedef size_t						 							difference_type;
+    	typedef ft::iterator<T>						 					iterator;
+    	typedef ft::iterator<const T>									const_iterator;
     	typedef ft::reverse_iterator<ft::iterator<T> >					reverse_iterator;
     	typedef ft::reverse_iterator<ft::iterator<const T> >			const_reverse_iterator;
 	

@@ -14,7 +14,7 @@
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
 #include "pair.hpp"
-
+#include "tree.hpp"
 
 namespace ft {
 
@@ -24,26 +24,34 @@ namespace ft {
 	{
 		public:
 
-	    	typedef Key															key_type;
-	    	typedef T															mapped_type;
-	    	typedef pair<const Key, T>											value_type;
-	    	typedef Compare														key_compare;
-	    	typedef Allocator													allocator_type;
-	    	typedef typename allocator_type::pointer							pointer;
-	    	typedef typename allocator_type::const_pointer						const_pointer;
+	    	typedef Key																		key_type;
+	    	typedef T																		mapped_type;
+	    	typedef pair<const Key, T>														value_type;
+	    	typedef Compare																	key_compare;
+	    	typedef Allocator																allocator_type;
 
+		private:
 
-	    	typedef value_type&													reference;
-	    	typedef const value_type& 											const_reference;
+			typedef RedBlackTree<key_type, value_type, key_compare, allocator_type>			tree_type;
 
-	    	typedef size_t 														size_type;
-	    	typedef size_t 														difference_type;
-	    	typedef ft::iterator<T>						 						iterator;
-	    	typedef ft::iterator<const T>										const_iterator;
-	    	typedef ft::reverse_iterator<iterator>								reverse_iterator;
-	    	typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
-	    	// typedef /* unspecified */											node_type;
-	    	// typedef /*insert-return-type*/<iterator, node_type>					insert_return_type;
+			tree_type	_rbt;
+
+		public:
+
+	    	typedef typename allocator_type::pointer										pointer;
+	    	typedef typename allocator_type::const_pointer									const_pointer;
+	    	typedef value_type&																reference;
+	    	typedef const value_type& 														const_reference;
+	    	typedef typename tree_type::size_type 											size_type;
+	    	typedef typename tree_type::difference_type 									difference_type;
+	    	typedef typename tree_type::iterator											iterator;
+	    	typedef typename tree_type::iterator											const_iterator;
+	    	typedef typename tree_type::reverse_iterator									reverse_iterator;
+	    	typedef typename tree_type::reverse_iterator									const_reverse_iterator;
+			
+			
+	    	typedef typename tree_type::node_type											node_type;
+	    	typedef typename tree_type::insert_return_type									insert_return_type;
 
 	    	class value_compare {
 	    		friend class map;
@@ -64,23 +72,23 @@ namespace ft {
 
 	    	~map() {}
 	    	map& operator=(const map& x);
-	    	allocator_type get_allocator() const;
+	    	allocator_type get_allocator() const { return Allocator; }
 
 	    	// iterators
-	    	iterator               begin();
-	    	const_iterator         begin() const;
-	    	iterator               end();
-	    	const_iterator         end() const;
+	    	iterator               begin() { return _rbt.begin(); }
+	    	const_iterator         begin() const { return _rbt.begin(); }
+	    	iterator               end() { return _rbt.end(); }
+	    	const_iterator         end() const { return _rbt.end(); }
 
-	    	reverse_iterator       rbegin();
-	    	const_reverse_iterator rbegin() const;
-	    	reverse_iterator       rend();
-	    	const_reverse_iterator rend() const;
+	    	reverse_iterator       rbegin() { return _rbt.rbegin(); }
+	    	const_reverse_iterator rbegin() const { return _rbt.rbegin(); }
+	    	reverse_iterator       rend() { return _rbt.rbegin(); }
+	    	const_reverse_iterator rend() const { return _rbt.rbegin(); }
 
 	    	// capacity
-	    	bool empty() const;
-	    	size_type size() const;
-	    	size_type max_size() const;
+	    	bool empty() const { return _rbt.size() == 0; }
+	    	size_type size() const { return _rbt.size(); }
+	    	size_type max_size() const { return _rbt.max_size(); }
 
 	    	// element access
 	    	mapped_type& operator[](const key_type& x);
