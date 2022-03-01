@@ -129,6 +129,16 @@ namespace ft {
 				_root->color = 0;
 			}
 
+			void		transplant(nodePtr x, nodePtr y) {
+				if (x->parent == nullptr)
+					_root = y;
+				else if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+				y->parent = x->parent;
+			}
+
 			void		deleteFix(nodePtr n);
 
 
@@ -186,16 +196,16 @@ namespace ft {
 				if (x->left == nullptr)
 				{
 					x = x->right;
-					transPlant();
+					transplant();
 				}
 				else if (x->right == nullptr)
 				{
 					x = x->left;
-					transPlant();
+					transplant();
 				}
 				else
 				{
-					minimum();
+					min();
 
 				}
 
