@@ -2,7 +2,7 @@
 # define _REVERSE_ITERATOR_H_
 
 namespace ft {
-    template <class iterator>
+    template <struct iterator>
     struct reverse_iterator {
         public:
             typedef iterator                                                iterator_type;

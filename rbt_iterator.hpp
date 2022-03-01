@@ -3,8 +3,8 @@
 
 namespace ft {
 
-	template<typename P>
-	struct rbt_iterator
+	template<struct rbt_iterator>
+	struct rbt_reverse_iterator
 	{
 		typedef bidirectional_iterator_tag 				iterator_category;
 		typedef P           							value_type;
@@ -18,7 +18,6 @@ namespace ft {
 
 		rbt_iterator():_it(NULL) {}
 		explicit rbt_iterator(nodePtr N):_it(P) {}
-		
 
 		reference operator*() const { return *(_it->data); }
     	pointer operator->() const { return _it->data; }
@@ -33,6 +32,10 @@ namespace ft {
 			it = lower_bound(_it);
 			return it; }
 
+		friend bool operator==(const iterator &x, const iterator &y)
+		{ return x._it == y._it; }
+  		friend bool operator!=(const iterator &x, const iterator &y)
+		{ return x._it != y._it; }
 
 	};
 
