@@ -2,20 +2,20 @@
 # define _ITERATOR_H_
 
 namespace ft {
-    // primitives:
+
     template<class iterator> struct iterator_traits;
     template<class T> struct iterator_traits<T*>;
 	template<class T> struct iterator_traits<const T*>;
 
-    template< class T, class Category = std::random_access_iterator_tag, class Distance = ptrdiff_t,
-    class Pointer = T*, class Reference = T&> class iterator
+    template<class T>
+	struct iterator
 	{
 		public:
     		typedef std::random_access_iterator_tag    		iterator_category;
 			typedef T           							value_type;
-    		typedef Distance    							difference_type;
-    		typedef Pointer     							pointer;
-    		typedef Reference   							reference;
+    		typedef ptrdiff_t    							difference_type;
+    		typedef T*		     							pointer;
+    		typedef T&			   							reference;
 
 			operator iterator<const T>() const { return iterator<const T>(_it); }
 

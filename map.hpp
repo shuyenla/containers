@@ -70,7 +70,7 @@ namespace ft {
 
 	    	~map() {}
 	    	map& operator=(const map& x);
-	    	allocator_type get_allocator() const { return Allocator; }
+	    	allocator_type get_allocator() const { return allocator_type(_rbt.get_allocator()); }
 
 	    	// iterators
 	    	iterator				begin() { return _rbt.begin(); }

@@ -3,7 +3,7 @@
 
 namespace ft {
     template <class iterator>
-    class reverse_iterator {
+    struct reverse_iterator {
         public:
             typedef iterator                                                iterator_type;
             typedef typename iterator_traits<iterator>::iterator_category   iterator_category;

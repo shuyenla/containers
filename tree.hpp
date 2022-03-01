@@ -8,14 +8,12 @@ namespace ft {
 	template<class Value>
 	struct node {
 
-		Value		data;
+		Value	data;
 		node	*parent;
 		node	*left;
 		node	*right;
 		int		color;
 	};
-
-	typedef node *nodePtr;
 
 	template<class Key, class Value, class Compare, class Allocator>
 	class RedBlackTree {
@@ -23,12 +21,13 @@ namespace ft {
 		public:
 
 			typedef size_t 												size_type;
-	    	typedef size_t					 							difference_type;
-	    	typedef typename iterator									iterator;
-	    	typedef typename const iterator								const_iterator;
-	    	typedef typename reverse_iterator							reverse_iterator;
-	    	typedef typename const reverse_iterator						const_reverse_iterator;
-	    	typedef typename node<Value>								node_type;
+	    	typedef ptrdiff_t					 						difference_type;
+	    	typedef ft::rbt_iterator<Value>								iterator;
+	    	typedef ft::iterator<const Value>							const_iterator;
+	    	typedef ft::reverse_iterator<Value>							reverse_iterator;
+	    	typedef ft::reverse_iterator<const Value>					const_reverse_iterator;
+	    	typedef node<Value>											node_type;
+			typedef node<Value>*										nodePtr;
 	    	typedef nodePtr												insert_return_type;
 
 		private:
