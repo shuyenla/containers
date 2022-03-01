@@ -61,12 +61,12 @@ namespace ft {
 	    	};
 
 	    	// construct/copy/destroy
-	    	map() : map(Compare()) {}
-	    	explicit map(const Compare& comp, const Allocator& = Allocator());
-	    	template<class InputIt>
-	    		map(InputIt first, InputIt last,
-	    	    const Compare& comp = Compare(), const Allocator& = Allocator());
-	    	map(const map& x);
+	    	// map() : map(Compare()) {}
+	    	// explicit map(const Compare& comp, const Allocator& = Allocator());
+	    	// template<class InputIt>
+	    	// 	map(InputIt first, InputIt last,
+	    	//     const Compare& comp = Compare(), const Allocator& = Allocator());
+	    	// map(const map& x);
 
 	    	~map() {}
 	    	map& operator=(const map& x);
@@ -89,9 +89,9 @@ namespace ft {
 	    	size_type				max_size() const { return _rbt.max_size(); }
 
 	    	// element access
-	    	mapped_type& operator[](const key_type& x);
-	    	mapped_type&			at(const key_type& x);
-	    	const mapped_type&		at(const key_type& x) const;
+	    	// mapped_type& operator[](const key_type& x);
+	    	// mapped_type&			at(const key_type& x);
+	    	// const mapped_type&		at(const key_type& x) const;
 
 	    	// modifiers
 	    	pair<iterator, bool>	insert(const value_type& x) { return _rbt.insert(x); }
@@ -101,12 +101,12 @@ namespace ft {
 	    	iterator				erase(iterator position) { return _rbt.erase(position); }
 	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
 	    	iterator				erase(iterator first, iterator last) { return _rbt.erase(first, last); }
-	    	void					swap(map& x);
-	    	void					clear();
+	    	// void					swap(map& x);
+	    	// void					clear();
 
 	    	// observers
-	    	key_compare				key_comp() const;
-	    	value_compare			value_comp() const;
+	    	// key_compare				key_comp() const;
+	    	// value_compare			value_comp() const;
 
 	    	// map operations
 	    	iterator				find(const key_type& x) { return _rbt.find(x); }
@@ -116,8 +116,8 @@ namespace ft {
 	    	const_iterator			lower_bound(const key_type& x) const { return _rbt.lower_bound(x); }
 	    	iterator				upper_bound(const key_type& x) { return _rbt.upper_bound(x); }
 	    	const_iterator			upper_bound(const key_type& x) const { return _rbt.upper_bound(x); }
-	    	pair<iterator, iterator>				equal_range(const key_type& x) { return _rbt.equal_range(x); }
-	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return _rbt.equal_range(x); }
+	    	// pair<iterator, iterator>				equal_range(const key_type& x) { return _rbt.equal_range(x); }
+	    	// pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return _rbt.equal_range(x); }
 	};
  
 	// swap
@@ -125,9 +125,9 @@ namespace ft {
 		void	swap(map<Key, T, Compare, Allocator>& x,
 	    			 map<Key, T, Compare, Allocator>& y) { std::swap(x, y); }
 
-	template<class Key, class T, class Compare, class Allocator>
-		bool	operator== (const map<Key, T, Compare, Allocator>& x,
-	                		const map<Key, T, Compare, Allocator>& y);
+	// template<class Key, class T, class Compare, class Allocator>
+	// 	bool	operator== (const map<Key, T, Compare, Allocator>& x,
+	//                 		const map<Key, T, Compare, Allocator>& y);
 }
 
 #endif

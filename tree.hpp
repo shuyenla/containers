@@ -243,12 +243,12 @@ namespace ft {
 				return y;
 			}
 
-			void		_insert(Value data)
+			iterator		_insert(iterator start, Value data)
 			{
 				nodePtr newbee = newNode(data);
 				nodePtr parent = nullPtr;
-				nodePtr target = move(newbee, &parent, _root);
-				
+				nodePtr target = move(newbee, &parent, start);
+			
 				_size++;
 				if (target == nullptr)
 					_root = newbee;
@@ -260,13 +260,14 @@ namespace ft {
 				if (parent == nullptr)
 				{
 					newbee->color = 0;
-					return ;
+					return iterator(newbee);
 				}
 
 				if (newbee->parent->parent == nullptr)
-					return ;
+					return iterator(newbee);
 
 				insertFix(newbee);
+				return iterator(newbee);
 			}
 
 			void		_deleteNode(Value data)
@@ -364,18 +365,18 @@ namespace ft {
     		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
     		const_reverse_iterator	rend() const { return reverse_iterator(iterator(_root)); }
 
-			pair<iterator, bool>	insert(const value_type& x) { return _rbt.insert(x); }
-	    	iterator				insert(const_iterator position, const value_type& x) { return _rbt.insert(position, x); }
-	    	template<class InputIt>
-	    		void				insert(InputIt first, InputIt last) { return _rbt.insert(first, last); }
-	    	iterator				erase(iterator position) { return _rbt.erase(position); }
-	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
-	    	iterator				erase(iterator first, iterator last) { return _rbt.erase(first, last); }
+			pair<iterator, bool>	insert(const value_type& x) { return {_rbt._insert(_root, x), true}; }
+	    	iterator				insert(const_iterator position, const value_type& x) { return {_rbt._insert(position, x), true}; }
+	    	// template<class InputIt>
+	    	// 	void				insert(InputIt first, InputIt last) { return _rbt._insert(first, last); }
+	    	// void					erase(iterator pos) { erase(pos); }
+	    	// void					erase(iterator first, iterator last) { return _rbt.erase(first, last); }
+			size_type				erase(const key_type& x) { _rbt._deleteNode(_searchR(_root, x)); }
 	    	// void					swap(map& x);
 	    	// void					clear();
 
-	    	iterator				find(const key_type& x) { return _rbt.find(x); }
-	    	const_iterator			find(const key_type& x) const { return _rbt.find(x); }
+	    	iterator				find(const key_type& x) { return iterator(_rbt._searchR(x, _root)); }
+	    	const_iterator			find(const key_type& x) const { return iterator(_rbt._searchR(x, _root)); }
 	    	iterator				lower_bound(const key_type& x) { return iterator(_rbt._lower_bound(x)); }
 	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_rbt._lower_bound(x)); }
 	    	iterator				upper_bound(const key_type& x) { return iterator(_rbt._upper_bound(x)); }
@@ -383,7 +384,7 @@ namespace ft {
 	    	// pair<iterator, iterator>				equal_range(const key_type& x) { return ; }
 	    	// pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ; }
 
-			void		printTree();
+			// void		printTree();
 	};
 
 }
