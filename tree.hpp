@@ -191,29 +191,56 @@ namespace ft {
 
 			void		deleteNode(T data)
 			{
-				nodePtr		x = search(data);
-				int			color = x->color;
-				if (x->left == nullptr)
-				{
-					x = x->right;
-					transplant();
+				nodePtr		d = searchR(_root, data);
+				if (d = _TNULL) {
+					std::cout << "Key to be deleted not found in the tree" << std::endl;
+					return ;
 				}
-				else if (x->right == nullptr)
+				nodePtr		x, y;
+				int			color = d->color;
+				if (d->left == _TNULL)
 				{
-					x = x->left;
-					transplant();
+					x = d->right;
+					transplant(d, x);
+				}
+				else if (x->right == _TNULL)
+				{
+					x = d->left;
+					transplant(d, x);
 				}
 				else
 				{
-					min();
-
+					y = min(d->right);
+					color = y->color;
+					x = y->right;
+					if (y->parent == d)
+						x->parent = y;
+					else
+					{
+						transplant(y, y->right);
+						y->right = d->right;
+						y->right->parent = y;
+					}
+					transplant(d, y);
+					y->left = d->left;
+					y->left->parent = y;
+					y->color = d->color;
 				}
-
+				delete d;
 				if (color == 0)
 					deleteFix(x);
 			}
 
-			nodePtr		search(T data);
+			nodePtr		searchR(NodePtr x, T data)
+			{
+				if (x != _TNULL || data == x->data)
+					return x;
+				if (data < x->data)
+					return searchR(x->left, data);
+				else
+					return searchR(x->right, data);
+			}
+
 			nodePtr		getRoot() { return _root; }
 			void		printTree();
 	};
