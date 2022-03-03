@@ -346,10 +346,7 @@ namespace ft {
 				return x;
 			}
 
-
-			nodePtr		getRoot() { return _root; }
-
-
+			nodePtr					getRoot() { return _root; }
 
 			size_type				size() { return _size; }
 			size_type				max_size() { return Allocator.max_size(); }
@@ -364,15 +361,28 @@ namespace ft {
     		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
     		const_reverse_iterator	rend() const { return reverse_iterator(iterator(_root)); }
 
-			pair<iterator, bool>	insert(const value_type& x) { return {_rbt._insert(_root, x), true}; }
-	    	iterator				insert(const_iterator position, const value_type& x) { return {_rbt._insert(position, x), true}; }
-	    	// template<class InputIt>
-	    	// 	void				insert(InputIt first, InputIt last) { return _rbt._insert(first, last); }
-	    	// void					erase(iterator pos) { erase(pos); }
-	    	// void					erase(iterator first, iterator last) { return _rbt.erase(first, last); }
+			pair<iterator, bool>	insert(const value_type& x) { return {_insert(_root, x), true}; }
+	    	iterator				insert(const_iterator position, const value_type& x) { return {_insert(position, x), true}; }
+	    	template<class InputIt>
+	    		void				insert(InputIt first, InputIt last)
+				{ 
+					for (; first != last; first++)
+						_insert(_root, *first);
+				}
+	    	void					erase(iterator pos) { _deleteNode(*pos); }
+	    	void					erase(iterator first, iterator last)
+			{
+				for (; first != last; first++)
+					_deleteNode(*first);
+			}
 			size_type				erase(const key_type& x) { _rbt._deleteNode(_searchR(_root, x)); }
-	    	// void					swap(map& x);
-	    	// void					clear();
+	    	void					swap(map& x)
+			{
+				std::swap(_root, x._root);
+				std::swap(_TNULL, x._TULL);
+				std::swap(_size, x._size);
+			}
+	    	void					clear() { erase(begin(), end()); }
 
 	    	iterator				find(const key_type& x) { return iterator(_rbt._searchR(x, _root)); }
 	    	const_iterator			find(const key_type& x) const { return iterator(_rbt._searchR(x, _root)); }
