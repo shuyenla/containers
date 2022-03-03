@@ -1,25 +1,21 @@
 #ifndef _TREE_H_
 # define _TREE_H_
 
-#include <iostream>
+# include <iostream>
+
+# include "node.hpp"
+# include "rbt_iterator.hpp"
+# include "rbt_reverse_iterator.hpp"
 
 namespace ft {
-
-	template<class P>
-	struct node {
-
-		P		data;
-		node	*parent;
-		node	*left;
-		node	*right;
-		int		color;
-	};
 
 	template<class Key, class P, class Compare, class Allocator>
 	class RedBlackTree {
 
 		public:
 
+			typedef P													value_type;
+			typedef Key													key_type;
 			typedef size_t 												size_type;
 	    	typedef ptrdiff_t					 						difference_type;
 	    	typedef ft::rbt_iterator<P>									iterator;
@@ -38,7 +34,7 @@ namespace ft {
 
 			nodePtr		newNode(P data)
 			{
-				nodePtr		n = new node;
+				nodePtr		n = new node<P>;
 				n->data = data;
 				n->parent = nullptr;
 				n->left = nullptr;
@@ -245,7 +241,7 @@ namespace ft {
 			iterator		_insert(iterator start, P data)
 			{
 				nodePtr newbee = newNode(data);
-				nodePtr parent = nullPtr;
+				nodePtr parent = nullptr;
 				nodePtr target = move(newbee, &parent, start);
 			
 				_size++;
@@ -272,7 +268,7 @@ namespace ft {
 			void		_deleteNode(P data)
 			{
 				nodePtr		d = searchR(_root, data);
-				if (d = _TNULL) {
+				if (d == _TNULL) {
 					std::cout << "Key to be deleted not found in the tree" << std::endl;
 					return ;
 				}
@@ -326,7 +322,7 @@ namespace ft {
 		public:
 
 			RedBlackTree() {
-				_TNULL = new node;
+				_TNULL = new node<P>;
 				_TNULL->color = 0;
 				_TNULL->left = nullptr;
 				_TNULL->right = nullptr;
@@ -375,21 +371,16 @@ namespace ft {
 				for (; first != last; first++)
 					_deleteNode(*first);
 			}
-			size_type				erase(const key_type& x) { _rbt._deleteNode(_searchR(_root, x)); }
-	    	void					swap(map& x)
-			{
-				std::swap(_root, x._root);
-				std::swap(_TNULL, x._TULL);
-				std::swap(_size, x._size);
-			}
+			size_type				erase(const key_type& x) { _deleteNode(_searchR(_root, x)); }
+
 	    	void					clear() { erase(begin(), end()); }
 
-	    	iterator				find(const key_type& x) { return iterator(_rbt._searchR(x, _root)); }
-	    	const_iterator			find(const key_type& x) const { return iterator(_rbt._searchR(x, _root)); }
-	    	iterator				lower_bound(const key_type& x) { return iterator(_rbt._lower_bound(x)); }
-	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_rbt._lower_bound(x)); }
-	    	iterator				upper_bound(const key_type& x) { return iterator(_rbt._upper_bound(x)); }
-	    	const_iterator			upper_bound(const key_type& x) const { return iterator(_rbt._upper_bound(x)); }
+	    	iterator				find(const key_type& x) { return iterator(_searchR(x, _root)); }
+	    	const_iterator			find(const key_type& x) const { return iterator(_searchR(x, _root)); }
+	    	iterator				lower_bound(const key_type& x) { return iterator(_lower_bound(x)); }
+	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_lower_bound(x)); }
+	    	iterator				upper_bound(const key_type& x) { return iterator(_upper_bound(x)); }
+	    	const_iterator			upper_bound(const key_type& x) const { return iterator(_upper_bound(x)); }
 	    	pair<iterator, iterator>				equal_range(const key_type& x) { return {lower_bound(x), upper_bound(x)}; }
 	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return {lower_bound(x), upper_bound(x)}; }
 

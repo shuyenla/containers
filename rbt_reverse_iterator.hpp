@@ -1,26 +1,28 @@
 #ifndef _RBT_REVERSE_ITERATOR_H_
 # define _RBT_REVERSE_ITERATOR_H_
 
+# include "rbt_iterator.hpp"
+
 namespace ft {
 
 	template<class rbt_iterator>
 	class rbt_reverse_iterator
 	{
-		typedef rbt_iterator                            	                iterator_type;
+		typedef rbt_iterator                            	                iterator;
 		typedef rbt_reverse_iterator										reverse_iterator;
         typedef typename iterator_traits<rbt_iterator>::iterator_category   iterator_category;
         typedef typename iterator_traits<rbt_iterator>::value_type          value_type;
         typedef typename iterator_traits<rbt_iterator>::difference_type     difference_type;
         typedef typename iterator_traits<rbt_iterator>::reference           reference;
         typedef typename iterator_traits<rbt_iterator>::pointer             pointer;		
-		typedef typename ft::rbt_iterator::nodePtr							nodePtr;
+		typedef typename iterator_traits<rbt_iterator>::nodePtr				nodePtr;
 
 		nodePtr		_rit;
 
 		rbt_reverse_iterator():_rit(NULL) {}
 		explicit rbt_reverse_iterator(iterator x):_rit(x) {}
 
-		iterator_type base() const { return _rit; }
+		iterator base() const { return _rit; }
 
 		reference operator*() const { return *((_rit)->data); }
     	pointer operator->() const { return (base()--).operator->(); }

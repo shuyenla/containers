@@ -1,14 +1,14 @@
 #ifndef _RBT_ITERATOR_H_
 # define _RBT_ITERATOR_H_
 
-# include "rbt_iterator.hpp"
+# include "node.hpp"
 
 namespace ft {
 
 	template<class P>
 	class rbt_iterator
 	{
-		typedef bidirectional_iterator_tag 				iterator_category;
+		typedef std::bidirectional_iterator_tag 		iterator_category;
 		typedef P           							value_type;
     	typedef ptrdiff_t    							difference_type;
     	typedef P*		     							pointer;
@@ -19,7 +19,7 @@ namespace ft {
 		nodePtr		_it;
 
 		rbt_iterator():_it(NULL) {}
-		explicit rbt_iterator(nodePtr N):_it(P) {}
+		explicit rbt_iterator(nodePtr N):_it(N) {}
 
 		reference operator*() const { return *(_it->data); }
     	pointer operator->() const { return _it->data; }
