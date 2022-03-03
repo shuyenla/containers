@@ -1,10 +1,12 @@
 #ifndef _RBT_ITERATOR_H_
 # define _RBT_ITERATOR_H_
 
+# include "rbt_iterator.hpp"
+
 namespace ft {
 
-	template<struct rbt_iterator>
-	struct rbt_reverse_iterator
+	template<class P>
+	class rbt_iterator
 	{
 		typedef bidirectional_iterator_tag 				iterator_category;
 		typedef P           							value_type;

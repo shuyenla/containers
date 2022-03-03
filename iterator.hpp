@@ -8,7 +8,7 @@ namespace ft {
 	template<class T> struct iterator_traits<const T*>;
 
     template<class T>
-	struct iterator
+	class iterator
 	{
 		public:
     		typedef std::random_access_iterator_tag    		iterator_category;

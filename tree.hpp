@@ -390,8 +390,8 @@ namespace ft {
 	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_rbt._lower_bound(x)); }
 	    	iterator				upper_bound(const key_type& x) { return iterator(_rbt._upper_bound(x)); }
 	    	const_iterator			upper_bound(const key_type& x) const { return iterator(_rbt._upper_bound(x)); }
-	    	// pair<iterator, iterator>				equal_range(const key_type& x) { return ; }
-	    	// pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ; }
+	    	pair<iterator, iterator>				equal_range(const key_type& x) { return {lower_bound(x), upper_bound(x)}; }
+	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return {lower_bound(x), upper_bound(x)}; }
 
 			// void		printTree();
 	};

@@ -3,8 +3,8 @@
 
 namespace ft {
 
-	template<struct rbt_iterator>
-	struct rbt_reverse_iterator
+	template<class rbt_iterator>
+	class rbt_reverse_iterator
 	{
 		typedef rbt_iterator                            	                iterator_type;
 		typedef rbt_reverse_iterator										reverse_iterator;
