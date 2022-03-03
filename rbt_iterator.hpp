@@ -8,6 +8,8 @@ namespace ft {
 	template<class P>
 	class rbt_iterator
 	{
+		public:
+
 		typedef std::bidirectional_iterator_tag 		iterator_category;
 		typedef P           							value_type;
     	typedef ptrdiff_t    							difference_type;
@@ -16,8 +18,11 @@ namespace ft {
 		typedef rbt_iterator<P>							iterator;
 		typedef node<P>*								nodePtr;
 
+		private:
+
 		nodePtr		_it;
 
+		public:
 		rbt_iterator():_it(NULL) {}
 		explicit rbt_iterator(nodePtr N):_it(N) {}
 

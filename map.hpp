@@ -38,7 +38,7 @@ namespace ft {
 			tree_type	_rbt;
 
 		public:
- 	typedef typename allocator_type::pointer							pointer;
+ 			typedef typename allocator_type::pointer							pointer;
 	    	typedef typename allocator_type::const_pointer				const_pointer;
 	    	typedef value_type&											reference;
 	    	typedef const value_type& 									const_reference;
@@ -61,12 +61,12 @@ namespace ft {
 	    	};
 
 	    	// construct/copy/destroy
-	    	// map() : map(Compare()) {}
-	    	// explicit map(const Compare& comp, const Allocator& = Allocator());
-	    	// template<class InputIt>
-	    	// 	map(InputIt first, InputIt last,
-	    	//     const Compare& comp = Compare(), const Allocator& = Allocator());
-	    	// map(const map& x);
+	    	map() : map(Compare()) {}
+	    	explicit map(const Compare& comp, const Allocator& = Allocator());
+	    	template<class InputIt>
+	    		map(InputIt first, InputIt last,
+	    	    const Compare& comp = Compare(), const Allocator& = Allocator());
+	    	map(const map& x);
 
 	    	~map() {}
 	    	map& operator=(const map& x);

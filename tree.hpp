@@ -16,12 +16,13 @@ namespace ft {
 
 			typedef P													value_type;
 			typedef Key													key_type;
+			typedef Allocator											allocator_type;
 			typedef size_t 												size_type;
 	    	typedef ptrdiff_t					 						difference_type;
 	    	typedef ft::rbt_iterator<P>									iterator;
-	    	typedef ft::iterator<const P>								const_iterator;
-	    	typedef ft::reverse_iterator<P>								reverse_iterator;
-	    	typedef ft::reverse_iterator<const P>						const_reverse_iterator;
+	    	typedef ft::rbt_iterator<const P>							const_iterator;
+	    	typedef ft::rbt_reverse_iterator<P>							reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<const P>					const_reverse_iterator;
 	    	typedef node<P>												node_type;
 			typedef node<P>*											nodePtr;
 	    	typedef nodePtr												insert_return_type;
@@ -31,6 +32,7 @@ namespace ft {
 			nodePtr		_root;
 			nodePtr		_TNULL;
 			size_type	_size;
+
 
 			nodePtr		newNode(P data)
 			{
@@ -344,21 +346,21 @@ namespace ft {
 
 			nodePtr					getRoot() { return _root; }
 
-			size_type				size() { return _size; }
-			size_type				max_size() { return Allocator.max_size(); }
+			size_type				size() const { return _size; }
+			size_type				max_size() const { allocator_type _a; return _a.max_size(); }
 
 			iterator				begin() { return iterator(_root); }
-	    	const_iterator			begin() const { return iterator(_root); }
+	    	const_iterator			begin() const { return const_iterator(_root); }
 	    	iterator				end() { return iterator(_TNULL); }
-	    	const_iterator			end() const { return iterator(_TNULL); }
+	    	const_iterator			end() const { return const_iterator(_TNULL); }
 
 			reverse_iterator		rbegin() { return reverse_iterator(iterator(_TNULL)); }
-    		const_reverse_iterator	rbegin() const { return reverse_iterator(iterator(_TNULL)); }
+    		const_reverse_iterator	rbegin() const { return const_reverse_iterator(iterator(_TNULL)); }
     		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
-    		const_reverse_iterator	rend() const { return reverse_iterator(iterator(_root)); }
+    		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(_root)); }
 
-			pair<iterator, bool>	insert(const value_type& x) { return {_insert(_root, x), true}; }
-	    	iterator				insert(const_iterator position, const value_type& x) { return {_insert(position, x), true}; }
+			pair<iterator, bool>	insert(const value_type& x) { return make_pair(_insert(_root, x), true); }
+	    	iterator				insert(const_iterator position, const value_type& x) { return make_pair(_insert(position, x), true); }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
@@ -376,13 +378,13 @@ namespace ft {
 	    	void					clear() { erase(begin(), end()); }
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(x, _root)); }
-	    	const_iterator			find(const key_type& x) const { return iterator(_searchR(x, _root)); }
+	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(x, _root)); }
 	    	iterator				lower_bound(const key_type& x) { return iterator(_lower_bound(x)); }
-	    	const_iterator			lower_bound(const key_type& x) const { return iterator(_lower_bound(x)); }
+	    	const_iterator			lower_bound(const key_type& x) const { return const_iterator(_lower_bound(x)); }
 	    	iterator				upper_bound(const key_type& x) { return iterator(_upper_bound(x)); }
-	    	const_iterator			upper_bound(const key_type& x) const { return iterator(_upper_bound(x)); }
-	    	pair<iterator, iterator>				equal_range(const key_type& x) { return {lower_bound(x), upper_bound(x)}; }
-	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return {lower_bound(x), upper_bound(x)}; }
+	    	const_iterator			upper_bound(const key_type& x) const { return const_iterator(_upper_bound(x)); }
+	    	pair<iterator, iterator>				equal_range(const key_type& x) { return make_pair(lower_bound(x), upper_bound(x)); }
+	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return make_pair(lower_bound(x), upper_bound(x)); }
 
 			// void		printTree();
 	};
