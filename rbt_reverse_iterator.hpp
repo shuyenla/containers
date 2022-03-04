@@ -8,6 +8,8 @@ namespace ft {
 	template<class rbt_iterator>
 	class rbt_reverse_iterator
 	{
+		public:
+
 		typedef rbt_iterator                            	                iterator;
 		typedef rbt_reverse_iterator										reverse_iterator;
         typedef typename iterator_traits<rbt_iterator>::iterator_category   iterator_category;
@@ -17,7 +19,11 @@ namespace ft {
         typedef typename iterator_traits<rbt_iterator>::pointer             pointer;		
 		typedef typename iterator_traits<rbt_iterator>::nodePtr				nodePtr;
 
+		protected:
+
 		nodePtr		_rit;
+
+		public:
 
 		rbt_reverse_iterator():_rit(NULL) {}
 		explicit rbt_reverse_iterator(iterator x):_rit(x) {}

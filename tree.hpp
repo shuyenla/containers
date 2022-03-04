@@ -14,18 +14,18 @@ namespace ft {
 
 		public:
 
-			typedef P													value_type;
-			typedef Key													key_type;
-			typedef Allocator											allocator_type;
-			typedef size_t 												size_type;
-	    	typedef ptrdiff_t					 						difference_type;
-	    	typedef ft::rbt_iterator<P>									iterator;
-	    	typedef ft::rbt_iterator<const P>							const_iterator;
-	    	typedef ft::rbt_reverse_iterator<P>							reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<const P>					const_reverse_iterator;
-	    	typedef node<P>												node_type;
-			typedef node<P>*											nodePtr;
-	    	typedef nodePtr												insert_return_type;
+			typedef P															value_type;
+			typedef Key															key_type;
+			typedef Allocator													allocator_type;
+			typedef size_t 														size_type;
+	    	typedef ptrdiff_t					 								difference_type;
+	    	typedef ft::rbt_iterator<P>											iterator;
+	    	typedef ft::rbt_iterator<P>									const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P> >				reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P> >		const_reverse_iterator;
+	    	typedef node<P>														node_type;
+			typedef typename ft::rbt_iterator<P>::nodePtr									nodePtr;
+	    	typedef nodePtr														insert_return_type;
 
 		private:
 
@@ -344,7 +344,7 @@ namespace ft {
 				return x;
 			}
 
-			nodePtr					getRoot() { return _root; }
+			nodePtr					getRoot() const { return _root; }
 
 			size_type				size() const { return _size; }
 			size_type				max_size() const { allocator_type _a; return _a.max_size(); }

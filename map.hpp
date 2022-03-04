@@ -38,16 +38,16 @@ namespace ft {
 			tree_type	_rbt;
 
 		public:
- 			typedef typename allocator_type::pointer							pointer;
+ 			typedef typename allocator_type::pointer					pointer;
 	    	typedef typename allocator_type::const_pointer				const_pointer;
 	    	typedef value_type&											reference;
 	    	typedef const value_type& 									const_reference;
 	    	typedef typename tree_type::size_type 						size_type;
 	    	typedef typename tree_type::difference_type 				difference_type;
 	    	typedef typename tree_type::iterator						iterator;
-	    	typedef typename tree_type::iterator						const_iterator;
+	    	typedef typename tree_type::const_iterator					const_iterator;
 	    	typedef typename tree_type::reverse_iterator				reverse_iterator;
-	    	typedef typename tree_type::reverse_iterator				const_reverse_iterator;
+	    	typedef typename tree_type::const_reverse_iterator			const_reverse_iterator;
 			typedef typename tree_type::node_type						node_type;
 	    	typedef typename tree_type::insert_return_type				insert_return_type;
 
