@@ -5,7 +5,7 @@
 
 namespace ft {
 
-	template<class rbt_iterator>
+	template<class rbt_iterator, class rbt>
 	class rbt_reverse_iterator
 	{
 		public:
@@ -24,6 +24,9 @@ namespace ft {
 		nodePtr		_rit;
 
 		public:
+
+		operator rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, rbt>, rbt>() const
+		{ return rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, rbt>, rbt>(_rit); }
 
 		rbt_reverse_iterator():_rit(NULL) {}
 		explicit rbt_reverse_iterator(iterator x):_rit(x) {}

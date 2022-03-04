@@ -15,26 +15,25 @@ namespace ft {
 
 		public:
 
-			typedef RedBlackTree<Key, P, Compare, Allocator>					rbt;
-			typedef P															value_type;
-			typedef Key															key_type;
-			typedef Allocator													allocator_type;
-			typedef size_t 														size_type;
-	    	typedef ptrdiff_t					 								difference_type;
+			typedef RedBlackTree<Key, P, Compare, Allocator>							rbt;
+			typedef P																	value_type;
+			typedef Key																	key_type;
+			typedef Allocator															allocator_type;
+			typedef size_t 																size_type;
+	    	typedef ptrdiff_t					 										difference_type;
 	    	typedef ft::rbt_iterator<P, rbt>											iterator;
-	    	typedef ft::rbt_iterator<P, rbt>									const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt> >				reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt> >		const_reverse_iterator;
-	    	typedef node<P>														node_type;
-			typedef typename ft::rbt_iterator<P, rbt>::nodePtr						nodePtr;
-	    	typedef nodePtr														insert_return_type;
+	    	typedef ft::rbt_iterator<P, rbt>											const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt>, rbt >			reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt>, rbt >		const_reverse_iterator;
+	    	typedef node<P>																node_type;
+			typedef typename ft::rbt_iterator<P, rbt>::nodePtr							nodePtr;
+	    	typedef nodePtr																insert_return_type;
 
 		private:
 
 			nodePtr		_root;
 			nodePtr		_TNULL;
 			size_type	_size;
-
 
 			nodePtr		newNode(P data)
 			{
@@ -287,7 +286,7 @@ namespace ft {
 					x = d->right;
 					transplant(d, x);
 				}
-				else if (x->right == _TNULL)
+				else if (d->right == _TNULL)
 				{
 					x = d->left;
 					transplant(d, x);
@@ -379,7 +378,7 @@ namespace ft {
 			{
 				nodePtr	n = _searchR(_root, x);
 				if (n == _TNULL)
-					return *insert(const_iterator(_root), ft::make_pair(x, 0));
+					return *insert(const_iterator(_root), ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
 				else
 					return n->data;
 
@@ -389,20 +388,27 @@ namespace ft {
 	    	const value_type&		at(const key_type& x) const;
 
 			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
-	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(*position, x); }
+	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(position.getNode(), x); }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
 					for (; first != last; first++)
 						_insert(_root, *first);
 				}
-	    	void					erase(iterator pos) { _deleteNode(*pos); }
+	    	void					erase(iterator pos) { _deleteNode((*pos).first); }
 	    	void					erase(iterator first, iterator last)
 			{
 				for (; first != last; first++)
-					_deleteNode(*first);
+					_deleteNode((*first).first);
 			}
-			size_type				erase(const key_type& x) { _deleteNode(x); }
+			size_type				erase(const key_type& x)
+			{
+				if (_searchR(_root, x) == _TNULL)
+					return 0;
+				else
+					_deleteNode(x);
+				return 1;
+			}
 
 	    	void					clear() { erase(begin(), end()); }
 

@@ -1,6 +1,8 @@
 #ifndef _EQUAL_H_
 # define _EQUAL_H_
 
+#include "pair.hpp"
+
 namespace ft {
 
 	template<class InputIt1, class InputIt2>

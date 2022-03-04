@@ -29,17 +29,18 @@ namespace ft {
 		rbt_iterator():_it(NULL) {}
 		explicit rbt_iterator(nodePtr N):_it(N) {}
 
+		nodePtr		getNode() const { return _it; }
 		reference operator*() const { return (_it->data); }
     	pointer operator->() const { return &(_it->data); }
     	iterator& operator++() { rbt r; _it = r.upper_bound(_it->data.first); return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
-			it++;
+			++(*this);
 			return it; }
     	iterator& operator--() { rbt r; _it = r.lower_bound(_it->data.first); return *this; }
     	iterator  operator--(int) {
 			iterator it = *this;
-			it--;
+			--(*this);
 			return it; }
 
 		friend bool operator==(const iterator &x, const iterator &y)
