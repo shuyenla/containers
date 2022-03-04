@@ -15,7 +15,7 @@ namespace ft {
 
 		public:
 
-			typedef RedBlackTree<Key, P, Compare, Allocator>		rbt;
+			typedef RedBlackTree<Key, P, Compare, Allocator>					rbt;
 			typedef P															value_type;
 			typedef Key															key_type;
 			typedef Allocator													allocator_type;
@@ -375,8 +375,21 @@ namespace ft {
     		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
     		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(_root)); }
 
+			value_type&		 		operator[](const key_type& x)
+			{
+				nodePtr	n = _searchR(_root, x);
+				if (n == _TNULL)
+					return *insert(const_iterator(_root), ft::make_pair(x, 0));
+				else
+					return n->data;
+
+			}
+
+	    	value_type&			at(const key_type& x);
+	    	const value_type&		at(const key_type& x) const;
+
 			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
-	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(position, x); }
+	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(*position, x); }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
@@ -397,8 +410,8 @@ namespace ft {
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }
 	    	nodePtr					lower_bound(const key_type& x) { return _lower_bound(x); }
 	    	nodePtr					upper_bound(const key_type& x) { return _upper_bound(x); }
-	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(lower_bound(x), upper_bound(x)); }
-	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(lower_bound(x), upper_bound(x)); }
+	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(iterator(lower_bound(x)), iterator(upper_bound(x))); }
+	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(const_iterator(lower_bound(x)), const_iterator(upper_bound(x))); }
 
 			// void		printTree();
 	};

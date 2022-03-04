@@ -16,7 +16,7 @@ namespace ft {
     	typedef ptrdiff_t    							difference_type;
     	typedef P*		     							pointer;
     	typedef P&			   							reference;
-		typedef ft::rbt_iterator<P, rbt>						iterator;
+		typedef ft::rbt_iterator<P, rbt>				iterator;
 		typedef node<P>*								nodePtr;
 
 		operator rbt_iterator<const P, rbt>() const { return rbt_iterator<const P, rbt>(_it); }
