@@ -98,9 +98,9 @@ namespace ft {
 	    	iterator				insert(const_iterator position, const value_type& x) { return _rbt.insert(position, x); }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last) { return _rbt.insert(first, last); }
-	    	iterator				erase(iterator position) { return _rbt.erase(position); }
+	    	void					erase(iterator position) { return _rbt.erase(position); }
+			void					erase(iterator first, iterator last) { return _rbt.erase(first, last); }
 	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
-	    	iterator				erase(iterator first, iterator last) { return _rbt.erase(first, last); }
 	    	// void					swap(map& x);
 	    	// void					clear();
 

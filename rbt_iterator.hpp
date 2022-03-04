@@ -29,11 +29,11 @@ namespace ft {
 		rbt_iterator():_it(NULL) {}
 		explicit rbt_iterator(nodePtr N):_it(N) {}
 
-		reference operator*() const { return *(_it->data); }
+		reference operator*() const { return (_it->data); }
     	pointer operator->() const { return &(_it->data); }
     	iterator& operator++() { 
 			
-			_it = upper_bound(_it); return *this; }
+			_it = _it->upper_bound(_it->data.first); return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
 			it = upper_bound(_it);
@@ -48,6 +48,12 @@ namespace ft {
 		{ return x._it == y._it; }
   		friend bool operator!=(const iterator &x, const iterator &y)
 		{ return x._it != y._it; }
+		// template<class U>
+		// friend bool operator==(const iterator &x, const ft::rbt_iterator<U> &y)
+		// { (void)x, (void)y; return false; }
+		// template<class U>
+  		// friend bool operator!=(const iterator &x, const ft::rbt_iterator<U> &y)
+		// { (void)x, (void)y; return true; }
 
 	};
 

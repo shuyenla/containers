@@ -6,6 +6,7 @@
 # include "node.hpp"
 # include "rbt_iterator.hpp"
 # include "rbt_reverse_iterator.hpp"
+#include "pair.hpp"
 
 namespace ft {
 
@@ -24,7 +25,7 @@ namespace ft {
 	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P> >				reverse_iterator;
 	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P> >		const_reverse_iterator;
 	    	typedef node<P>														node_type;
-			typedef typename ft::rbt_iterator<P>::nodePtr									nodePtr;
+			typedef typename ft::rbt_iterator<P>::nodePtr						nodePtr;
 	    	typedef nodePtr														insert_return_type;
 
 		private:
@@ -42,6 +43,7 @@ namespace ft {
 				n->left = nullptr;
 				n->right = nullptr;
 				n->color = 1;
+				return n;
 			}
 
 			nodePtr		move(nodePtr newbee, nodePtr *parent, nodePtr target)
@@ -49,7 +51,7 @@ namespace ft {
 				while (target != _TNULL)
 				{
 					*parent = target;
-					if (newbee->data > target->data)
+					if (newbee->data.first > target->data.first)
 						target = target->right;
 					else
 						target = target->left;
@@ -240,7 +242,7 @@ namespace ft {
 				return y;
 			}
 
-			iterator		_insert(iterator start, P data)
+			iterator		_insert(nodePtr start, P data)
 			{
 				nodePtr newbee = newNode(data);
 				nodePtr parent = nullptr;
@@ -249,7 +251,7 @@ namespace ft {
 				_size++;
 				if (target == nullptr)
 					_root = newbee;
-				else if (newbee->data > parent->data)
+				else if (newbee->data.first > parent->data.first)
 					parent->right = newbee;
 				else
 					parent->left = newbee;
@@ -267,9 +269,9 @@ namespace ft {
 				return iterator(newbee);
 			}
 
-			void		_deleteNode(P data)
+			void		_deleteNode(key_type k)
 			{
-				nodePtr		d = searchR(_root, data);
+				nodePtr		d = _searchR(_root, k);
 				if (d == _TNULL) {
 					std::cout << "Key to be deleted not found in the tree" << std::endl;
 					return ;
@@ -310,14 +312,14 @@ namespace ft {
 					deleteFix(x);
 			}
 
-			nodePtr		_searchR(nodePtr x, P data)
+			nodePtr		_searchR(nodePtr x, key_type k) const
 			{
-				if (x != _TNULL || data == x->data)
+				if (x != _TNULL || k == x->data.first)
 					return x;
-				if (data < x->data)
-					return searchR(x->left, data);
+				if (k < x->data.first)
+					return _searchR(x->left, k);
 				else
-					return searchR(x->right, data);
+					return _searchR(x->right, k);
 			}
 
 
@@ -359,8 +361,8 @@ namespace ft {
     		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
     		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(_root)); }
 
-			pair<iterator, bool>	insert(const value_type& x) { return make_pair(_insert(_root, x), true); }
-	    	iterator				insert(const_iterator position, const value_type& x) { return make_pair(_insert(position, x), true); }
+			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
+	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(position, x); }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
@@ -373,18 +375,18 @@ namespace ft {
 				for (; first != last; first++)
 					_deleteNode(*first);
 			}
-			size_type				erase(const key_type& x) { _deleteNode(_searchR(_root, x)); }
+			size_type				erase(const key_type& x) { _deleteNode(x); }
 
 	    	void					clear() { erase(begin(), end()); }
 
-	    	iterator				find(const key_type& x) { return iterator(_searchR(x, _root)); }
-	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(x, _root)); }
+	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
+	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }
 	    	iterator				lower_bound(const key_type& x) { return iterator(_lower_bound(x)); }
 	    	const_iterator			lower_bound(const key_type& x) const { return const_iterator(_lower_bound(x)); }
 	    	iterator				upper_bound(const key_type& x) { return iterator(_upper_bound(x)); }
 	    	const_iterator			upper_bound(const key_type& x) const { return const_iterator(_upper_bound(x)); }
-	    	pair<iterator, iterator>				equal_range(const key_type& x) { return make_pair(lower_bound(x), upper_bound(x)); }
-	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return make_pair(lower_bound(x), upper_bound(x)); }
+	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(lower_bound(x), upper_bound(x)); }
+	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(lower_bound(x), upper_bound(x)); }
 
 			// void		printTree();
 	};
