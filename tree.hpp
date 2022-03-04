@@ -15,17 +15,18 @@ namespace ft {
 
 		public:
 
+			typedef RedBlackTree<Key, P, Compare, Allocator>		rbt;
 			typedef P															value_type;
 			typedef Key															key_type;
 			typedef Allocator													allocator_type;
 			typedef size_t 														size_type;
 	    	typedef ptrdiff_t					 								difference_type;
-	    	typedef ft::rbt_iterator<P>											iterator;
-	    	typedef ft::rbt_iterator<P>									const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P> >				reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P> >		const_reverse_iterator;
+	    	typedef ft::rbt_iterator<P, rbt>											iterator;
+	    	typedef ft::rbt_iterator<P, rbt>									const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt> >				reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt> >		const_reverse_iterator;
 	    	typedef node<P>														node_type;
-			typedef typename ft::rbt_iterator<P>::nodePtr						nodePtr;
+			typedef typename ft::rbt_iterator<P, rbt>::nodePtr						nodePtr;
 	    	typedef nodePtr														insert_return_type;
 
 		private:
@@ -214,29 +215,31 @@ namespace ft {
 				x->color = 0;
 			}
 
-			nodePtr		_upper_bound(nodePtr x)
+			nodePtr		_upper_bound(key_type k)
 			{
-				if (x->right != _TNULL)
-				return min(x->right);
+				nodePtr n = _searchR(_root, k);
+				if (n->right != _TNULL)
+				return min(n->right);
 
-				nodePtr y = x->parent;
-				while (y != _TNULL && x == y->right)
+				nodePtr y = n->parent;
+				while (y != _TNULL && n == y->right)
 				{
-					x = y;
+					n = y;
 					y = y->parent;
 				}
 				return y;
 			}
 
-			nodePtr		_lower_bound(nodePtr x)
+			nodePtr		_lower_bound(key_type k)
 			{
-				if (x->left != _TNULL)
-					return max(x->left);
+				nodePtr n = _searchR(_root, k);
+				if (n->left != _TNULL)
+					return max(n->left);
 
-				nodePtr y = x->parent;
-				while (y != _TNULL && x == y->left)
+				nodePtr y = n->parent;
+				while (y != _TNULL && n == y->left)
 				{
-					x = y;
+					n = y;
 					y = y->parent;
 				}
 				return y;
@@ -334,6 +337,17 @@ namespace ft {
 				_size = 0;
 			}
 
+			RedBlackTree(nodePtr root):_root(root), _size(1) {
+				_TNULL = new node<P>;
+				_TNULL->color = 0;
+				_TNULL->left = nullptr;
+				_TNULL->right = nullptr;
+				_root->left = _TNULL;
+				_root->right = _TNULL;
+				_root->parent = nullptr;
+				_root->color = 0;
+			}
+
 			nodePtr min(nodePtr x) {
 				while (x->left != _TNULL)
 					x = x->left;
@@ -381,15 +395,15 @@ namespace ft {
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }
-	    	iterator				lower_bound(const key_type& x) { return iterator(_lower_bound(x)); }
-	    	const_iterator			lower_bound(const key_type& x) const { return const_iterator(_lower_bound(x)); }
-	    	iterator				upper_bound(const key_type& x) { return iterator(_upper_bound(x)); }
-	    	const_iterator			upper_bound(const key_type& x) const { return const_iterator(_upper_bound(x)); }
+	    	nodePtr					lower_bound(const key_type& x) { return _lower_bound(x); }
+	    	nodePtr					upper_bound(const key_type& x) { return _upper_bound(x); }
 	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(lower_bound(x), upper_bound(x)); }
 	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(lower_bound(x), upper_bound(x)); }
 
 			// void		printTree();
 	};
+
+
 
 }
 

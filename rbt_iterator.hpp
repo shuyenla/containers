@@ -6,7 +6,7 @@
 
 namespace ft {
 
-	template<class P>
+	template<class P, class rbt>
 	class rbt_iterator
 	{
 		public:
@@ -16,10 +16,10 @@ namespace ft {
     	typedef ptrdiff_t    							difference_type;
     	typedef P*		     							pointer;
     	typedef P&			   							reference;
-		typedef ft::rbt_iterator<P>						iterator;
+		typedef ft::rbt_iterator<P, rbt>						iterator;
 		typedef node<P>*								nodePtr;
 
-		operator rbt_iterator<const P>() const { return rbt_iterator<const P>(_it); }
+		operator rbt_iterator<const P, rbt>() const { return rbt_iterator<const P, rbt>(_it); }
 
 		protected:
 
@@ -31,17 +31,15 @@ namespace ft {
 
 		reference operator*() const { return (_it->data); }
     	pointer operator->() const { return &(_it->data); }
-    	iterator& operator++() { 
-			
-			_it = _it->upper_bound(_it->data.first); return *this; }
+    	iterator& operator++() { rbt r; _it = r.upper_bound(_it->data.first); return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
-			it = upper_bound(_it);
+			it++;
 			return it; }
-    	iterator& operator--() { _it = lower_bound(_it); return *this; }
+    	iterator& operator--() { rbt r; _it = r.lower_bound(_it->data.first); return *this; }
     	iterator  operator--(int) {
 			iterator it = *this;
-			it = lower_bound(_it);
+			it--;
 			return it; }
 
 		friend bool operator==(const iterator &x, const iterator &y)
