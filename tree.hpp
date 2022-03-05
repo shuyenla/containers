@@ -4,40 +4,39 @@
 
 # include "node.hpp"
 # include "rbt_iterator.hpp"
+# include "rbt_c_iterator.hpp"
 // # include "rbt_reverse_iterator.hpp"
 #include "pair.hpp"
 
 namespace ft {
 
-	template<class Key, class P, class Compare, class Allocator>
+	template<class P>
 	class rbt_iterator;
 	template<class rbt_iterator>
 	class rbt_reverse_iterator;
 
-	template<class Key, class P, class Compare, class Allocator>
+	template<class Key, class P>
 	class RedBlackTree {
 
 		public:
 
-			typedef RedBlackTree<Key, P, Compare, Allocator>							rbt;
 			typedef P																	value_type;
 			typedef Key																	key_type;
-			typedef Allocator															allocator_type;
 			typedef size_t 																size_type;
 	    	typedef ptrdiff_t					 										difference_type;
-	    	typedef ft::rbt_iterator<Key, P, Compare, Allocator>											iterator;
-	    	typedef ft::rbt_iterator<Key, P, Compare, Allocator>										const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<Key, P, Compare, Allocator> >				reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<Key, const P, Compare, Allocator> >		const_reverse_iterator;
+	    	typedef ft::rbt_iterator<P>													iterator;
+	    	typedef ft::rbt_iterator<const P>											const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P> >						reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P> >				const_reverse_iterator;
 	    	typedef node<P>																node_type;
-			typedef typename ft::rbt_iterator<Key, P, Compare, Allocator>::nodePtr							nodePtr;
-	    	typedef nodePtr																insert_return_type;
+			typedef typename ft::rbt_iterator<P>::nodePtr								nodePtr;
 
 		private:
 
-			nodePtr		_root;
-			nodePtr		_TNULL;
-			size_type	_size;
+			nodePtr			_root;
+			nodePtr			_TNULL;
+			size_type		_size;
+			// allocator_type	_allocator;
 
 			nodePtr		newNode(P data)
 			{
@@ -394,8 +393,6 @@ namespace ft {
 			nodePtr					getRoot() const { return _root; }
 
 			size_type				size() const { return _size; }
-			size_type				max_size() const { allocator_type _a; return _a.max_size(); }
-
 			iterator				begin() { return iterator(min(_root)); }
 	    	const_iterator			begin() const { return const_iterator(min(_root)); }
 	    	iterator				end() { return iterator(_TNULL); }
@@ -423,7 +420,7 @@ namespace ft {
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
-					for (; first != last; ++first)
+					for (; first != last; first++)
 						_insert(_root, *first);
 				}
 

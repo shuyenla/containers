@@ -31,8 +31,7 @@ namespace ft {
 
 		private:
 
-			typedef RedBlackTree<key_type, 
-			value_type, key_compare, allocator_type>					tree_type;
+			typedef RedBlackTree<key_type, value_type>					tree_type;
 
 
 
@@ -62,6 +61,7 @@ namespace ft {
 
 				tree_type		_rbt;
 				value_compare	_vc;
+				allocator_type	_a;
 
 
 			public:
@@ -86,13 +86,13 @@ namespace ft {
 				return *this;
 			}
 
-	    	allocator_type get_allocator() const { return allocator_type(_rbt.get_allocator()); }
+	    	allocator_type get_allocator() const { return Allocator(); }
 
 	    	// iterators
-	    	iterator				begin() { return iterator(_rbt.begin()); }
-	    	const_iterator			begin() const { return const_iterator(_rbt.begin()); }
-	    	iterator				end() { return iterator(_rbt.end()); }
-	    	const_iterator			end() const { return const_iterator(_rbt.end()); }
+	    	iterator				begin() { return _rbt.begin(); }
+	    	const_iterator			begin() const { return _rbt.begin(); }
+	    	iterator				end() { return _rbt.end(); }
+	    	const_iterator			end() const { return _rbt.end(); }
 
 	    	reverse_iterator		rbegin() { return _rbt.rbegin(); }
 	    	const_reverse_iterator	rbegin() const { return _rbt.rbegin(); }
@@ -102,7 +102,7 @@ namespace ft {
 	    	// capacity
 	    	bool					empty() const { return _rbt.size() == 0 ? 1 : 0; }
 	    	size_type				size() const { return _rbt.size(); }
-	    	size_type				max_size() const { return _rbt.max_size(); }
+	    	size_type				max_size() const { return _a.max_size(); }
 
 	    	// element access
 	    	mapped_type& 			operator[](const key_type& x) { return _rbt.operator[](x).second; }

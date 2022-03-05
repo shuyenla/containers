@@ -12,16 +12,16 @@ namespace ft {
 		public:
     		typedef std::random_access_iterator_tag    		iterator_category;
 			typedef T           							value_type;
-    		typedef ptrdiff_t    							difference_type;
     		typedef T*		     							pointer;
     		typedef T&			   							reference;
+			typedef ptrdiff_t    							difference_type;
 
 			operator iterator<const T>() const { return iterator<const T>(_it); }
 
 			iterator():_it(NULL) {}
     	    explicit iterator(pointer x):_it(x) {}
     	    template <class U>
-			iterator(const iterator<U> & u):_it(u.base()) {}
+				iterator(const iterator<U> & u):_it(u.base()) {}
 
 			const pointer& base() const { return _it; }
 
@@ -53,8 +53,6 @@ namespace ft {
 
     	protected:
     	    pointer _it;
-    	private:
-
 	};
 
     template< class iterator1, class iterator2 >
