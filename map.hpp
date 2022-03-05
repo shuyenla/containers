@@ -69,14 +69,14 @@ namespace ft {
 
 	    	// construct/copy/destroy
 	    	map():_rbt(), _vc(Compare()) {}
-	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp) {}
+	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_rbt(),_vc(comp) {}
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,
-	    	    const Compare& comp = Compare(), const Allocator& = Allocator()):_vc(comp) { insert(first, last); }
+	    	    const Compare& comp = Compare(), const Allocator& = Allocator()):_rbt(NULL), _vc(comp) { insert(first, last); }
 	    	map(const map& x):_rbt(x._rbt), _vc(x._vc) {}
 
 
-	    	~map() {}
+	    	~map() { clear(); }
 	    	map& operator=(const map& x)
 			{
 				if (this != &x)
@@ -133,10 +133,10 @@ namespace ft {
 	    	iterator				find(const key_type& x) { return _rbt.find(x); }
 	    	const_iterator			find(const key_type& x) const { return _rbt.find(x); }
 	    	size_type				count(const key_type& x) const { return _rbt.find(x) != _rbt.end(); }
-	    	iterator				lower_bound(const key_type& x) { return _rbt.lower_bound(x); }
-	    	const_iterator			lower_bound(const key_type& x) const { return _rbt.lower_bound(x); }
-	    	iterator				upper_bound(const key_type& x) { return _rbt.upper_bound(x); }
-	    	const_iterator			upper_bound(const key_type& x) const { return _rbt.upper_bound(x); }
+	    	iterator				lower_bound(const key_type& x) { return iterator(_rbt.lower_bound(x)); }
+	    	const_iterator			lower_bound(const key_type& x) const { return const_iterator(_rbt.lower_bound(x)); }
+	    	iterator				upper_bound(const key_type& x) { return iterator(_rbt.upper_bound(x)); }
+	    	const_iterator			upper_bound(const key_type& x) const { return const_iterator(_rbt.upper_bound(x)); }
 	    	pair<iterator, iterator>				equal_range(const key_type& x) { return _rbt.equal_range(x); }
 	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return _rbt.equal_range(x); }
 	};

@@ -22,9 +22,9 @@ namespace ft {
 			typedef size_t 																size_type;
 	    	typedef ptrdiff_t					 										difference_type;
 	    	typedef ft::rbt_iterator<P, rbt>											iterator;
-	    	typedef ft::rbt_iterator<P, rbt>											const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt>, rbt >			reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt>, rbt >		const_reverse_iterator;
+	    	typedef ft::rbt_iterator<const P, rbt>										const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt>, rbt>				reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt>, rbt>		const_reverse_iterator;
 	    	typedef node<P>																node_type;
 			typedef typename ft::rbt_iterator<P, rbt>::nodePtr							nodePtr;
 	    	typedef nodePtr																insert_return_type;
@@ -39,10 +39,11 @@ namespace ft {
 			{
 				nodePtr		n = new node<P>;
 				n->data = data;
-				n->parent = nullptr;
-				n->left = nullptr;
-				n->right = nullptr;
+				n->parent = _TNULL;
+				n->left = _TNULL;
+				n->right = _TNULL;
 				n->color = 1;
+				std::cout << "newwbee" << std::endl;
 				return n;
 			}
 
@@ -64,10 +65,10 @@ namespace ft {
 			{
 				nodePtr		y = x->right;
 				x->right = y->left;
-				if (y->left != nullptr)
+				if (y->left != _TNULL)
 					y->left->parent = x;
 				y->parent = x->parent;
-				if (x->parent == nullptr)
+				if (x->parent == _TNULL)
 					_root = y;
 				else if (x == x->parent->left)
 					x->parent->left = y;
@@ -81,10 +82,10 @@ namespace ft {
 			{
 				nodePtr		y = x->left;
 				x->left = y->right;
-				if (y->right != nullptr)
+				if (y->right != _TNULL)
 					y->right->parent = x;
 				y->parent = x->parent;
-				if (x->parent == nullptr)
+				if (x->parent == _TNULL)
 					_root = y;
 				else if (x == x->parent->left)
 					x->parent->left = y;
@@ -140,7 +141,7 @@ namespace ft {
 			}
 
 			void		transplant(nodePtr x, nodePtr y) {
-				if (x->parent == nullptr)
+				if (x->parent == _TNULL)
 					_root = y;
 				else if (x == x->parent->left)
 					x->parent->left = y;
@@ -214,11 +215,11 @@ namespace ft {
 				x->color = 0;
 			}
 
-			nodePtr		_upper_bound(key_type k)
+			nodePtr		_upper_bound(key_type k) const
 			{
 				nodePtr n = _searchR(_root, k);
 				if (n->right != _TNULL)
-				return min(n->right);
+					return min(n->right);
 
 				nodePtr y = n->parent;
 				while (y != _TNULL && n == y->right)
@@ -229,7 +230,7 @@ namespace ft {
 				return y;
 			}
 
-			nodePtr		_lower_bound(key_type k)
+			nodePtr		_lower_bound(key_type k) const 
 			{
 				nodePtr n = _searchR(_root, k);
 				if (n->left != _TNULL)
@@ -244,27 +245,27 @@ namespace ft {
 				return y;
 			}
 
-			iterator		_insert(nodePtr start, P data)
+			iterator	_insert(nodePtr start, value_type data)
 			{
 				nodePtr newbee = newNode(data);
-				nodePtr parent = nullptr;
+				nodePtr parent = _TNULL;
 				nodePtr target = move(newbee, &parent, start);
-			
+
 				_size++;
-				if (target == nullptr)
+				if (target == _TNULL)
 					_root = newbee;
 				else if (newbee->data.first > parent->data.first)
 					parent->right = newbee;
 				else
 					parent->left = newbee;
 
-				if (parent == nullptr)
+				if (parent == _TNULL)
 				{
 					newbee->color = 0;
 					return iterator(newbee);
 				}
 
-				if (newbee->parent->parent == nullptr)
+				if (newbee->parent->parent == _TNULL)
 					return iterator(newbee);
 
 				insertFix(newbee);
@@ -316,7 +317,8 @@ namespace ft {
 
 			nodePtr		_searchR(nodePtr x, key_type k) const
 			{
-				if (x != _TNULL || k == x->data.first)
+				std::cout << "searching!!" << std::endl;
+				if (x == _TNULL || k == x->data.first)
 					return x;
 				if (k < x->data.first)
 					return _searchR(x->left, k);
@@ -330,8 +332,9 @@ namespace ft {
 			RedBlackTree() {
 				_TNULL = new node<P>;
 				_TNULL->color = 0;
-				_TNULL->left = nullptr;
-				_TNULL->right = nullptr;
+				_TNULL->left = _TNULL;
+				_TNULL->right = _TNULL;
+				_TNULL->parent = _TNULL;
 				_root = _TNULL;
 				_size = 0;
 			}
@@ -339,21 +342,22 @@ namespace ft {
 			RedBlackTree(nodePtr root):_root(root), _size(1) {
 				_TNULL = new node<P>;
 				_TNULL->color = 0;
-				_TNULL->left = nullptr;
-				_TNULL->right = nullptr;
+				_TNULL->left = _TNULL;
+				_TNULL->right = _TNULL;
+				_TNULL->parent = _TNULL;
 				_root->left = _TNULL;
 				_root->right = _TNULL;
-				_root->parent = nullptr;
+				_root->parent = _TNULL;
 				_root->color = 0;
 			}
 
-			nodePtr min(nodePtr x) {
+			nodePtr min(nodePtr x) const {
 				while (x->left != _TNULL)
 					x = x->left;
 				return x;
 			}
 
-			nodePtr	max(nodePtr x) {
+			nodePtr	max(nodePtr x) const {
 				while (x->right != _TNULL)
 					x = x->right;
 				return x;
@@ -381,11 +385,10 @@ namespace ft {
 					return *insert(const_iterator(_root), ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
 				else
 					return n->data;
-
 			}
 
-	    	value_type&			at(const key_type& x);
-	    	const value_type&		at(const key_type& x) const;
+	    	// value_type&			at(const key_type& x);
+	    	// const value_type&		at(const key_type& x) const;
 
 			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
 	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(position.getNode(), x); }
@@ -410,20 +413,19 @@ namespace ft {
 				return 1;
 			}
 
-	    	void					clear() { erase(begin(), end()); }
+	    	void					clear() { erase(begin(), end()); delete _TNULL; }
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }
 	    	nodePtr					lower_bound(const key_type& x) { return _lower_bound(x); }
+			nodePtr					lower_bound(const key_type& x) const { return _lower_bound(x); }
 	    	nodePtr					upper_bound(const key_type& x) { return _upper_bound(x); }
+			nodePtr					upper_bound(const key_type& x) const { return _upper_bound(x); }
 	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(iterator(lower_bound(x)), iterator(upper_bound(x))); }
 	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(const_iterator(lower_bound(x)), const_iterator(upper_bound(x))); }
 
 			// void		printTree();
 	};
-
-
-
 }
 
 #endif

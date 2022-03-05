@@ -21,6 +21,9 @@ namespace ft {
 
 		operator rbt_iterator<const P, rbt>() const { return rbt_iterator<const P, rbt>(_it); }
 
+		private:
+		rbt			_r;
+
 		protected:
 
 		nodePtr		_it;
@@ -30,14 +33,14 @@ namespace ft {
 		explicit rbt_iterator(nodePtr N):_it(N) {}
 
 		nodePtr		getNode() const { return _it; }
-		reference operator*() const { return (_it->data); }
-    	pointer operator->() const { return &(_it->data); }
-    	iterator& operator++() { rbt r; _it = r.upper_bound(_it->data.first); return *this; }
+		reference operator*() const { return *(_it->data); }
+    	pointer operator->() const { return (_it->data); }
+    	iterator& operator++() { _it = _r.upper_bound(_it->data.first); return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
 			++(*this);
 			return it; }
-    	iterator& operator--() { rbt r; _it = r.lower_bound(_it->data.first); return *this; }
+    	iterator& operator--() { _it = _r.lower_bound(_it->data.first); return *this; }
     	iterator  operator--(int) {
 			iterator it = *this;
 			--(*this);
