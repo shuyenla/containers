@@ -1,5 +1,4 @@
-#ifndef _MAP_H_
-# define _MAP_H_
+#pragma once
 
 # include <memory>
 # include <cstddef>
@@ -61,8 +60,8 @@ namespace ft {
 
 			private:
 
-				tree_type	_rbt;
-				value_compare _vc;
+				tree_type		_rbt;
+				value_compare	_vc;
 
 
 			public:
@@ -72,7 +71,7 @@ namespace ft {
 	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_rbt(),_vc(comp) {}
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,
-	    	    const Compare& comp = Compare(), const Allocator& = Allocator()):_rbt(NULL), _vc(comp) { insert(first, last); }
+	    	    const Compare& comp = Compare(), const Allocator& = Allocator()):_rbt(), _vc(comp) { insert(first, last); }
 	    	map(const map& x):_rbt(x._rbt), _vc(x._vc) {}
 
 
@@ -172,5 +171,3 @@ namespace ft {
                 		const ft::map<Key,T,Compare,Alloc>& y)
 		{ return !(x < y) || x == y; }
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _ITERATOR_H_
-# define _ITERATOR_H_
+#pragma once
 
 namespace ft {
 
@@ -96,5 +95,3 @@ namespace ft {
 
 
 }
-
-#endif

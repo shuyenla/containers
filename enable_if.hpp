@@ -1,6 +1,4 @@
-#ifndef _ENABLE_IF_H_
-# define _ENABLE_IF_H_
-
+#pragma once
 namespace ft {
 	template<bool B, class T = void>
 	struct enable_if {};
@@ -17,5 +15,3 @@ namespace ft {
 		const static bool value = true;
 	};
 }
-
-#endif

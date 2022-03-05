@@ -1,5 +1,4 @@
-#ifndef _ITERATOR_TRAITS_H_
-# define _ITERATOR_TRAITS_H_
+#pragma once
 
 namespace ft {
 
@@ -29,5 +28,3 @@ template<class T> struct iterator_traits<const T*> {
 };
 
 }
-
-#endif

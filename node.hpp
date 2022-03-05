@@ -9,6 +9,8 @@ namespace ft {
 		node	*parent;
 		node	*left;
 		node	*right;
+		node	*root;
+		node	*TNULL;
 		int		color;
 	};
 }

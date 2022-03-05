@@ -1,14 +1,18 @@
-#ifndef _TREE_H_
-# define _TREE_H_
+#pragma once
 
 # include <iostream>
 
 # include "node.hpp"
 # include "rbt_iterator.hpp"
-# include "rbt_reverse_iterator.hpp"
+// # include "rbt_reverse_iterator.hpp"
 #include "pair.hpp"
 
 namespace ft {
+
+	template<class Key, class P, class Compare, class Allocator>
+	class rbt_iterator;
+	template<class rbt_iterator>
+	class rbt_reverse_iterator;
 
 	template<class Key, class P, class Compare, class Allocator>
 	class RedBlackTree {
@@ -21,12 +25,12 @@ namespace ft {
 			typedef Allocator															allocator_type;
 			typedef size_t 																size_type;
 	    	typedef ptrdiff_t					 										difference_type;
-	    	typedef ft::rbt_iterator<P, rbt>											iterator;
-	    	typedef ft::rbt_iterator<const P, rbt>										const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, rbt>, rbt>				reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, rbt>, rbt>		const_reverse_iterator;
+	    	typedef ft::rbt_iterator<Key, P, Compare, Allocator>											iterator;
+	    	typedef ft::rbt_iterator<Key, P, Compare, Allocator>										const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<Key, P, Compare, Allocator> >				reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<Key, const P, Compare, Allocator> >		const_reverse_iterator;
 	    	typedef node<P>																node_type;
-			typedef typename ft::rbt_iterator<P, rbt>::nodePtr							nodePtr;
+			typedef typename ft::rbt_iterator<Key, P, Compare, Allocator>::nodePtr							nodePtr;
 	    	typedef nodePtr																insert_return_type;
 
 		private:
@@ -42,8 +46,10 @@ namespace ft {
 				n->parent = _TNULL;
 				n->left = _TNULL;
 				n->right = _TNULL;
+				n->root = _root;
+				n->TNULL = _TNULL;
 				n->color = 1;
-				std::cout << "newwbee" << std::endl;
+				// std::cout << "newwbee" << std::endl;
 				return n;
 			}
 
@@ -51,6 +57,7 @@ namespace ft {
 			{
 				while (target != _TNULL)
 				{
+					std::cout<< "-----get_in------" <<std::endl;
 					*parent = target;
 					if (newbee->data.first > target->data.first)
 						target = target->right;
@@ -58,7 +65,7 @@ namespace ft {
 						target = target->left;
 				}
 				newbee->parent = *parent;
-				return target;
+				return *parent;
 			}
 
 			void		leftRotate(nodePtr x)
@@ -80,6 +87,10 @@ namespace ft {
 
 			void		rightRotate(nodePtr x)
 			{
+
+				std::cout << "-----x: " <<x->data.first << std::endl;
+				std::cout << "x->left : " << x->left->data.first << std::endl;
+				std::cout << "x->right: " << x->right->data.first << std::endl << std::endl << std::endl;
 				nodePtr		y = x->left;
 				x->left = y->right;
 				if (y->right != _TNULL)
@@ -93,11 +104,16 @@ namespace ft {
 					x->parent->right = y;
 				y->right = x;
 				x->parent = y;
+
+				std::cout << "-----r: " << _root->data.first << std::endl;
+				std::cout << "r->left : " << _root->left->data.first << std::endl;
+				std::cout << "r->right: " << _root->right->data.first << std::endl << std::endl << std::endl;
 			}
 
 			void		insertFix(nodePtr x)
 			{
 				nodePtr		gx;
+				std::cout << "fixing" << std::endl;
 				while (x != _root && x->parent->color == 1)
 				{
 					gx = x->parent->parent;
@@ -107,6 +123,7 @@ namespace ft {
 						{
 							gx->left->color = 0;
 							gx->right->color = 0;
+							gx->color = 1;
 							x = gx;
 						}
 						else if (x == x->parent->right)
@@ -115,8 +132,8 @@ namespace ft {
 							leftRotate(x);
 						}
 						x->parent->color = 0;
-						x->parent->parent->color = 1;
-						rightRotate(x->parent->parent);
+						gx->color = 1;
+						rightRotate(gx);
 					}
 					else
 					{
@@ -133,8 +150,8 @@ namespace ft {
 							rightRotate(x);
 						}
 						x->parent->color = 0;
-						x->parent->parent->color = 1;
-						leftRotate(x->parent->parent);
+						gx->color = 1;
+						leftRotate(gx);
 					}
 				}
 				_root->color = 0;
@@ -233,6 +250,8 @@ namespace ft {
 			nodePtr		_lower_bound(key_type k) const 
 			{
 				nodePtr n = _searchR(_root, k);
+				if (n->data.first == k)
+					return n;
 				if (n->left != _TNULL)
 					return max(n->left);
 
@@ -250,7 +269,9 @@ namespace ft {
 				nodePtr newbee = newNode(data);
 				nodePtr parent = _TNULL;
 				nodePtr target = move(newbee, &parent, start);
-
+std::cout << "r: " << _root->data.first << std::endl;
+				std::cout << "r->left : " << _root->left->data.first << std::endl;
+				std::cout << "r->right: " << _root->right->data.first << std::endl << std::endl << std::endl;
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
@@ -258,7 +279,12 @@ namespace ft {
 					parent->right = newbee;
 				else
 					parent->left = newbee;
-
+				std::cout << "r: " << _root->data.first << std::endl;
+				std::cout << "r->left : " << _root->left->data.first << std::endl;
+				std::cout << "r->right: " << _root->right->data.first << std::endl;
+				if (parent != _TNULL)
+					std::cout << "p: " << newbee->parent->data.first << std::endl;
+				 std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
 				if (parent == _TNULL)
 				{
 					newbee->color = 0;
@@ -317,7 +343,7 @@ namespace ft {
 
 			nodePtr		_searchR(nodePtr x, key_type k) const
 			{
-				std::cout << "searching!!" << std::endl;
+				// std::cout << "searching!!" << std::endl;
 				if (x == _TNULL || k == x->data.first)
 					return x;
 				if (k < x->data.first)
@@ -335,20 +361,11 @@ namespace ft {
 				_TNULL->left = _TNULL;
 				_TNULL->right = _TNULL;
 				_TNULL->parent = _TNULL;
+				_TNULL->root = _root;
+				_TNULL->TNULL = _TNULL;
 				_root = _TNULL;
+				_root->TNULL = _TNULL;
 				_size = 0;
-			}
-
-			RedBlackTree(nodePtr root):_root(root), _size(1) {
-				_TNULL = new node<P>;
-				_TNULL->color = 0;
-				_TNULL->left = _TNULL;
-				_TNULL->right = _TNULL;
-				_TNULL->parent = _TNULL;
-				_root->left = _TNULL;
-				_root->right = _TNULL;
-				_root->parent = _TNULL;
-				_root->color = 0;
 			}
 
 			nodePtr min(nodePtr x) const {
@@ -368,8 +385,8 @@ namespace ft {
 			size_type				size() const { return _size; }
 			size_type				max_size() const { allocator_type _a; return _a.max_size(); }
 
-			iterator				begin() { return iterator(_root); }
-	    	const_iterator			begin() const { return const_iterator(_root); }
+			iterator				begin() { return iterator(min(_root)); }
+	    	const_iterator			begin() const { return const_iterator(min(_root)); }
 	    	iterator				end() { return iterator(_TNULL); }
 	    	const_iterator			end() const { return const_iterator(_TNULL); }
 
@@ -395,14 +412,21 @@ namespace ft {
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
-					for (; first != last; first++)
+					for (; first != last; ++first)
 						_insert(_root, *first);
 				}
+
 	    	void					erase(iterator pos) { _deleteNode((*pos).first); }
 	    	void					erase(iterator first, iterator last)
 			{
-				for (; first != last; first++)
-					_deleteNode((*first).first);
+				last--;
+				std::cout << "key: " << (*first).first << std::endl;
+				for (int i = 0; last != first; --last, i++)
+				{
+					std::cout << "key: " << (*last).first << std::endl;
+					_deleteNode((*last).first);
+					std::cout << i << std::endl;
+				}
 			}
 			size_type				erase(const key_type& x)
 			{
@@ -412,6 +436,8 @@ namespace ft {
 					_deleteNode(x);
 				return 1;
 			}
+
+			// void		printTree();
 
 	    	void					clear() { erase(begin(), end()); delete _TNULL; }
 
@@ -423,9 +449,6 @@ namespace ft {
 			nodePtr					upper_bound(const key_type& x) const { return _upper_bound(x); }
 	    	pair<iterator, iterator>				equal_range(const key_type& x) { return ft::make_pair(iterator(lower_bound(x)), iterator(upper_bound(x))); }
 	    	pair<const_iterator, const_iterator>	equal_range(const key_type& x) const { return ft::make_pair(const_iterator(lower_bound(x)), const_iterator(upper_bound(x))); }
-
-			// void		printTree();
 	};
-}
 
-#endif
+}

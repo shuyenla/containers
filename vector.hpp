@@ -1,5 +1,4 @@
-#ifndef _VECTOR_H_
-# define _VECTOR_H_
+#pragma once
 
 # include <memory>
 # include <cstddef>
@@ -317,5 +316,3 @@ namespace ft {
 		{ return x < y || x == y; }
 	template <class Allocator> class vector<bool,Allocator>;
 }
-
-#endif

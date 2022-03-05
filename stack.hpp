@@ -1,5 +1,4 @@
-#ifndef _STACK_H_
-# define _STACK_H_
+#pragma once
 
 #include "vector.hpp"
 
@@ -48,5 +47,3 @@ namespace ft {
 		{ return !(x < y) || x == y; }
 
   };
-
-#endif

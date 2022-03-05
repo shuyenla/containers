@@ -1,5 +1,4 @@
-#ifndef _PAIR_H_
-# define _PAIR_H_
+#pragma once
 
 namespace ft {
 
@@ -53,6 +52,3 @@ namespace ft {
 		bool operator>=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
 		 { return lhs == rhs || !lhs < rhs; }
 }
-
-
-#endif

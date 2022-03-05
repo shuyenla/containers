@@ -1,11 +1,8 @@
-#ifndef _RBT_REVERSE_ITERATOR_H_
-# define _RBT_REVERSE_ITERATOR_H_
-
-# include "rbt_iterator.hpp"
+#pragma once
 
 namespace ft {
 
-	template<class rbt_iterator, class rbt>
+	template<class rbt_iterator>
 	class rbt_reverse_iterator
 	{
 		public:
@@ -25,8 +22,14 @@ namespace ft {
 
 		public:
 
-		operator rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, rbt>, rbt>() const
-		{ return rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, rbt>, rbt>(_rit); }
+		operator rbt_reverse_iterator<ft::rbt_iterator<typename iterator::key_type, 
+									const typename iterator::value_type,
+									typename iterator::compare_type,
+									typename iterator::allocator_type> >() const
+		{ return rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, 
+									const typename iterator::value_type,
+									typename iterator::compare_type,
+									typename iterator::allocator_type> >(_rit); }
 
 		rbt_reverse_iterator():_rit(NULL) {}
 		explicit rbt_reverse_iterator(iterator x):_rit(x) {}
@@ -54,5 +57,3 @@ namespace ft {
 	};
 
 }
-
-#endif

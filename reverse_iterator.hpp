@@ -1,5 +1,4 @@
-#ifndef _REVERSE_ITERATOR_H_
-# define _REVERSE_ITERATOR_H_
+#pragma once
 
 namespace ft {
 
@@ -92,5 +91,3 @@ namespace ft {
 
 
 }
-    
-#endif

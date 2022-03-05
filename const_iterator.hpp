@@ -1,5 +1,4 @@
-#ifndef _CONST_ITERATOR_H_
-# define _CONST_ITERATOR_H_
+#pragma once
 
 namespace ft {
     // primitives:
@@ -49,5 +48,3 @@ namespace ft {
 	};
 
 }
-
-#endif
