@@ -88,9 +88,9 @@ namespace ft {
 			void		rightRotate(nodePtr x)
 			{
 
-				std::cout << "-----x: " <<x->data.first << std::endl;
-				std::cout << "x->left : " << x->left->data.first << std::endl;
-				std::cout << "x->right: " << x->right->data.first << std::endl << std::endl << std::endl;
+				// std::cout << "-----x: " <<x->data.first << std::endl;
+				// std::cout << "x->left : " << x->left->data.first << std::endl;
+				// std::cout << "x->right: " << x->right->data.first << std::endl << std::endl << std::endl;
 				nodePtr		y = x->left;
 				x->left = y->right;
 				if (y->right != _TNULL)
@@ -105,9 +105,7 @@ namespace ft {
 				y->right = x;
 				x->parent = y;
 
-				std::cout << "-----r: " << _root->data.first << std::endl;
-				std::cout << "r->left : " << _root->left->data.first << std::endl;
-				std::cout << "r->right: " << _root->right->data.first << std::endl << std::endl << std::endl;
+				
 			}
 
 			void		insertFix(nodePtr x)
@@ -123,7 +121,7 @@ namespace ft {
 						{
 							gx->left->color = 0;
 							gx->right->color = 0;
-							gx->color = 1;
+							// gx->color = 1;
 							x = gx;
 						}
 						else if (x == x->parent->right)
@@ -141,7 +139,7 @@ namespace ft {
 						{
 							gx->left->color = 0;
 							gx->right->color = 0;
-							gx->color = 1;
+							// gx->color = 1;
 							x = gx;
 						}
 						else if (x == x->parent->left)
@@ -269,9 +267,9 @@ namespace ft {
 				nodePtr newbee = newNode(data);
 				nodePtr parent = _TNULL;
 				nodePtr target = move(newbee, &parent, start);
-std::cout << "r: " << _root->data.first << std::endl;
-				std::cout << "r->left : " << _root->left->data.first << std::endl;
-				std::cout << "r->right: " << _root->right->data.first << std::endl << std::endl << std::endl;
+					std::cout << "r: " << _root->data.first << " " << _root->color << std::endl;
+					std::cout << "r->left : " << _root->left->data.first  << " " << _root->left->color<< std::endl;
+					std::cout << "r->right: " << _root->right->data.first << " " << _root->right->color << std::endl << std::endl << std::endl;
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
@@ -279,12 +277,19 @@ std::cout << "r: " << _root->data.first << std::endl;
 					parent->right = newbee;
 				else
 					parent->left = newbee;
-				std::cout << "r: " << _root->data.first << std::endl;
-				std::cout << "r->left : " << _root->left->data.first << std::endl;
-				std::cout << "r->right: " << _root->right->data.first << std::endl;
+					std::cout << "-----r: " << _root->data.first << std::endl;
+				for (nodePtr ptr = _root; ptr != _TNULL;)
+				{	std::cout << "r->left : " << ptr->left->data.first << std::endl;
+				std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->left;}
+				std::cout << std::endl << std::endl;
+				for (nodePtr ptr = _root; ptr != _TNULL; )
+				{ std::cout << "r->left : " << ptr->left->data.first << std::endl;
+				std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->right; }
+				
+				std::cout << std::endl << std::endl;
 				if (parent != _TNULL)
 					std::cout << "p: " << newbee->parent->data.first << std::endl;
-				 std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
+				 	std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
 				if (parent == _TNULL)
 				{
 					newbee->color = 0;
