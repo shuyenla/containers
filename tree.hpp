@@ -46,7 +46,7 @@ namespace ft {
 				n->parent = _TNULL;
 				n->left = _TNULL;
 				n->right = _TNULL;
-				n->root = _root;
+				n->root = &_root;
 				n->TNULL = _TNULL;
 				n->color = 1;
 				// std::cout << "newwbee" << std::endl;
@@ -57,7 +57,7 @@ namespace ft {
 			{
 				while (target != _TNULL)
 				{
-					std::cout<< "-----get_in------" <<std::endl;
+					// std::cout<< "-----get_in------" <<std::endl;
 					*parent = target;
 					if (newbee->data.first > target->data.first)
 						target = target->right;
@@ -111,7 +111,7 @@ namespace ft {
 			void		insertFix(nodePtr x)
 			{
 				nodePtr		gx;
-				std::cout << "fixing" << std::endl;
+				// std::cout << "fixing" << std::endl;
 				while (x != _root && x->parent->color == 1)
 				{
 					gx = x->parent->parent;
@@ -267,9 +267,9 @@ namespace ft {
 				nodePtr newbee = newNode(data);
 				nodePtr parent = _TNULL;
 				nodePtr target = move(newbee, &parent, start);
-					std::cout << "r: " << _root->data.first << " " << _root->color << std::endl;
-					std::cout << "r->left : " << _root->left->data.first  << " " << _root->left->color<< std::endl;
-					std::cout << "r->right: " << _root->right->data.first << " " << _root->right->color << std::endl << std::endl << std::endl;
+					// std::cout << "r: " << _root->data.first << " " << _root->color << std::endl;
+					// std::cout << "r->left : " << _root->left->data.first  << " " << _root->left->color<< std::endl;
+					// std::cout << "r->right: " << _root->right->data.first << " " << _root->right->color << std::endl << std::endl << std::endl;
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
@@ -277,19 +277,19 @@ namespace ft {
 					parent->right = newbee;
 				else
 					parent->left = newbee;
-					std::cout << "-----r: " << _root->data.first << std::endl;
-				for (nodePtr ptr = _root; ptr != _TNULL;)
-				{	std::cout << "r->left : " << ptr->left->data.first << std::endl;
-				std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->left;}
-				std::cout << std::endl << std::endl;
-				for (nodePtr ptr = _root; ptr != _TNULL; )
-				{ std::cout << "r->left : " << ptr->left->data.first << std::endl;
-				std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->right; }
+					// std::cout << "-----r: " << _root->data.first << std::endl;
+				// for (nodePtr ptr = _root; ptr != _TNULL;)
+				// {	std::cout << "r->left : " << ptr->left->data.first << std::endl;
+				// std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->left;}
+				// std::cout << std::endl << std::endl;
+				// for (nodePtr ptr = _root; ptr != _TNULL; )
+				// { std::cout << "r->left : " << ptr->left->data.first << std::endl;
+				// std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->right; }
 				
-				std::cout << std::endl << std::endl;
-				if (parent != _TNULL)
-					std::cout << "p: " << newbee->parent->data.first << std::endl;
-				 	std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
+				// std::cout << std::endl << std::endl;
+				// if (parent != _TNULL)
+				// 	std::cout << "p: " << newbee->parent->data.first << std::endl;
+				//  	std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
 				if (parent == _TNULL)
 				{
 					newbee->color = 0;
@@ -360,15 +360,21 @@ namespace ft {
 
 		public:
 
+
 			RedBlackTree() {
 				_TNULL = new node<P>;
 				_TNULL->color = 0;
 				_TNULL->left = _TNULL;
 				_TNULL->right = _TNULL;
 				_TNULL->parent = _TNULL;
-				_TNULL->root = _root;
+				_TNULL->root = &_root;
 				_TNULL->TNULL = _TNULL;
 				_root = _TNULL;
+				_root->color = 0;
+				_root->left = _TNULL;
+				_root->right = _TNULL;
+				_root->parent = _TNULL;
+				_root->root = &_root;
 				_root->TNULL = _TNULL;
 				_size = 0;
 			}
@@ -397,8 +403,8 @@ namespace ft {
 
 			reverse_iterator		rbegin() { return reverse_iterator(iterator(_TNULL)); }
     		const_reverse_iterator	rbegin() const { return const_reverse_iterator(iterator(_TNULL)); }
-    		reverse_iterator		rend() { return reverse_iterator(iterator(_root)); }
-    		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(_root)); }
+    		reverse_iterator		rend() { return reverse_iterator(iterator(min(_root))); }
+    		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(min(_root))); }
 
 			value_type&		 		operator[](const key_type& x)
 			{
@@ -424,11 +430,11 @@ namespace ft {
 	    	void					erase(iterator pos) { _deleteNode((*pos).first); }
 	    	void					erase(iterator first, iterator last)
 			{
-				last--;
-				std::cout << "key: " << (*first).first << std::endl;
+				// last--;
+				// std::cout << "key: " << (*first).first << std::endl;
 				for (int i = 0; last != first; --last, i++)
 				{
-					std::cout << "key: " << (*last).first << std::endl;
+					// std::cout << "key: " << (*last).first << std::endl;
 					_deleteNode((*last).first);
 					std::cout << i << std::endl;
 				}

@@ -100,7 +100,7 @@ namespace ft {
 	    	const_reverse_iterator	rend() const { return _rbt.rbegin(); }
 
 	    	// capacity
-	    	bool					empty() const { return _rbt.size() == 0; }
+	    	bool					empty() const { return _rbt.size() == 0 ? 1 : 0; }
 	    	size_type				size() const { return _rbt.size(); }
 	    	size_type				max_size() const { return _rbt.max_size(); }
 
@@ -122,7 +122,7 @@ namespace ft {
 				std::swap(_rbt, x._rbt);
 				std::swap(_vc, x._vc);
 			}
-	    	void					clear() { _rbt.clear(); }
+	    	void					clear() { }
 
 	    	// observers
 	    	key_compare				key_comp() const { return _vc.comp; }

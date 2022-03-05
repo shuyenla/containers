@@ -36,10 +36,12 @@ namespace ft {
 			node<P>*		__upper_bound(Key k, node<P>* root)
 			{
 				node<P>* n = __searchR(root, k);
+				// std::cout << "upper n: " << n->data.first << std::endl;
 				if (n->right != root->TNULL)
 					return min(n->right);
 
 				node<P>* y = n->parent;
+				// std::cout << "upper y: " << y->data.first << std::endl;
 				while (y != root->TNULL && n == y->right)
 				{
 					n = y;
@@ -52,8 +54,6 @@ namespace ft {
 			node<P>*		__lower_bound(Key k, node<P>* root)
 			{
 				node<P>* n = __searchR(root, k);
-				if (n->data.first == k)
-					return n;
 				if (n->left != root->TNULL)
 					return max(n->left);
 
@@ -99,12 +99,16 @@ namespace ft {
 		nodePtr		getNode() const { return _it; }
 		reference operator*() const { return (_it->data); }
     	pointer operator->() const { return &(_it->data); }
-    	iterator& operator++() { _it = __upper_bound(_it->data.first, _it->root); return *this; }
+    	iterator& operator++() { 
+			// std::cout << "upper r: " << (*(_it->root))->data.first << std::endl;
+			_it = __upper_bound(_it->data.first, *(_it->root)); 
+		// std::cout << "upper: " << _it->data.first << std::endl;
+		return *this; }
     	iterator  operator++(int) {
 			iterator it = *this;
 			++(*this);
 			return it; }
-    	iterator& operator--() { _it = __lower_bound(_it->data.first, _it->root); return *this; }
+    	iterator& operator--() { _it = __lower_bound(_it->data.first, *(_it->root)); return *this; }
     	iterator  operator--(int) {
 			iterator it = *this;
 			--(*this);
