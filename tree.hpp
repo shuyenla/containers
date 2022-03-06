@@ -4,32 +4,33 @@
 
 # include "node.hpp"
 # include "rbt_iterator.hpp"
-# include "rbt_c_iterator.hpp"
+// # include "rbt_c_iterator.hpp"
 // # include "rbt_reverse_iterator.hpp"
 #include "pair.hpp"
 
 namespace ft {
 
-	template<class P>
+	template<class P, class Mapped, class nodePtr>
 	class rbt_iterator;
 	template<class rbt_iterator>
 	class rbt_reverse_iterator;
 
-	template<class Key, class P>
+	template<class P, class Key, class Mapped>
 	class RedBlackTree {
 
 		public:
 
 			typedef P																	value_type;
 			typedef Key																	key_type;
+			typedef Mapped																mapped_type;
 			typedef size_t 																size_type;
 	    	typedef ptrdiff_t					 										difference_type;
-	    	typedef ft::rbt_iterator<P>													iterator;
-	    	typedef ft::rbt_iterator<const P>											const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P> >						reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P> >				const_reverse_iterator;
 	    	typedef node<P>																node_type;
-			typedef typename ft::rbt_iterator<P>::nodePtr								nodePtr;
+			typedef node_type*															nodePtr;
+	    	typedef ft::rbt_iterator<P, mapped_type, nodePtr>							iterator;
+	    	typedef ft::rbt_iterator<const P, const mapped_type, nodePtr>				const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, mapped_type, nodePtr> >			reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, const mapped_type, nodePtr> >	const_reverse_iterator;
 
 		private:
 
@@ -48,7 +49,6 @@ namespace ft {
 				n->root = &_root;
 				n->TNULL = _TNULL;
 				n->color = 1;
-				// std::cout << "newwbee" << std::endl;
 				return n;
 			}
 
@@ -56,7 +56,6 @@ namespace ft {
 			{
 				while (target != _TNULL)
 				{
-					// std::cout<< "-----get_in------" <<std::endl;
 					*parent = target;
 					if (newbee->data.first > target->data.first)
 						target = target->right;
@@ -120,7 +119,7 @@ namespace ft {
 						{
 							gx->left->color = 0;
 							gx->right->color = 0;
-							// gx->color = 1;
+							gx->color = 1;
 							x = gx;
 						}
 						else if (x == x->parent->right)
@@ -166,8 +165,11 @@ namespace ft {
 
 			void		deleteFix(nodePtr x) {
 				nodePtr		y;
+				std::cout << "deleteFix func" << std::endl;
+				printTree();
 				while (x != _root && x->color == 0)
 				{
+					std::cout << "deleteFix loop" << std::endl;
 					if (x == x->parent->left)
 					{
 						y = x->parent->right;
@@ -266,9 +268,6 @@ namespace ft {
 				nodePtr newbee = newNode(data);
 				nodePtr parent = _TNULL;
 				nodePtr target = move(newbee, &parent, start);
-					// std::cout << "r: " << _root->data.first << " " << _root->color << std::endl;
-					// std::cout << "r->left : " << _root->left->data.first  << " " << _root->left->color<< std::endl;
-					// std::cout << "r->right: " << _root->right->data.first << " " << _root->right->color << std::endl << std::endl << std::endl;
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
@@ -276,29 +275,25 @@ namespace ft {
 					parent->right = newbee;
 				else
 					parent->left = newbee;
-					// std::cout << "-----r: " << _root->data.first << std::endl;
-				// for (nodePtr ptr = _root; ptr != _TNULL;)
-				// {	std::cout << "r->left : " << ptr->left->data.first << std::endl;
-				// std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->left;}
-				// std::cout << std::endl << std::endl;
-				// for (nodePtr ptr = _root; ptr != _TNULL; )
-				// { std::cout << "r->left : " << ptr->left->data.first << std::endl;
-				// std::cout << "r->right: " << ptr->right->data.first << std::endl; ptr = ptr->right; }
-				
-				// std::cout << std::endl << std::endl;
-				// if (parent != _TNULL)
-				// 	std::cout << "p: " << newbee->parent->data.first << std::endl;
-				//  	std::cout << "inserted " << newbee->data.first << " " << newbee->data.second << std::endl;
 				if (parent == _TNULL)
 				{
+					// printTree();
 					newbee->color = 0;
 					return iterator(newbee);
 				}
 
 				if (newbee->parent->parent == _TNULL)
-					return iterator(newbee);
-
+				{ return iterator(newbee);}
+				printTree();
+				std::cout << std::endl;
+				std::cout << "r: " << _root->data.first << std::endl;
+				std::cout << std::endl;
 				insertFix(newbee);
+				printTree();
+				std::cout << std::endl;
+				std::cout << "r: " << _root->data.first << std::endl;
+				std::cout << std::endl;
+
 				return iterator(newbee);
 			}
 
@@ -306,7 +301,7 @@ namespace ft {
 			{
 				nodePtr		d = _searchR(_root, k);
 				if (d == _TNULL) {
-					std::cout << "Key to be deleted not found in the tree" << std::endl;
+					// std::cout << "Key to be deleted not found in the tree" << std::endl;
 					return ;
 				}
 				_size--;
@@ -379,6 +374,13 @@ namespace ft {
 			}
 
 			nodePtr min(nodePtr x) const {
+				// std::cout << "add:" << x << std::endl;
+				// std::cout << "add l:" << x->left << std::endl;
+				// std::cout << "add t:" << _TNULL << std::endl;
+
+
+				if (x == _TNULL)
+					return x;
 				while (x->left != _TNULL)
 					x = x->left;
 				return x;
@@ -424,17 +426,11 @@ namespace ft {
 						_insert(_root, *first);
 				}
 
-	    	void					erase(iterator pos) { _deleteNode((*pos).first); }
+	    	void					erase(iterator pos) { erase((*pos).first); }
 	    	void					erase(iterator first, iterator last)
 			{
-				// last--;
-				// std::cout << "key: " << (*first).first << std::endl;
-				for (int i = 0; last != first; --last, i++)
-				{
-					// std::cout << "key: " << (*last).first << std::endl;
-					_deleteNode((*last).first);
-					std::cout << i << std::endl;
-				}
+				while (first != last)
+					erase((*(first++)).first);
 			}
 			size_type				erase(const key_type& x)
 			{
@@ -444,10 +440,31 @@ namespace ft {
 					_deleteNode(x);
 				return 1;
 			}
+			void printHelper(nodePtr root, std::string indent, bool last) {
+				if (root != _TNULL) {
+				std::cout << indent;
+				if (last) {
+					std::cout << "R----";
+					indent += "   ";
+				} else {
+					std::cout << "L----";
+					indent += "|  ";
+				}
 
-			// void		printTree();
+				std::string sColor = root->color ? "RED" : "BLACK";
+				std::cout << root->data.first << "(" << sColor << ")" << std::endl;
+				printHelper(root->left, indent, false);
+				printHelper(root->right, indent, true);
+				}
+			}
 
-	    	void					clear() { erase(begin(), end()); delete _TNULL; }
+			void printTree() {
+				if (_root) {
+				printHelper(this->_root, "", true);
+				}
+			}
+
+	    	void					clear() { erase(begin(), end()); }
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }

@@ -31,7 +31,7 @@ namespace ft {
 
 		private:
 
-			typedef RedBlackTree<key_type, value_type>					tree_type;
+			typedef RedBlackTree<value_type, key_type, mapped_type>		tree_type;
 
 
 
@@ -72,7 +72,7 @@ namespace ft {
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,
 	    	    const Compare& comp = Compare(), const Allocator& = Allocator()):_rbt(), _vc(comp) { insert(first, last); }
-	    	map(const map& x):_rbt(x._rbt), _vc(x._vc) {}
+	    	map(const map& x):_rbt(), _vc(x._vc) { _rbt.insert(x.begin(), x.end()); }
 
 
 	    	~map() { clear(); }
@@ -122,7 +122,7 @@ namespace ft {
 				std::swap(_rbt, x._rbt);
 				std::swap(_vc, x._vc);
 			}
-	    	void					clear() { }
+	    	void					clear() { _rbt.clear();}
 
 	    	// observers
 	    	key_compare				key_comp() const { return _vc.comp; }
