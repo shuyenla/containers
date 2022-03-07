@@ -106,52 +106,104 @@ namespace ft {
 				
 			}
 
-			void		insertFix(nodePtr x)
-			{
-				nodePtr		gx;
-				// std::cout << "fixing" << std::endl;
-				while (x != _root && x->parent->color == 1)
-				{
-					gx = x->parent->parent;
-					if (x->parent == gx->left)
-					{
-						if (gx->right->color == 1)
-						{
-							gx->left->color = 0;
-							gx->right->color = 0;
-							gx->color = 1;
-							x = gx;
-						}
-						else if (x == x->parent->right)
-						{
-							x = x->parent;
-							leftRotate(x);
-						}
-						x->parent->color = 0;
-						gx->color = 1;
-						rightRotate(gx);
-					}
-					else
-					{
-						if (gx->left->color == 1)
-						{
-							gx->left->color = 0;
-							gx->right->color = 0;
-							// gx->color = 1;
-							x = gx;
-						}
-						else if (x == x->parent->left)
-						{
-							x = x->parent;
-							rightRotate(x);
-						}
-						x->parent->color = 0;
-						gx->color = 1;
-						leftRotate(gx);
-					}
-				}
-				_root->color = 0;
-			}
+void insertFix(nodePtr k) {
+    nodePtr u;
+    while (k->parent->color == 1) {
+      if (k->parent == k->parent->parent->right) {
+        u = k->parent->parent->left;
+        if (u->color == 1) {
+          u->color = 0;
+          k->parent->color = 0;
+          k->parent->parent->color = 1;
+          k = k->parent->parent;
+        } else {
+          if (k == k->parent->left) {
+            k = k->parent;
+            rightRotate(k);
+          }
+          k->parent->color = 0;
+          k->parent->parent->color = 1;
+          leftRotate(k->parent->parent);
+        }
+      } else {
+        u = k->parent->parent->right;
+
+        if (u->color == 1) {
+          u->color = 0;
+          k->parent->color = 0;
+          k->parent->parent->color = 1;
+          k = k->parent->parent;
+        } else {
+          if (k == k->parent->right) {
+            k = k->parent;
+            leftRotate(k);
+          }
+          k->parent->color = 0;
+          k->parent->parent->color = 1;
+          rightRotate(k->parent->parent);
+        }
+      }
+      if (k == _root) {
+        break;
+      }
+    }
+    _root->color = 0;
+  }
+
+
+			// void		insertFix(nodePtr x)
+			// {
+			// 	nodePtr		gx;
+			// 	// std::cout << "fixing" << std::endl;
+			// 	while (x != _root && x->parent->color == 1)
+			// 	{
+			// 		gx = x->parent->parent;
+			// 		if (x->parent == gx->left)
+			// 		{
+			// 			if (gx->right->color == 1)
+			// 			{
+			// 				gx->left->color = 0;
+			// 				gx->right->color = 0;
+			// 				gx->color = 1;
+			// 				x = gx;
+			// 			}
+			// 			else if (x == x->parent->right)
+			// 			{
+			// 				x = x->parent;
+			// 				leftRotate(x);
+			// 			}
+			// 			x->parent->color = 0;
+			// 			gx->color = 1;
+			// 			rightRotate(gx);
+			// 							_root->color = 0;
+
+			// 		}
+			// 		else
+			// 		{
+			// 			if (gx->left->color == 1)
+			// 			{
+			// 				gx->left->color = 0;
+			// 				gx->right->color = 0;
+			// 				gx->color = 1;
+			// 				x = gx;
+			// 			}
+			// 			else if (x == x->parent->left)
+			// 			{
+			// 				x = x->parent;
+			// 				rightRotate(x);
+			// 			}
+			// 			x->parent->color = 0;
+			// 			gx->color = 1;
+			// 			leftRotate(gx);
+			// 			_root->color = 0;
+
+			// 		}
+			// 		if (x == _root) {
+        	// 			break;
+      		// 		}
+			// 	}
+			// 	_root->color = 0;
+			// }
 
 			void		transplant(nodePtr x, nodePtr y) {
 				if (x->parent == _TNULL)
@@ -165,11 +217,11 @@ namespace ft {
 
 			void		deleteFix(nodePtr x) {
 				nodePtr		y;
-				std::cout << "deleteFix func" << std::endl;
-				printTree();
+				// std::cout << "deleteFix func" << std::endl;
+				// printTree();
 				while (x != _root && x->color == 0)
 				{
-					std::cout << "deleteFix loop" << std::endl;
+					// std::cout << "deleteFix loop" << std::endl;
 					if (x == x->parent->left)
 					{
 						y = x->parent->right;
@@ -284,15 +336,15 @@ namespace ft {
 
 				if (newbee->parent->parent == _TNULL)
 				{ return iterator(newbee);}
-				printTree();
-				std::cout << std::endl;
-				std::cout << "r: " << _root->data.first << std::endl;
-				std::cout << std::endl;
+				// printTree();
+				// std::cout << std::endl;
+				// std::cout << "r: " << _root->data.first << std::endl;
+				// std::cout << std::endl;
 				insertFix(newbee);
-				printTree();
-				std::cout << std::endl;
-				std::cout << "r: " << _root->data.first << std::endl;
-				std::cout << std::endl;
+				// printTree();
+				// std::cout << std::endl;
+				// std::cout << "r: " << _root->data.first << std::endl;
+				// std::cout << std::endl;
 
 				return iterator(newbee);
 			}
