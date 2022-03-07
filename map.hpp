@@ -75,12 +75,14 @@ namespace ft {
 	    	map(const map& x):_rbt(), _vc(x._vc) { _rbt.insert(x.begin(), x.end()); }
 
 
-	    	~map() { clear(); }
+	    	~map() {}
+
 	    	map& operator=(const map& x)
 			{
 				if (this != &x)
 				{
-					_rbt = x._rbt;
+					_rbt.clear();
+					_rbt.insert(x.begin(), x.end());
 					_vc = x._vc;
 				}
 				return *this;

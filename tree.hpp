@@ -429,8 +429,6 @@ void insertFix(nodePtr k) {
 				// std::cout << "add:" << x << std::endl;
 				// std::cout << "add l:" << x->left << std::endl;
 				// std::cout << "add t:" << _TNULL << std::endl;
-
-
 				if (x == _TNULL)
 					return x;
 				while (x->left != _TNULL)
@@ -461,12 +459,17 @@ void insertFix(nodePtr k) {
 			{
 				nodePtr	n = _searchR(_root, x);
 				if (n == _TNULL)
-					return *insert(const_iterator(_root), ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
+					return *insert(const_iterator(_root), 
+					ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
 				else
 					return n->data;
 			}
 
-	    	// value_type&			at(const key_type& x);
+	    	// value_type&			at(const key_type& x)
+			// {
+			// 	if (n > _size)
+			// 	throw(std::out_of_range("out_of_range"));
+			// }
 	    	// const value_type&		at(const key_type& x) const;
 
 			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
