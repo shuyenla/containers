@@ -4,7 +4,6 @@
 
 # include "node.hpp"
 # include "rbt_iterator.hpp"
-// # include "rbt_c_iterator.hpp"
 # include "rbt_reverse_iterator.hpp"
 #include "pair.hpp"
 
@@ -21,6 +20,7 @@ namespace ft {
 			typedef size_t 																size_type;
 	    	typedef ptrdiff_t					 										difference_type;
 	    	typedef node<P>																node_type;
+			typedef std::allocator<node_type>											allocator_type;
 			typedef node_type*															nodePtr;
 	    	typedef ft::rbt_iterator<P, mapped_type, nodePtr, Compare>							iterator;
 	    	typedef ft::rbt_iterator<const P, const mapped_type, nodePtr, Compare>				const_iterator;
@@ -33,12 +33,11 @@ namespace ft {
 			nodePtr			_TNULL;
 			size_type		_size;
 			Compare			_cmp;
-
-			// allocator_type	_allocator;
+			allocator_type	_allocator;
 
 			nodePtr		newNode(P data)
 			{
-				nodePtr		n = new node<P>;
+				nodePtr		n = _allocator.allocate(1);
 				n->data = data;
 				n->parent = _TNULL;
 				n->left = _TNULL;
@@ -384,14 +383,14 @@ void insertFix(nodePtr k) {
 					y->left->parent = y;
 					y->color = d->color;
 				}
-				delete d;
+				_allocator.destroy(d);
+				_allocator.deallocate(d, 1);
 				if (color == 0)
 					deleteFix(x);
 			}
 
 			nodePtr		_searchR(nodePtr x, key_type k) const
 			{
-				// std::cout << "searching!!" << std::endl;
 				if (x == _TNULL || k == x->data.first)
 					return x;
 				if (_cmp(k, x->data.first))
@@ -405,7 +404,7 @@ void insertFix(nodePtr k) {
 
 
 			RedBlackTree() {
-				_TNULL = new node<P>;
+				_TNULL = _allocator.allocate(1);
 				_TNULL->color = 0;
 				_TNULL->left = _TNULL;
 				_TNULL->right = _TNULL;
@@ -423,7 +422,7 @@ void insertFix(nodePtr k) {
 				_cmp = Compare();
 			}
 
-			~RedBlackTree() { clear(); delete _TNULL; }
+			~RedBlackTree() { clear(); _allocator.deallocate(_TNULL, 1); }
 
 			nodePtr min(nodePtr x) const {
 				// std::cout << "add:" << x << std::endl;
@@ -443,6 +442,7 @@ void insertFix(nodePtr k) {
 			}
 
 			nodePtr					getRoot() const { return _root; }
+
 
 			size_type				size() const { return _size; }
 			iterator				begin() { return iterator(min(_root)); }
@@ -466,12 +466,22 @@ void insertFix(nodePtr k) {
 					return n->data;
 			}
 
-	    	// value_type&			at(const key_type& x)
-			// {
-			// 	if (n > _size)
-			// 	throw(std::out_of_range("out_of_range"));
-			// }
-	    	// const value_type&		at(const key_type& x) const;
+	    	value_type&			at(const key_type& x)
+			{
+				nodePtr	n = _searchR(_root, x);
+				if (n == _TNULL)
+					throw(std::out_of_range("out_of_range"));
+				else
+					return n->data;
+			}
+	    	const value_type&		at(const key_type& x) const
+			{
+				nodePtr	n = _searchR(_root, x);
+				if (n == _TNULL)
+					throw(std::out_of_range("out_of_range"));
+				else
+					return n->data;
+			}
 
 			pair<iterator, bool>	insert(const value_type& x) {
 				nodePtr old = _searchR(_root, x.first);
@@ -481,6 +491,7 @@ void insertFix(nodePtr k) {
 				}
 				else
 					return ft::make_pair(_insert(_root, x), true); }
+
 	    	iterator				insert(const_iterator position, const value_type& x) { (void)position; return insert(x).first; }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
@@ -527,7 +538,17 @@ void insertFix(nodePtr k) {
 				}
 			}
 
-	    	void					clear() { erase(begin(), end()); }
+			void					swap(RedBlackTree& x)
+			{
+				std::swap(_root, x._root);
+				std::swap(_TNULL, x._TNULL);
+				std::swap(_size, x._size);
+				std::swap(_cmp, x._cmp);
+				std::swap(_allocator, x._allocator);
+
+			}
+
+	    	void					clear() { erase(begin(), end()); _allocator.deallocate(_TNULL); }
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }

@@ -79,11 +79,13 @@ namespace ft {
 
 	    	map& operator=(const map& x)
 			{
+				// std::cout << "haloooooooo" << std::endl;
 				if (this != &x)
 				{
 					_rbt.clear();
 					_rbt.insert(x.begin(), x.end());
 					_vc = x._vc;
+					_a = x._a;
 				}
 				return *this;
 			}
@@ -119,11 +121,7 @@ namespace ft {
 	    	void					erase(iterator position) { return _rbt.erase(position); }
 			void					erase(iterator first, iterator last) { return _rbt.erase(first, last); }
 	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
-	    	void					swap(map& x)
-			{
-				std::swap(_rbt, x._rbt);
-				std::swap(_vc, x._vc);
-			}
+	    	void					swap(map& x) { _rbt.swap(x._rbt); }
 	    	void					clear() { _rbt.clear();}
 
 	    	// observers

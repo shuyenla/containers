@@ -45,7 +45,7 @@ namespace ft {
 
 			iterator base() const { return iterator(_rit); }
 
-			reference operator*() const { return ((_rit))->data; }
+			reference operator*() const { return (--base()).operator*(); }
 			pointer operator->() const { return (--base()).operator->(); }
 			reverse_iterator& operator++() {
 				if (_rit != _rit->TNULL)
