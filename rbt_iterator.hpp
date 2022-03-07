@@ -23,29 +23,25 @@ namespace ft {
 				return x;
 			}
 
-			template<class P, class Key>
-			node<P>*		__searchR(node<P>* x, Key k)
+			template<class P, class Key, class Compare>
+			node<P>*		__searchR(node<P>* x, Key k, Compare cmp)
 			{
-				// std::cout << "searching!!" << std::endl;
 				if (x == x->TNULL || k == (x->data).first)
 					return x;
-				if (k < x->data.first)
-					return __searchR(x->left, k);
+				if (cmp(k, x->data.first))
+					return __searchR(x->left, k, cmp);
 				else
-					return __searchR(x->right, k);
+					return __searchR(x->right, k, cmp);
 			}
 
 
-			template<class P, class Key>
-			node<P>*		__upper_bound(Key k, node<P>* root)
+			template<class P, class Key, class Compare>
+			node<P>*		__upper_bound(Key k, node<P>* root, Compare cmp)
 			{
-				node<P>* n = __searchR(root, k);
-				// std::cout << "upper n: " << n->data.first << std::endl;
+				node<P>* n = __searchR(root, k, cmp);
 				if (n->right != root->TNULL)
 					return min(n->right);
-
 				node<P>* y = n->parent;
-				// std::cout << "upper y: " << y->data.first << std::endl;
 				while (y != root->TNULL && n == y->right)
 				{
 					n = y;
@@ -54,10 +50,10 @@ namespace ft {
 				return y;
 			}
 
-			template<class P, class Key>
-			node<P>*		__lower_bound(Key k, node<P>* root)
+			template<class P, class Key, class Compare>
+			node<P>*		__lower_bound(Key k, node<P>* root, Compare cmp)
 			{
-				node<P>* n = __searchR(root, k);
+				node<P>* n = __searchR(root, k, cmp);
 				if (n->left != root->TNULL)
 					return max(n->left);
 
@@ -81,32 +77,33 @@ namespace ft {
 			typedef P           												value_type;
 			typedef Mapped           											mapped_type;
 			typedef nodePointer													nodePtr;
+			typedef	Compare														cmp;
 			typedef ptrdiff_t    												difference_type;
 			typedef P*		     												pointer;
 			typedef P&			   												reference;
-			typedef ft::rbt_iterator<P, mapped_type, nodePtr>					iterator;
-			typedef ft::rbt_iterator<const P, const mapped_type, nodePtr>		const_iterator;
+			typedef ft::rbt_iterator<P, mapped_type, nodePtr, cmp>					iterator;
+			typedef ft::rbt_iterator<const P, const mapped_type, nodePtr, cmp>		const_iterator;
 	
 		protected:
 			nodePtr		_it;
 
 		private:
-			Compare		_cmp;
+			cmp			_cmp;
 
 		public:
-			rbt_iterator():_it(NULL) {}
-			explicit rbt_iterator(nodePtr n):_it(n) {}
+			rbt_iterator():_it(NULL), _cmp(Compare()) {}
+			explicit rbt_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
 
 
-			operator rbt_iterator<const P, const Mapped, nodePtr>() const
-			{ return rbt_iterator<const P, const Mapped, nodePtr>(_it); }
+			operator rbt_iterator<const P, const Mapped, nodePtr, cmp>() const
+			{ return rbt_iterator<const P, const Mapped, nodePtr, cmp>(_it); }
 
 
 			nodePtr		getNode() const { return _it; }
 			reference operator*() const { return _it->data; }
 			pointer operator->() const { return &(_it->data); }
 			iterator& operator++() {
-				_it = __upper_bound(_it->data.first, *(_it->root));
+				_it = __upper_bound(_it->data.first, *(_it->root), _cmp);
 				return *this; }
 			iterator  operator++(int) {
 				iterator it = *this;
@@ -115,7 +112,7 @@ namespace ft {
 			iterator& operator--()
 			{
 				if (_it != _it->TNULL)
-					_it = __lower_bound(_it->data.first, *(_it->root));
+					_it = __lower_bound(_it->data.first, *(_it->root), _cmp);
 				else
 					_it = max(*(_it->root));
 				return *this; }

@@ -16,7 +16,8 @@ namespace ft {
 			typedef typename iterator_traits<rbt_iterator>::reference           reference;
 			typedef typename iterator_traits<rbt_iterator>::pointer             pointer;		
 			typedef typename iterator::const_iterator							const_iterator;
-			typedef typename iterator::nodePtr											nodePtr;
+			typedef typename iterator::nodePtr									nodePtr;
+			typedef typename iterator::cmp										Compare;
 
 		protected:
 
@@ -48,7 +49,7 @@ namespace ft {
 			pointer operator->() const { return (--base()).operator->(); }
 			reverse_iterator& operator++() {
 				if (_rit != _rit->TNULL)
-						_rit = __lower_bound(_rit->data.first, *(_rit->root));
+						_rit = __lower_bound(_rit->data.first, *(_rit->root), _cmp);
 					else
 						_rit = max(*(_rit->root));
 				return *this; }
@@ -56,7 +57,7 @@ namespace ft {
 				reverse_iterator rit = *this;
 				++(*this);
 				return rit; }
-			reverse_iterator& operator--() { _rit = __upper_bound(_rit->data.first, *(_rit->root)); return *this; }
+			reverse_iterator& operator--() { _rit = __upper_bound(_rit->data.first, *(_rit->root), _cmp); return *this; }
 			reverse_iterator  operator--(int) {
 				reverse_iterator rit = *this;
 				--(*this);

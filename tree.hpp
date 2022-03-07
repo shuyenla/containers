@@ -10,11 +10,6 @@
 
 namespace ft {
 
-	template<class P, class Mapped, class nodePtr>
-	class rbt_iterator;
-	// template<class rbt_iterator>
-	// class rbt_reverse_iterator;
-
 	template<class P, class Key, class Mapped, class Compare>
 	class RedBlackTree {
 
@@ -27,10 +22,10 @@ namespace ft {
 	    	typedef ptrdiff_t					 										difference_type;
 	    	typedef node<P>																node_type;
 			typedef node_type*															nodePtr;
-	    	typedef ft::rbt_iterator<P, mapped_type, nodePtr>							iterator;
-	    	typedef ft::rbt_iterator<const P, const mapped_type, nodePtr>				const_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, mapped_type, nodePtr> >			reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, const mapped_type, nodePtr> >	const_reverse_iterator;
+	    	typedef ft::rbt_iterator<P, mapped_type, nodePtr, Compare>							iterator;
+	    	typedef ft::rbt_iterator<const P, const mapped_type, nodePtr, Compare>				const_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<P, mapped_type, nodePtr, Compare> >			reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<ft::rbt_iterator<const P, const mapped_type, nodePtr, Compare> >	const_reverse_iterator;
 
 		private:
 
@@ -463,7 +458,7 @@ void insertFix(nodePtr k) {
 			value_type&		 		operator[](const key_type& x)
 			{
 				nodePtr	n = _searchR(_root, x);
-				printTree();
+				// printTree();
 				if (n == _TNULL)
 					return *insert(const_iterator(_root), 
 					ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
