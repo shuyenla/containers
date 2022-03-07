@@ -1,5 +1,6 @@
 #pragma once
 
+#include "rbt_iterator.hpp"
 namespace ft {
 
 	template<class rbt_iterator>
@@ -7,52 +8,64 @@ namespace ft {
 	{
 		public:
 
-		typedef rbt_iterator                            	                iterator;
-		typedef rbt_reverse_iterator										reverse_iterator;
-        typedef typename iterator_traits<rbt_iterator>::iterator_category   iterator_category;
-        typedef typename iterator_traits<rbt_iterator>::value_type          value_type;
-        typedef typename iterator_traits<rbt_iterator>::difference_type     difference_type;
-        typedef typename iterator_traits<rbt_iterator>::reference           reference;
-        typedef typename iterator_traits<rbt_iterator>::pointer             pointer;		
-		typedef typename iterator_traits<rbt_iterator>::nodePtr				nodePtr;
+			typedef rbt_iterator                            	                iterator;
+			typedef rbt_reverse_iterator										reverse_iterator;
+			typedef typename iterator_traits<rbt_iterator>::iterator_category   iterator_category;
+			typedef typename iterator_traits<rbt_iterator>::value_type          value_type;
+			typedef typename iterator_traits<rbt_iterator>::difference_type     difference_type;
+			typedef typename iterator_traits<rbt_iterator>::reference           reference;
+			typedef typename iterator_traits<rbt_iterator>::pointer             pointer;		
+			typedef typename iterator::const_iterator							const_iterator;
+			typedef typename iterator::nodePtr											nodePtr;
 
 		protected:
 
-		nodePtr		_rit;
+			nodePtr		_rit;
+
+		private:
+			Compare		_cmp;
+
 
 		public:
 
-		operator rbt_reverse_iterator<ft::rbt_iterator<typename iterator::key_type, 
-									const typename iterator::value_type,
-									typename iterator::compare_type,
-									typename iterator::allocator_type> >() const
-		{ return rbt_reverse_iterator<ft::rbt_iterator<const typename iterator::value_type, 
-									const typename iterator::value_type,
-									typename iterator::compare_type,
-									typename iterator::allocator_type> >(_rit); }
+			operator rbt_reverse_iterator<const_iterator>() const
+			{ return rbt_reverse_iterator<const_iterator>(iterator(_rit)); }
 
-		rbt_reverse_iterator():_rit(NULL) {}
-		explicit rbt_reverse_iterator(iterator x):_rit(x) {}
+			rbt_reverse_iterator():_rit(NULL) {}
+			
+			explicit rbt_reverse_iterator(iterator x):_rit(x.getNode()) {}
 
-		iterator base() const { return _rit; }
+			template <class U>
+				rbt_reverse_iterator& operator=(const rbt_reverse_iterator<U>& u) {
+					if (*this != u)
+						_rit = u.base();
+					return *this;
+				}
 
-		reference operator*() const { return *((_rit)->data); }
-    	pointer operator->() const { return (base()--).operator->(); }
-    	reverse_iterator& operator++() { _rit = lower_bound(_rit); return *this; }
-    	reverse_iterator  operator++(int) {
-			iterator rit = *this;
-			++(*this);
-			return rit; }
-    	reverse_iterator& operator--() { _rit = upper_bound(_rit); return *this; }
-    	reverse_iterator  operator--(int) {
-			iterator rit = *this;
-			--(*this);
-			return rit; }
+			iterator base() const { return iterator(_rit); }
 
-		friend bool operator==(const reverse_iterator &x, const reverse_iterator &y)
-		{ return x._it == y._it; }
-  		friend bool operator!=(const reverse_iterator &x, const reverse_iterator &y)
-		{ return x._it != y._it; }
+			reference operator*() const { return ((_rit))->data; }
+			pointer operator->() const { return (--base()).operator->(); }
+			reverse_iterator& operator++() {
+				if (_rit != _rit->TNULL)
+						_rit = __lower_bound(_rit->data.first, *(_rit->root));
+					else
+						_rit = max(*(_rit->root));
+				return *this; }
+			reverse_iterator  operator++(int) {
+				reverse_iterator rit = *this;
+				++(*this);
+				return rit; }
+			reverse_iterator& operator--() { _rit = __upper_bound(_rit->data.first, *(_rit->root)); return *this; }
+			reverse_iterator  operator--(int) {
+				reverse_iterator rit = *this;
+				--(*this);
+				return rit; }
+
+			friend bool operator==(const reverse_iterator &x, const reverse_iterator &y)
+			{ return x._rit == y._rit; }
+			friend bool operator!=(const reverse_iterator &x, const reverse_iterator &y)
+			{ return !(x._rit == y._rit); }
 
 	};
 

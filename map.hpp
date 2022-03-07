@@ -31,7 +31,7 @@ namespace ft {
 
 		private:
 
-			typedef RedBlackTree<value_type, key_type, mapped_type>		tree_type;
+			typedef RedBlackTree<value_type, key_type, mapped_type, Compare>		tree_type;
 
 
 
@@ -98,8 +98,8 @@ namespace ft {
 
 	    	reverse_iterator		rbegin() { return _rbt.rbegin(); }
 	    	const_reverse_iterator	rbegin() const { return _rbt.rbegin(); }
-	    	reverse_iterator		rend() { return _rbt.rbegin(); }
-	    	const_reverse_iterator	rend() const { return _rbt.rbegin(); }
+	    	reverse_iterator		rend() { return _rbt.rend(); }
+	    	const_reverse_iterator	rend() const { return _rbt.rend(); }
 
 	    	// capacity
 	    	bool					empty() const { return _rbt.size() == 0 ? 1 : 0; }

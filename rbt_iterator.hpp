@@ -27,7 +27,7 @@ namespace ft {
 			node<P>*		__searchR(node<P>* x, Key k)
 			{
 				// std::cout << "searching!!" << std::endl;
-				if (x == x->TNULL || k == x->data.first)
+				if (x == x->TNULL || k == (x->data).first)
 					return x;
 				if (k < x->data.first)
 					return __searchR(x->left, k);
@@ -72,7 +72,7 @@ namespace ft {
 
 
 
-	template<class P, class Mapped, class nodePtr>
+	template<class P, class Mapped, class nodePointer, class Compare>
 	class rbt_iterator
 	{
 		public:
@@ -80,6 +80,7 @@ namespace ft {
 			typedef std::bidirectional_iterator_tag 							iterator_category;
 			typedef P           												value_type;
 			typedef Mapped           											mapped_type;
+			typedef nodePointer													nodePtr;
 			typedef ptrdiff_t    												difference_type;
 			typedef P*		     												pointer;
 			typedef P&			   												reference;
@@ -88,6 +89,9 @@ namespace ft {
 	
 		protected:
 			nodePtr		_it;
+
+		private:
+			Compare		_cmp;
 
 		public:
 			rbt_iterator():_it(NULL) {}
@@ -99,7 +103,7 @@ namespace ft {
 
 
 			nodePtr		getNode() const { return _it; }
-			reference operator*() const { return (_it->data); }
+			reference operator*() const { return _it->data; }
 			pointer operator->() const { return &(_it->data); }
 			iterator& operator++() {
 				_it = __upper_bound(_it->data.first, *(_it->root));

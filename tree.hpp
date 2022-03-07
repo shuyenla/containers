@@ -5,17 +5,17 @@
 # include "node.hpp"
 # include "rbt_iterator.hpp"
 // # include "rbt_c_iterator.hpp"
-// # include "rbt_reverse_iterator.hpp"
+# include "rbt_reverse_iterator.hpp"
 #include "pair.hpp"
 
 namespace ft {
 
 	template<class P, class Mapped, class nodePtr>
 	class rbt_iterator;
-	template<class rbt_iterator>
-	class rbt_reverse_iterator;
+	// template<class rbt_iterator>
+	// class rbt_reverse_iterator;
 
-	template<class P, class Key, class Mapped>
+	template<class P, class Key, class Mapped, class Compare>
 	class RedBlackTree {
 
 		public:
@@ -37,6 +37,8 @@ namespace ft {
 			nodePtr			_root;
 			nodePtr			_TNULL;
 			size_type		_size;
+			Compare			_cmp;
+
 			// allocator_type	_allocator;
 
 			nodePtr		newNode(P data)
@@ -57,7 +59,7 @@ namespace ft {
 				while (target != _TNULL)
 				{
 					*parent = target;
-					if (newbee->data.first > target->data.first)
+					if (!_cmp(newbee->data.first, target->data.first))
 						target = target->right;
 					else
 						target = target->left;
@@ -323,7 +325,7 @@ void insertFix(nodePtr k) {
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
-				else if (newbee->data.first > parent->data.first)
+				else if (!_cmp(newbee->data.first, parent->data.first))
 					parent->right = newbee;
 				else
 					parent->left = newbee;
@@ -397,7 +399,7 @@ void insertFix(nodePtr k) {
 				// std::cout << "searching!!" << std::endl;
 				if (x == _TNULL || k == x->data.first)
 					return x;
-				if (k < x->data.first)
+				if (_cmp(k, x->data.first))
 					return _searchR(x->left, k);
 				else
 					return _searchR(x->right, k);
@@ -423,6 +425,7 @@ void insertFix(nodePtr k) {
 				_root->root = &_root;
 				_root->TNULL = _TNULL;
 				_size = 0;
+				_cmp = Compare();
 			}
 
 			~RedBlackTree() { clear(); delete _TNULL; }
@@ -452,14 +455,15 @@ void insertFix(nodePtr k) {
 	    	iterator				end() { return iterator(_TNULL); }
 	    	const_iterator			end() const { return const_iterator(_TNULL); }
 
-			reverse_iterator		rbegin() { return reverse_iterator(iterator(_TNULL)); }
-    		const_reverse_iterator	rbegin() const { return const_reverse_iterator(iterator(_TNULL)); }
-    		reverse_iterator		rend() { return reverse_iterator(iterator(min(_root))); }
-    		const_reverse_iterator	rend() const { return const_reverse_iterator(iterator(min(_root))); }
+			reverse_iterator		rbegin() { return reverse_iterator(end()); }
+    		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
+    		reverse_iterator		rend() { return reverse_iterator(begin()); }
+    		const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
 
 			value_type&		 		operator[](const key_type& x)
 			{
 				nodePtr	n = _searchR(_root, x);
+				printTree();
 				if (n == _TNULL)
 					return *insert(const_iterator(_root), 
 					ft::pair<key_type, typename value_type::second_type>(x, typename value_type::second_type()));
