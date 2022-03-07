@@ -425,6 +425,8 @@ void insertFix(nodePtr k) {
 				_size = 0;
 			}
 
+			~RedBlackTree() { clear(); delete _TNULL; }
+
 			nodePtr min(nodePtr x) const {
 				// std::cout << "add:" << x << std::endl;
 				// std::cout << "add l:" << x->left << std::endl;
@@ -472,13 +474,20 @@ void insertFix(nodePtr k) {
 			// }
 	    	// const value_type&		at(const key_type& x) const;
 
-			pair<iterator, bool>	insert(const value_type& x) { return ft::make_pair(_insert(_root, x), true); }
-	    	iterator				insert(const_iterator position, const value_type& x) { return _insert(position.getNode(), x); }
+			pair<iterator, bool>	insert(const value_type& x) {
+				nodePtr old = _searchR(_root, x.first);
+				if (old != _TNULL)
+				{
+					return ft::make_pair(old, false);
+				}
+				else
+					return ft::make_pair(_insert(_root, x), true); }
+	    	iterator				insert(const_iterator position, const value_type& x) { (void)position; return insert(x).first; }
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
 					for (; first != last; first++)
-						_insert(_root, *first);
+						insert(*first);
 				}
 
 	    	void					erase(iterator pos) { erase((*pos).first); }
