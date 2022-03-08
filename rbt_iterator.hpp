@@ -2,12 +2,10 @@
 
 # include "node.hpp"
 # include "tree.hpp"
+# include "iterator_traits.hpp"
+# include <typeinfo>
 
 namespace ft {
-
-	template<class iterator> struct iterator_traits;
-    template<class T> struct iterator_traits<T*>;
-	template<class T> struct iterator_traits<const T*>;
 
 			template<class P>
 			node<P>* min(node<P>* x) {
@@ -73,14 +71,14 @@ namespace ft {
 	{
 		public:
 
-			typedef std::bidirectional_iterator_tag 							iterator_category;
-			typedef P           												value_type;
-			typedef Mapped           											mapped_type;
-			typedef nodePointer													nodePtr;
-			typedef	Compare														cmp;
-			typedef ptrdiff_t    												difference_type;
-			typedef P*		     												pointer;
-			typedef P&			   												reference;
+			typedef std::bidirectional_iterator_tag 								iterator_category;
+			typedef P           													value_type;
+			typedef Mapped           												mapped_type;
+			typedef nodePointer														nodePtr;
+			typedef	Compare															cmp;
+			typedef ptrdiff_t    													difference_type;
+			typedef P*		     													pointer;
+			typedef P&			   													reference;
 			typedef ft::rbt_iterator<P, mapped_type, nodePtr, cmp>					iterator;
 			typedef ft::rbt_iterator<const P, const mapped_type, nodePtr, cmp>		const_iterator;
 	
@@ -94,14 +92,12 @@ namespace ft {
 			rbt_iterator():_it(NULL), _cmp(Compare()) {}
 			explicit rbt_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
 
-
 			operator rbt_iterator<const P, const Mapped, nodePtr, cmp>() const
 			{ return rbt_iterator<const P, const Mapped, nodePtr, cmp>(_it); }
 
-
 			nodePtr		getNode() const { return _it; }
-			reference operator*() const { return _it->data; }
-			pointer operator->() const { return &(_it->data); }
+			virtual reference operator*() const { return _it->data; }
+			virtual pointer operator->() const { return &(_it->data); }
 			iterator& operator++() {
 				_it = __upper_bound(_it->data.first, *(_it->root), _cmp);
 				return *this; }
@@ -122,18 +118,9 @@ namespace ft {
 				--(*this);
 				return it; }
 
-
 			friend bool operator==(const iterator &x, const iterator &y)
 			{ return x._it == y._it; }
 			friend bool operator!=(const iterator &x, const iterator &y)
 			{ return x._it != y._it; }
-			// template<class U>
-			// friend bool operator==(const iterator &x, const ft::rbt_iterator<U> &y)
-			// { (void)x, (void)y; return false; }
-			// template<class U>
-			// friend bool operator!=(const iterator &x, const ft::rbt_iterator<U> &y)
-			// { (void)x, (void)y; return true; }
-
 	};
-
 }

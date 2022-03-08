@@ -9,9 +9,9 @@
 
 #include "enable_if.hpp"
 #include "equal.hpp"
-#include "rbt_iterator.hpp"
+#include "iterator.hpp"
 #include "iterator_traits.hpp"
-#include "rbt_reverse_iterator.hpp"
+#include "reverse_iterator.hpp"
 #include "pair.hpp"
 #include "tree.hpp"
 
@@ -23,38 +23,41 @@ namespace ft {
 	{
 		public:
 
-	    	typedef Key													key_type;
-	    	typedef T													mapped_type;
-	    	typedef pair<Key, T>										value_type;
-	    	typedef Compare												key_compare;
-	    	typedef Allocator											allocator_type;
+	    	typedef Key																			key_type;
+	    	typedef T																			mapped_type;
+	    	typedef pair<Key, T>																value_type;
+	    	typedef Compare																		key_compare;
+	    	typedef Allocator																	allocator_type;
 
-		private:
+			typedef node<value_type>															node_type;
+			typedef node_type*																	nodePtr;
+	    	typedef ft::rbt_iterator<value_type, mapped_type, nodePtr, Compare>					iterator;
+	   		typedef ft::rbt_iterator<const value_type, const mapped_type, nodePtr, Compare>		const_iterator;
+	    	typedef ft::rbt_reverse_iterator<iterator>											reverse_iterator;
+	    	typedef ft::rbt_reverse_iterator<const_iterator>									const_reverse_iterator;
 
-			typedef RedBlackTree<value_type, key_type, mapped_type, Compare>		tree_type;
-
-		public:
- 			typedef typename allocator_type::pointer					pointer;
-	    	typedef typename allocator_type::const_pointer				const_pointer;
-	    	typedef value_type&											reference;
-	    	typedef const value_type& 									const_reference;
-	    	typedef typename tree_type::size_type 						size_type;
-	    	typedef typename tree_type::difference_type 				difference_type;
-	    	typedef typename tree_type::iterator						iterator;
-	    	typedef typename tree_type::const_iterator					const_iterator;
-	    	typedef typename tree_type::reverse_iterator				reverse_iterator;
-	    	typedef typename tree_type::const_reverse_iterator			const_reverse_iterator;
-			typedef typename tree_type::node_type						node_type;
-
-	    	class value_compare
+			class value_compare
 			{
 	    		friend class map;
 	    		protected:
 	    			Compare comp;
-	    			value_compare(Compare c):comp(c) {}
 	    		public:
+					value_compare(Compare c):comp(c) {}
 	    			bool operator()(const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
 	    	};
+
+		private:
+
+			typedef RedBlackTree
+			<value_type, key_type, mapped_type ,Compare, value_compare, ft::map<Key, T, Compare> >		tree_type;
+
+		public:
+ 			typedef typename allocator_type::pointer											pointer;
+	    	typedef typename allocator_type::const_pointer										const_pointer;
+	    	typedef value_type&																	reference;
+	    	typedef const value_type& 															const_reference;
+	    	typedef typename tree_type::size_type 												size_type;
+	    	typedef typename tree_type::difference_type 										difference_type;
 
 		private:
 
@@ -100,12 +103,12 @@ namespace ft {
 	    	// capacity
 	    	bool					empty() const { return _rbt.size() == 0 ? 1 : 0; }
 	    	size_type				size() const { return _rbt.size(); }
-	    	size_type				max_size() const { return _a.max_size(); }
+	    	size_type				max_size() const { return _rbt.max_size(); }
 
 	    	// element access
 	    	mapped_type& 			operator[](const key_type& x) { return _rbt.operator[](x).second; }
-	    	mapped_type&			at(const key_type& x);
-	    	const mapped_type&		at(const key_type& x) const;
+	    	mapped_type&			at(const key_type& x) { return _rbt.at(x); }
+	    	const mapped_type&		at(const key_type& x) const { return _rbt.at(x); }
 
 	    	// modifiers
 	    	pair<iterator, bool>	insert(const value_type& x) { return _rbt.insert(x); }
@@ -115,7 +118,12 @@ namespace ft {
 	    	void					erase(iterator position) { return _rbt.erase(position); }
 			void					erase(iterator first, iterator last) { return _rbt.erase(first, last); }
 	    	size_type				erase(const key_type& x) { return _rbt.erase(x); }
-	    	void					swap(map& x) { std::swap(_rbt, x._rbt); }
+	    	void					swap(map& x)
+			{
+				std::swap(_rbt, x._rbt);
+				std::swap(_vc, x._vc);
+				std::swap(_a, x._a);
+			}
 	    	void					clear() { _rbt.clear();}
 
 	    	// observers
@@ -136,8 +144,8 @@ namespace ft {
  
 	// swap
 	template<class Key, class T, class Compare, class Allocator>
-		void	swap(map<Key, T, Compare, Allocator>& x,
-	    			 map<Key, T, Compare, Allocator>& y) { std::swap(x, y); }
+		void	swap(ft::map<Key, T, Compare, Allocator>& x,
+	    			 ft::map<Key, T, Compare, Allocator>& y) { x.swap(y); }
 
 	// overload operator
 	template< class Key, class T, class Compare, class Alloc >

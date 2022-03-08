@@ -1,20 +1,20 @@
 #pragma once
 
-#include "rbt_iterator.hpp"
+#include "set_iterator.hpp"
 namespace ft {
 
-	template<class rbt_iterator>
-	class rbt_reverse_iterator
+	template<class set_iterator>
+	class set_reverse_iterator: public class rbt_reverse_iterator
 	{
 		public:
 
-			typedef rbt_iterator                            	                iterator;
-			typedef rbt_reverse_iterator										reverse_iterator;
-			typedef typename ft::iterator_traits<rbt_iterator>::iterator_category   iterator_category;
-			typedef typename ft::iterator_traits<rbt_iterator>::value_type          value_type;
-			typedef typename ft::iterator_traits<rbt_iterator>::difference_type     difference_type;
-			typedef typename ft::iterator_traits<rbt_iterator>::reference           reference;
-			typedef typename ft::iterator_traits<rbt_iterator>::pointer             pointer;		
+			typedef set_iterator                            	                iterator;
+			typedef set_reverse_iterator										reverse_iterator;
+			typedef typename ft::iterator_traits<set_iterator>::iterator_category   iterator_category;
+			typedef typename ft::iterator_traits<set_iterator>::value_type          value_type;
+			typedef typename ft::iterator_traits<set_iterator>::difference_type     difference_type;
+			typedef typename ft::iterator_traits<set_iterator>::reference           reference;
+			typedef typename ft::iterator_traits<set_iterator>::pointer             pointer;		
 			typedef typename iterator::const_iterator							const_iterator;
 			typedef typename iterator::nodePtr									nodePtr;
 			typedef typename iterator::cmp										Compare;
@@ -29,15 +29,15 @@ namespace ft {
 
 		public:
 
-			operator rbt_reverse_iterator<const_iterator>() const
-			{ return rbt_reverse_iterator<const_iterator>(iterator(_rit)); }
+			operator set_reverse_iterator<const_iterator>() const
+			{ return set_reverse_iterator<const_iterator>(iterator(_rit)); }
 
-			rbt_reverse_iterator():_rit(NULL) {}
+			set_reverse_iterator():_rit(NULL) {}
 			
-			explicit rbt_reverse_iterator(iterator x):_rit(x.getNode()) {}
+			explicit set_reverse_iterator(iterator x):_rit(x.getNode()) {}
 
 			template <class U>
-				rbt_reverse_iterator& operator=(const rbt_reverse_iterator<U>& u) {
+				set_reverse_iterator& operator=(const set_reverse_iterator<U>& u) {
 					if (*this != u)
 						_rit = u.base();
 					return *this;

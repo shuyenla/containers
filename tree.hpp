@@ -9,30 +9,32 @@
 
 namespace ft {
 
-	template<class P, class Key, class Mapped, class Compare>
-	class RedBlackTree {
-
+	template<class P, class Key, class Mapped, class Compare, class Value_Compare, class Base>
+	class RedBlackTree
+	{
 		public:
-
-			typedef P																	value_type;
-			typedef Key																	key_type;
-			typedef Mapped																mapped_type;
-			typedef size_t 																size_type;
-	    	typedef ptrdiff_t					 										difference_type;
-	    	typedef node<P>																node_type;
-			typedef std::allocator<node_type>											allocator_type;
-			typedef node_type*															nodePtr;
-	    	typedef ft::rbt_iterator<P, mapped_type, nodePtr, Compare>					iterator;
-	    	typedef ft::rbt_iterator<const P, const mapped_type, nodePtr, Compare>		const_iterator;
-	    	typedef ft::rbt_reverse_iterator<iterator>									reverse_iterator;
-	    	typedef ft::rbt_reverse_iterator<const_iterator>							const_reverse_iterator;
+			
+			typedef P																value_type;
+			typedef Key																key_type;
+			typedef Mapped															mapped_type;
+			typedef Compare															key_compare;
+			typedef Value_Compare													value_compare;
+			typedef size_t 															size_type;
+			typedef ptrdiff_t					 									difference_type;
+			typedef typename Base::node_type										node_type;
+			typedef typename Base::nodePtr											nodePtr;
+			typedef typename Base::iterator											iterator;
+			typedef typename Base::const_iterator									const_iterator;
+			typedef typename Base::reverse_iterator									reverse_iterator;
+			typedef typename Base::const_reverse_iterator							const_reverse_iterator;
+			typedef std::allocator<node_type>										allocator_type;
 
 		private:
 
 			nodePtr			_root;
 			nodePtr			_TNULL;
 			size_type		_size;
-			Compare			_cmp;
+			value_compare	_cmp;
 			allocator_type	_allocator;
 
 			nodePtr		newNode(P data)
@@ -55,7 +57,7 @@ namespace ft {
 				while (target != _TNULL)
 				{
 					*parent = target;
-					if (!_cmp(newbee->data.first, target->data.first))
+					if (!_cmp(newbee->data, target->data))
 						target = target->right;
 					else
 						target = target->left;
@@ -291,13 +293,15 @@ void insertFix(nodePtr k) {
 					n = y;
 					y = y->parent;
 				}
+				if(y == _TNULL)
+					return min(_root);
 				return y;
 			}
 
 			nodePtr		_lower_bound(key_type k) const 
 			{
 				nodePtr n = _searchR(_root, k);
-				if (n->data.first == k)
+				if (n->data == k)
 					return n;
 				if (n->left != _TNULL)
 					return max(n->left);
@@ -307,6 +311,8 @@ void insertFix(nodePtr k) {
 					n = y;
 					y = y->parent;
 				}
+				if (y == _TNULL)
+					return (min(_root));
 				return y;
 			}
 
@@ -318,7 +324,7 @@ void insertFix(nodePtr k) {
 				_size++;
 				if (target == _TNULL)
 					_root = newbee;
-				else if (!_cmp(newbee->data.first, parent->data.first))
+				else if (!_cmp(newbee->data, parent->data))
 					parent->right = newbee;
 				else
 					parent->left = newbee;
@@ -377,9 +383,9 @@ void insertFix(nodePtr k) {
 
 			nodePtr		_searchR(nodePtr x, key_type k) const
 			{
-				if (x == x->TNULL || k == x->data.first)
+				if (x == x->TNULL || x->data == k)
 					return x;
-				if (_cmp(k, x->data.first))
+				if (x->data > k)
 					return _searchR(x->left, k);
 				else
 					return _searchR(x->right, k);
@@ -406,10 +412,8 @@ void insertFix(nodePtr k) {
 
 		public:
 
-			RedBlackTree()
+			RedBlackTree():_cmp(Compare()), _allocator(allocator_type())
 			{
-				_cmp = Compare();
-				_allocator = allocator_type();
 				_init();
 			}
 			
@@ -453,6 +457,7 @@ void insertFix(nodePtr k) {
 
 			nodePtr					getRoot() const { return _root; }
 			size_type				size() const { return _size; }
+			size_type				max_size() const { return _allocator.max_size(); }
 			iterator				begin() { return iterator(min(_root)); }
 	    	const_iterator			begin() const { return const_iterator(min(_root)); }
 	    	iterator				end() { return iterator(_TNULL); }
@@ -503,17 +508,15 @@ void insertFix(nodePtr k) {
 	    	template<class InputIt>
 	    		void				insert(InputIt first, InputIt last)
 				{ 
-					// for (; first != last; ++first)
-					// 	insert(*first);
-					while (first != last)
-						insert(*(first++));
+					for (; first != last; ++first)
+						insert(*first);
 				}
 
-	    	void					erase(iterator pos) { erase((*pos).first); }
+	    	void					erase(iterator pos) { erase(pos.getNode()->data.first); }
 	    	void					erase(iterator first, iterator last)
 			{
 				while (first != last)
-					erase((*(first++)).first);
+					erase((first++).getNode()->data.first);
 			}
 
 			size_type				erase(const key_type& x)
@@ -563,6 +566,9 @@ void insertFix(nodePtr k) {
 			// }
 
 	    	void					clear() { erase(begin(), end()); }
+
+			key_compare				key_comp() const { return _cmp.comp; }
+	    	value_compare			value_comp() const { return _cmp; }
 
 	    	iterator				find(const key_type& x) { return iterator(_searchR(_root, x)); }
 	    	const_iterator			find(const key_type& x) const { return const_iterator(_searchR(_root, x)); }
