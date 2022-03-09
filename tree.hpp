@@ -5,7 +5,7 @@
 # include "node.hpp"
 # include "rbt_iterator.hpp"
 # include "rbt_reverse_iterator.hpp"
-#include "pair.hpp"
+# include "pair.hpp"
 
 namespace ft {
 
@@ -102,104 +102,61 @@ namespace ft {
 				
 			}
 
-void insertFix(nodePtr k) {
-    nodePtr u;
-    while (k->parent->color == 1) {
-      if (k->parent == k->parent->parent->right) {
-        u = k->parent->parent->left;
-        if (u->color == 1) {
-          u->color = 0;
-          k->parent->color = 0;
-          k->parent->parent->color = 1;
-          k = k->parent->parent;
-        } else {
-          if (k == k->parent->left) {
-            k = k->parent;
-            rightRotate(k);
-          }
-          k->parent->color = 0;
-          k->parent->parent->color = 1;
-          leftRotate(k->parent->parent);
-        }
-      } else {
-        u = k->parent->parent->right;
+			void		insertFix(nodePtr x)
+			{
+				nodePtr		gx;
+				while (x->parent->color == 1)
+				{
+					gx = x->parent->parent;
+					if (x->parent == gx->left)
+					{
+						if (gx->right->color == 1)
+						{
+							x->parent->color = 0;
+							gx->right->color = 0; 
+							gx->color = 1;
+							x = gx;
+						}
+						else 
+						{
+							if (x == x->parent->right)
+							{
+								x = x->parent;
+								leftRotate(x);
+							}
+							x->parent->color = 0;
+							gx->color = 1;
+							rightRotate(gx);
+						}	
 
-        if (u->color == 1) {
-          u->color = 0;
-          k->parent->color = 0;
-          k->parent->parent->color = 1;
-          k = k->parent->parent;
-        } else {
-          if (k == k->parent->right) {
-            k = k->parent;
-            leftRotate(k);
-          }
-          k->parent->color = 0;
-          k->parent->parent->color = 1;
-          rightRotate(k->parent->parent);
-        }
-      }
-      if (k == _root) {
-        break;
-      }
-    }
-    _root->color = 0;
-  }
-
-
-			// void		insertFix(nodePtr x)
-			// {
-			// 	nodePtr		gx;
-			// 	// std::cout << "fixing" << std::endl;
-			// 	while (x != _root && x->parent->color == 1)
-			// 	{
-			// 		gx = x->parent->parent;
-			// 		if (x->parent == gx->left)
-			// 		{
-			// 			if (gx->right->color == 1)
-			// 			{
-			// 				gx->left->color = 0;
-			// 				gx->right->color = 0;
-			// 				gx->color = 1;
-			// 				x = gx;
-			// 			}
-			// 			else if (x == x->parent->right)
-			// 			{
-			// 				x = x->parent;
-			// 				leftRotate(x);
-			// 			}
-			// 			x->parent->color = 0;
-			// 			gx->color = 1;
-			// 			rightRotate(gx);
-			// 							_root->color = 0;
-
-			// 		}
-			// 		else
-			// 		{
-			// 			if (gx->left->color == 1)
-			// 			{
-			// 				gx->left->color = 0;
-			// 				gx->right->color = 0;
-			// 				gx->color = 1;
-			// 				x = gx;
-			// 			}
-			// 			else if (x == x->parent->left)
-			// 			{
-			// 				x = x->parent;
-			// 				rightRotate(x);
-			// 			}
-			// 			x->parent->color = 0;
-			// 			gx->color = 1;
-			// 			leftRotate(gx);
-			// 			_root->color = 0;
-
-			// 		}
-			// 		if (x == _root) {
-        	// 			break;
-      		// 		}
-			// 	}
-			// 	_root->color = 0;
-			// }
+					}
+					else
+					{
+						if (gx->left->color == 1)
+						{
+							gx->left->color = 0;
+							x->parent->color = 0;
+							gx->color = 1;
+							x = gx;
+						}
+						else
+						{
+							if (x == x->parent->left)
+							{
+								x = x->parent;
+								rightRotate(x);
+							} 			
+							x->parent->color = 0;
+							gx->color = 1;
+							leftRotate(gx);	
+						}		
+					}
+					if (x == _root) {
+        				break;
+      				}
+				}
+				_root->color = 0;
+			}
 
 			void		transplant(nodePtr x, nodePtr y)
 			{
@@ -536,21 +493,6 @@ void insertFix(nodePtr k) {
 			{
 				if (_root)
 					printHelper(this->_root, "", true);
-			}
-
-			void					swap(RedBlackTree& x)
-			{
-			 	//std::swap(_allocator, x._allocator);
-			 	//std::swap(_TNULL, x._TNULL);
-			 	//std::swap(_root, x._root);
-			 	//std::swap(_cmp, x._cmp);
-			 	//std::swap(_size, x._size);
-				/*RedBlackTree &p = *this;
-
-				 *this = x;
-
-				 x = p;*/
-				 (void)x;
 			}
 
 	    	void					clear() { erase(begin(), end()); }
