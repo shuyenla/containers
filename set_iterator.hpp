@@ -20,11 +20,11 @@ namespace ft {
 			typedef ptrdiff_t    													difference_type;
 			typedef mapped_type*		     										pointer;
 			typedef mapped_type&			   										reference;
-			typedef ft::set_iterator<P, mapped_type, nodePtr, cmp>					iterator;
-			typedef ft::set_iterator<const P, const mapped_type, nodePtr, cmp>			const_iterator;
+			typedef ft::set_iterator<P, const mapped_type, nodePtr, cmp>					iterator;
+			typedef ft::set_iterator<P, const mapped_type, nodePtr, cmp>			const_iterator;
 
-			operator set_iterator<const P, const Mapped, nodePtr, cmp>() const
-			{ return set_iterator<const P, const Mapped, nodePtr, cmp>(_it); }
+			operator set_iterator<P, const Mapped, nodePtr, cmp>() const
+			{ return set_iterator<P, const Mapped, nodePtr, cmp>(_it); }
 
 		protected:
 			nodePtr		_it;
@@ -33,7 +33,7 @@ namespace ft {
 		public:
 			set_iterator():_it(), _cmp(Compare()) {}
 			explicit set_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
-			set_iterator(iterator const &x):_it(x._it), _cmp(x._cmp) {}
+			set_iterator(const iterator &x):_it(x._it), _cmp(x._cmp) {}
 
 			nodePtr		getNode() const { return _it; }
 			reference operator*() const { return _it->data.first; }
