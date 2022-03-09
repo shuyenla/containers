@@ -13,7 +13,6 @@ namespace ft {
 	class RedBlackTree
 	{
 		public:
-			
 			typedef P																value_type;
 			typedef Key																key_type;
 			typedef Mapped															mapped_type;
@@ -30,7 +29,6 @@ namespace ft {
 			typedef std::allocator<node_type>										allocator_type;
 
 		private:
-
 			nodePtr			_root;
 			nodePtr			_TNULL;
 			size_type		_size;
@@ -350,17 +348,9 @@ namespace ft {
 			}
 
 		public:
-
-			RedBlackTree():_cmp(Compare()), _allocator(allocator_type())
-			{
-				_init();
-			}
+			RedBlackTree():_cmp(Compare()), _allocator(allocator_type()) { _init(); }
 			
-			RedBlackTree(const RedBlackTree &x): _cmp(x._cmp), _allocator(x._allocator)
-			{
-				_init();
-				insert(x.begin(), x.end());
-			}
+			RedBlackTree(const RedBlackTree &x): _cmp(x._cmp), _allocator(x._allocator) { _init(); insert(x.begin(), x.end()); }
 
 			RedBlackTree& operator=(const RedBlackTree& x)
 			{
@@ -374,7 +364,6 @@ namespace ft {
 				}
 				return *this;
 			}
-
 
 			~RedBlackTree() { erase(begin(), end()); _allocator.destroy(_TNULL); _allocator.deallocate(_TNULL, 1); }
 
@@ -405,6 +394,7 @@ namespace ft {
     		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
     		reverse_iterator		rend() { return reverse_iterator(begin()); }
     		const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
+
 			value_type&		 		operator[](const key_type& x)
 			{
 				nodePtr	n = _searchR(_root, x);
@@ -423,6 +413,7 @@ namespace ft {
 				else
 					return n->data;
 			}
+
 	    	const value_type&		at(const key_type& x) const
 			{
 				nodePtr	n = _searchR(_root, x);
@@ -452,6 +443,7 @@ namespace ft {
 				}
 
 	    	void					erase(iterator pos) { erase(pos.getNode()->data.first); }
+
 	    	void					erase(iterator first, iterator last)
 			{
 				while (first != last)

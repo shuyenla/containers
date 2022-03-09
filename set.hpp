@@ -23,7 +23,6 @@ namespace ft {
     class set
     {
         public:
-            // types
             typedef Key                                                                         key_type;
             typedef Compare                                                                     key_compare;
             typedef Key                                                                         value_type;
@@ -32,9 +31,7 @@ namespace ft {
             typedef ft::pair<Key, value_type>								                 	pair_type;
             typedef ft::value_compare<pair_type, Compare>                                       pair_compare;
 
-
         public:
-
             typedef typename allocator_type::pointer				                        	pointer;
 	    	typedef typename allocator_type::const_pointer		                        		const_pointer;
 	    	typedef value_type&									                        		reference;
@@ -44,23 +41,20 @@ namespace ft {
 
 			typedef node<pair_type>																node_type;
 			typedef node_type*																	nodePtr;
-	    	typedef ft::set_iterator<pair_type, const key_type, nodePtr, Compare>					    iterator;
-	   		typedef ft::set_iterator<pair_type, const key_type, nodePtr, Compare>		    const_iterator;
+	    	typedef ft::set_iterator<pair_type, const key_type, nodePtr, Compare>			    iterator;
+	   		typedef ft::set_iterator<pair_type, const key_type, nodePtr, Compare>		        const_iterator;
             typedef ft::rbt_reverse_iterator<iterator>			            					reverse_iterator;
 			typedef ft::rbt_reverse_iterator<const_iterator>			            			const_reverse_iterator;
 
         private:
-
 			typedef RedBlackTree<pair_type, key_type, key_type, Compare, pair_compare, ft::set<Key, Compare> >		tree_type;
 
 		private:
-
 			tree_type		*_rbt;
 			value_compare	_vc;
 			allocator_type	_a;
 
         public:
-
             // construct/copy/destroy
             set():_vc(Compare()), _a(Allocator()) { _rbt = new tree_type(); }
             explicit set(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) {_rbt = new tree_type(); }

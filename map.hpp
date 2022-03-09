@@ -22,7 +22,6 @@ namespace ft {
     class map
 	{
 		public:
-
 	    	typedef Key																			key_type;
 	    	typedef T																			mapped_type;
 	    	typedef pair<Key, T>																value_type;
@@ -47,7 +46,6 @@ namespace ft {
 	    	};
 
 		private:
-
 			typedef RedBlackTree
 			<value_type, key_type, mapped_type ,Compare, value_compare, ft::map<Key, T, Compare> >		tree_type;
 
@@ -60,21 +58,21 @@ namespace ft {
 	    	typedef typename tree_type::difference_type 										difference_type;
 
 		private:
-
 			tree_type		*_rbt;
 			value_compare	_vc;
 			allocator_type	_a;
 
 		public:
-
 	    	// construct/copy/destroy
-	    	map():_vc(Compare()), _a(Allocator()) {_rbt = new tree_type();}
-	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) {_rbt = new tree_type();}
+	    	map():_vc(Compare()), _a(Allocator()) {_ rbt = new tree_type(); }
+	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) { _rbt = new tree_type(); }
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,
-	    	    const Compare& comp = Compare(), const Allocator& = Allocator()): _vc(comp), _a(Allocator()) { _rbt = new tree_type();insert(first, last);}
+	    	    const Compare& comp = Compare(), const Allocator& = Allocator()): _vc(comp), _a(Allocator())
+				{ _rbt = new tree_type();insert(first, last);}
 	    	map(const map& x): _vc(x._vc), _a(x._a) { _rbt = new tree_type();insert(x.begin(), x.end()); }
-	    	~map() {delete _rbt;}
+	    	~map() { delete _rbt; }
+
 	    	map& operator=(const map& x)
 			{
 				if (this != &x)
@@ -118,13 +116,14 @@ namespace ft {
 	    	void					erase(iterator position) { return _rbt->erase(position); }
 			void					erase(iterator first, iterator last) { return _rbt->erase(first, last); }
 	    	size_type				erase(const key_type& x) { return _rbt->erase(x); }
+			void					clear() { _rbt->clear(); }
+
 	    	void					swap(map& x)
 			{
 				std::swap(_rbt, x._rbt);
 				std::swap(_vc, x._vc);
 				std::swap(_a, x._a);
 			}
-	    	void					clear() { _rbt->clear();}
 
 	    	// observers
 	    	key_compare				key_comp() const { return _vc.comp; }

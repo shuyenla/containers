@@ -16,6 +16,10 @@ namespace ft {
     		typedef T&			   							reference;
 			typedef ptrdiff_t    							difference_type;
 
+		protected:
+    	    pointer _it;
+
+		public:
 			operator iterator<const T>() const { return iterator<const T>(_it); }
 
 			iterator():_it(NULL) {}
@@ -50,9 +54,6 @@ namespace ft {
     	    iterator& operator-=(difference_type n) { _it -= n; return *this; }
     	    reference operator[](difference_type n) const { return _it[n]; }
 			iterator& operator= (value_type v) { *_it = v; return *this; }
-
-    	protected:
-    	    pointer _it;
 	};
 
     template< class iterator1, class iterator2 >

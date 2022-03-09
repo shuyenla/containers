@@ -3,7 +3,6 @@
 # include "node.hpp"
 # include "tree.hpp"
 # include "iterator_traits.hpp"
-# include <typeinfo>
 
 namespace ft {
 
@@ -31,7 +30,6 @@ namespace ft {
 				else
 					return __searchR(x->right, k, cmp);
 			}
-
 
 			template<class P, class Key, class Compare>
 			node<P>*		__upper_bound(Key k, node<P>* root, Compare cmp)
@@ -65,12 +63,10 @@ namespace ft {
 			}
 
 
-
 	template<class P, class Mapped, class nodePointer, class Compare>
 	class rbt_iterator
 	{
 		public:
-
 			typedef std::bidirectional_iterator_tag 								iterator_category;
 			typedef P           													value_type;
 			typedef Mapped           												mapped_type;
@@ -87,34 +83,45 @@ namespace ft {
 			cmp			_cmp;
 
 		public:
-			rbt_iterator():_it(NULL), _cmp(Compare()) {}
+			rbt_iterator():_it(), _cmp(Compare()) {}
 			explicit rbt_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
 
 			operator rbt_iterator<const P, const Mapped, nodePtr, cmp>() const
 			{ return rbt_iterator<const P, const Mapped, nodePtr, cmp>(_it); }
 
-			nodePtr		getNode() const { return _it; }
-			virtual reference operator*() const { return _it->data; }
-			virtual pointer operator->() const { return &(_it->data); }
-			iterator& operator++() {
+			reference operator*() const { return _it->data; }
+			pointer operator->() const { return &(_it->data); }
+
+			iterator& operator++()
+			{
 				_it = __upper_bound(_it->data.first, *(_it->root), _cmp);
-				return *this; }
-			iterator  operator++(int) {
+				return *this;
+			}
+
+			iterator  operator++(int)
+			{
 				iterator it = *this;
 				++(*this);
-				return it; }
+				return it;
+			}
+
 			iterator& operator--()
 			{
 				if (_it != _it->TNULL)
 					_it = __lower_bound(_it->data.first, *(_it->root), _cmp);
 				else
 					_it = max(*(_it->root));
-				return *this; }
+				return *this;
+			}
 
-			iterator  operator--(int) {
+			iterator  operator--(int)
+			{
 				iterator it = *this;
 				--(*this);
-				return it; }
+				return it;
+			}
+
+			nodePtr		getNode() const { return _it; }
 
 			friend bool operator==(const iterator &x, const iterator &y)
 			{ return x._it == y._it; }

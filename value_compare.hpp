@@ -1,4 +1,4 @@
-namespace ft{
+namespace ft {
 
     template<class value_type, class Compare>
 	class value_compare
