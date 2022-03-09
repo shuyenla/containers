@@ -19,7 +19,7 @@ namespace ft {
 			typedef ptrdiff_t    													difference_type;
 			typedef mapped_type*		     										pointer;
 			typedef mapped_type&			   										reference;
-			typedef ft::set_iterator<P, const mapped_type, nodePtr, cmp>					iterator;
+			typedef ft::set_iterator<P, const mapped_type, nodePtr, cmp>			iterator;
 			typedef ft::set_iterator<P, const mapped_type, nodePtr, cmp>			const_iterator;
 
 			operator set_iterator<P, const Mapped, nodePtr, cmp>() const

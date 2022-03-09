@@ -63,8 +63,7 @@ namespace ft {
 			allocator_type	_a;
 
 		public:
-	    	// construct/copy/destroy
-	    	map():_vc(Compare()), _a(Allocator()) {_ rbt = new tree_type(); }
+	    	map():_vc(Compare()), _a(Allocator()) { _rbt = new tree_type(); }
 	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) { _rbt = new tree_type(); }
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,

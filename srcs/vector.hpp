@@ -97,14 +97,14 @@ namespace ft {
 			size_type n = 0;
 			for (InputIt it = first; it != last; it++)
 				n++;
-			this->resize(n);
+			resize(n);
 			for (size_type n = 0; first != last; first++, n++)
 				_ptr[n] = *first;
 		}
 
     	void assign(size_type n, const value_type& val)
 		{
-			this->resize(n, val);
+			resize(n, val);
 			for (size_type i = 0; i < n; i++)
 				_ptr[i] = val;
 		}
@@ -208,25 +208,28 @@ namespace ft {
    		iterator insert(const_iterator position, const T& x)
 		{
 			size_type pos = 0;
-			for (const_iterator cit = this->begin(); cit != position; cit++)
+			for (const_iterator cit = begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + 1);
 			_size++;
 			std::copy_backward(begin() + pos, end() - 1, end());
-			*(this->begin() + pos) = x;
-			return this->begin() + pos;
+			_allocator.construct(_ptr + pos, x);
+			// *(begin() + pos) = x;
+			return begin() + pos;
 		}
 
     	iterator insert(const_iterator position, size_type n, const T& x)
 		{
 			size_type pos = 0;
-			for (const_iterator cit = this->begin(); cit != position; cit++)
+			for (const_iterator cit = begin(); cit != position; cit++)
 				pos++;
 			reserve(_size + n);
 			_size += n;
 			std::copy_backward(begin() + pos, end() - n, end());
-			std::fill_n(begin() + pos, n, x);
-			return this->begin() + pos;
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(_ptr + pos + i, x);
+			// std::fill_n(begin() + pos, n, x);
+			return begin() + pos;
 		}
 
     	template<class InputIt>
@@ -235,24 +238,26 @@ namespace ft {
 		{
 			size_type n = 0;
 			size_type pos = 0;
-			for (const_iterator cit = this->begin(); cit != position; cit++)
+			for (const_iterator cit = begin(); cit != position; cit++)
 				pos++;
 			for (InputIt it = first; it != last; it++)
 				n++;
 			reserve(_size + n);
 			_size += n;
 			std::copy_backward(begin() + pos , end() - n, end());
-			for (iterator it = this->begin() + pos; first != last; it++, first++)
-				*it = *first;
-			return this->begin() + pos;
+			for (size_type i = 0; first != last; i++, first++)
+				_allocator.construct(_ptr + pos + i, *first);
+			return begin() + pos;
 		}
 
     	iterator erase(iterator position)
 		{
+			size_type pos = 0;
+			for (const_iterator cit = begin(); cit != position; cit++)
+				pos++;
 			_allocator.destroy(&(*position));
+			std::copy(begin() + pos + 1, end(), begin() + pos);
 			_size--;
-			for (iterator it = position; it != this->end(); it++)
-				*(it) = *(it + 1);
 			return position;
 		}
 
@@ -260,32 +265,28 @@ namespace ft {
 		{
 			size_type pos = 0;
 			size_type n = 0;
-			for (iterator cit = this->begin(); cit != first; cit++)
+			for (iterator cit = begin(); cit != first; cit++)
 				pos++;
 			for (iterator cit = first; cit != last; cit++)
 				n++;
 			if (n > 0)
 			{
-				for (size_type n_ = n, pos_ = pos; n_ > 0; n_--, pos_++)
-					_allocator.destroy(_ptr + pos_);
-				for (iterator it = this->begin() + pos; it != this->end(); it++)
-				*(it) = *(it + n);
-				_size -= n;
-				if (iterator(_ptr + pos) == this->end())
-					return this->end();
+				for (iterator it = last - 1; it != first - 1; it--)
+					erase(it);
 				return (iterator(_ptr + pos));
 			}
 			return last;
 		}
 
-    	void     swap(vector& x) {
+    	void     swap(vector& x)
+		{
 			std::swap(_ptr, x._ptr);
 			std::swap(_size, x._size);
 			std::swap(_cap, x._cap);
 			std::swap(_allocator, x._allocator);
 		}
 
-    	void     clear() { erase(this->begin(), this->end()); }
+    	void     clear() { erase(begin(), end()); }
   	};	
 	
   	//	 swap

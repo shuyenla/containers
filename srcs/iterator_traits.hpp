@@ -8,7 +8,6 @@ namespace ft {
         typedef typename iterator::pointer              pointer;
         typedef typename iterator::reference            reference;
         typedef typename iterator::iterator_category    iterator_category;
-        typedef typename iterator::nodePtr              nodePtr;
     };
 
     template<class T> struct iterator_traits<T*> {
