@@ -28,9 +28,10 @@ namespace ft {
             typedef Key                                                                         key_type;
             typedef Compare                                                                     key_compare;
             typedef Key                                                                         value_type;
+            typedef Compare                                                                     value_compare;
             typedef Allocator                                                                   allocator_type;
             typedef ft::pair<Key, value_type>								                 	pair_type;
-            typedef ft::value_compare<pair_type, Compare>                                       value_compare;
+            typedef ft::value_compare<pair_type, Compare>                                       pair_compare;
 
 
         public:
@@ -51,7 +52,7 @@ namespace ft {
 
         private:
 
-			typedef RedBlackTree<pair_type, key_type, key_type, Compare, value_compare, ft::set<Key> >		tree_type;
+			typedef RedBlackTree<pair_type, key_type, key_type, Compare, pair_compare, ft::set<Key, Compare> >		tree_type;
 
 		private:
 
@@ -77,7 +78,7 @@ namespace ft {
 					_rbt.clear();
 					_vc = x._vc;
 					_a = x._a;
-					_rbt.insert(x.begin(), x.end());
+					insert(x.begin(), x.end());
 				}
 				return *this;
 			}
@@ -143,27 +144,27 @@ namespace ft {
         { x.swap(y); }
 
         // overload operator
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator==(const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return x.size() == y.size() && ft::equal(x.begin(), x.end(), y.begin()); }
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator!=(const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return !(x == y); }
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator< (const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()); }
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator<=(const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return x < y || x == y; }
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator> (const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return !(x <= y); }
-        template<class Key, class T, class Compare, class Allocator>
+        template<class Key, class Compare, class Allocator>
             bool operator>=(const ft::set<Key, Compare, Allocator>& x,
                             const ft::set<Key, Compare, Allocator>& y)
             { return !(x < y) || x == y; }

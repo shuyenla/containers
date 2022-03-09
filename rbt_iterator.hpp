@@ -84,8 +84,6 @@ namespace ft {
 	
 		protected:
 			nodePtr		_it;
-
-		private:
 			cmp			_cmp;
 
 		public:

@@ -22,8 +22,6 @@ namespace ft {
 		protected:
 
 			nodePtr		_rit;
-
-		private:
 			Compare		_cmp;
 
 

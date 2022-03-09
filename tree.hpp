@@ -284,36 +284,18 @@ void insertFix(nodePtr k) {
 
 			nodePtr		_upper_bound(key_type k) const
 			{
-				nodePtr n = _searchR(_root, k);
-				if (n->right != _TNULL)
-					return min(n->right);
-				nodePtr y = n->parent;
-				while (y != _TNULL && n == y->right)
-				{
-					n = y;
-					y = y->parent;
-				}
-				if(y == _TNULL)
-					return min(_root);
-				return y;
+				for (const_iterator it = begin(); it != end(); it++)
+					if (it.getNode()->data.first > k)
+						return it.getNode();
+				return _TNULL;
 			}
 
-			nodePtr		_lower_bound(key_type k) const 
+			nodePtr		_lower_bound(key_type k) const
 			{
-				nodePtr n = _searchR(_root, k);
-				if (n->data == k)
-					return n;
-				if (n->left != _TNULL)
-					return max(n->left);
-				nodePtr y = n->parent;
-				while (y != _TNULL && n == y->left)
-				{
-					n = y;
-					y = y->parent;
-				}
-				if (y == _TNULL)
-					return (min(_root));
-				return y;
+				for (const_iterator it = begin(); it != end(); it++)
+					if (it.getNode()->data.first > k || it.getNode()->data.first == k)
+						return it.getNode();
+				return _TNULL;
 			}
 
 			iterator	_insert(nodePtr start, value_type data)
@@ -556,14 +538,20 @@ void insertFix(nodePtr k) {
 					printHelper(this->_root, "", true);
 			}
 
-			// void					swap(RedBlackTree& x)
-			// {
-			// 	std::swap(_TNULL, x._TNULL);
-			// 	std::swap(_root, x._root);
-			// 	std::swap(_cmp, x._cmp);
-			// 	std::swap(_allocator, x._allocator);
+			void					swap(RedBlackTree& x)
+			{
+			 	//std::swap(_allocator, x._allocator);
+			 	//std::swap(_TNULL, x._TNULL);
+			 	//std::swap(_root, x._root);
+			 	//std::swap(_cmp, x._cmp);
+			 	//std::swap(_size, x._size);
+				/*RedBlackTree &p = *this;
 
-			// }
+				 *this = x;
+
+				 x = p;*/
+				 (void)x;
+			}
 
 	    	void					clear() { erase(begin(), end()); }
 

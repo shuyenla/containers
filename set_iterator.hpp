@@ -21,22 +21,19 @@ namespace ft {
 			typedef mapped_type*		     										pointer;
 			typedef mapped_type&			   										reference;
 			typedef ft::set_iterator<P, mapped_type, nodePtr, cmp>					iterator;
-			typedef ft::set_iterator<const P, const mapped_type, nodePtr, cmp>		const_iterator;
-
-		protected:
-			nodePtr		_it;
-
-		private:
-			cmp			_cmp;
-
-		public:
-			set_iterator():_it(NULL), _cmp(Compare()) {}
-			explicit set_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
-
+			typedef ft::set_iterator<const P, const mapped_type, nodePtr, cmp>			const_iterator;
 
 			operator set_iterator<const P, const Mapped, nodePtr, cmp>() const
 			{ return set_iterator<const P, const Mapped, nodePtr, cmp>(_it); }
 
+		protected:
+			nodePtr		_it;
+			cmp			_cmp;
+
+		public:
+			set_iterator():_it(), _cmp(Compare()) {}
+			explicit set_iterator(nodePtr n):_it(n), _cmp(Compare()) {}
+			set_iterator(iterator const &x):_it(x._it), _cmp(x._cmp) {}
 
 			nodePtr		getNode() const { return _it; }
 			reference operator*() const { return _it->data.first; }
@@ -61,18 +58,9 @@ namespace ft {
 				--(*this);
 				return it; }
 
-
 			friend bool operator==(const iterator &x, const iterator &y)
 			{ return x._it == y._it; }
 			friend bool operator!=(const iterator &x, const iterator &y)
 			{ return x._it != y._it; }
-			// template<class U>
-			// friend bool operator==(const iterator &x, const ft::set_iterator<U> &y)
-			// { (void)x, (void)y; return false; }
-			// template<class U>
-			// friend bool operator!=(const iterator &x, const ft::set_iterator<U> &y)
-			// { (void)x, (void)y; return true; }
-
 	};
-
 }
