@@ -86,12 +86,9 @@ int main()
     std::cout << (mp >= mp2) << std::endl;
     std::cout << (mp <= mp2) << std::endl;
 
-
     printMap(mp);
     printMap(mp2);
 
-    TESTED_NAMESPACE::map<T1, T2> mp;
-	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin();
 	TESTED_NAMESPACE::map<T1, T2>::const_iterator cit = mp.begin();
 
 	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit(it);

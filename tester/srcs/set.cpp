@@ -57,7 +57,6 @@ int main()
     std::cout << (st <  st2) << std::endl;
     std::cout << (st >= st2) << std::endl;
     std::cout << (st <= st2) << std::endl;
-
     
     st.insert(25);
 	st.insert(19);

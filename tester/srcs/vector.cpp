@@ -33,7 +33,6 @@ int main()
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct4;
     TESTED_NAMESPACE::vector<TESTED_TYPE> vct5(lst.begin(), lst.end());
 
-
     TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
 
