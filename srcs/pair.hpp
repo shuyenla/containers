@@ -8,8 +8,8 @@ namespace ft {
 		typedef T1 		first_type;
 		typedef T2 		second_type;
 	
-		T1 first;
-		T2 second;
+		first_type first;
+		second_type second;
 	
 		pair():first(), second() {}
 		pair(const T1& x, const T2& y):first(x), second(y) {}
@@ -18,7 +18,7 @@ namespace ft {
 		
 		operator pair<const T1, const T2>() const { return pair<const T1, const T2>(first, second); }
 
-		pair( const pair& p ):first(p.first), second(p.second) {}
+		pair(const pair& p):first(p.first), second(p.second) {}
 
 		pair& operator=(const pair& p)
 		{

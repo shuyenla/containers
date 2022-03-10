@@ -48,6 +48,7 @@ namespace ft {
 		private:
 			typedef RedBlackTree
 			<value_type, key_type, mapped_type ,Compare, value_compare, ft::map<Key, T, Compare> >		tree_type;
+			typedef std::allocator<tree_type>															tree_allocator;
 
 		public:
  			typedef typename allocator_type::pointer											pointer;
@@ -61,16 +62,20 @@ namespace ft {
 			tree_type		*_rbt;
 			value_compare	_vc;
 			allocator_type	_a;
+			tree_allocator	_ta;
 
 		public:
-	    	map():_vc(Compare()), _a(Allocator()) { _rbt = new tree_type(); }
-	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) { _rbt = new tree_type(); }
+	    	map():_vc(Compare()), _a(Allocator()), _ta(tree_allocator()) { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
+	    	explicit map(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()), _ta(tree_allocator()) { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
 	    	template<class InputIt>
 	    		map(InputIt first, InputIt last,
 	    	    const Compare& comp = Compare(), const Allocator& = Allocator()): _vc(comp), _a(Allocator())
-				{ _rbt = new tree_type();insert(first, last);}
-	    	map(const map& x): _vc(x._vc), _a(x._a) { _rbt = new tree_type();insert(x.begin(), x.end()); }
-	    	~map() { delete _rbt; }
+				{ _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type());
+					insert(first, last);
+				}
+					
+	    	map(const map& x): _vc(x._vc), _a(x._a), _ta(x._ta) { _rbt = _ta.allocate(1); _ta.construct(_rbt, *x._rbt); }
+	    	~map() { _ta.destroy(_rbt); _ta.deallocate(_rbt, 1); }
 
 	    	map& operator=(const map& x)
 			{

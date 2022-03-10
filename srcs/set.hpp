@@ -61,12 +61,12 @@ namespace ft {
             set():_vc(Compare()), _a(Allocator()), _ta(tree_allocator())
             { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
             explicit set(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()), _ta(tree_allocator())
-            {_rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
+            { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
             template<class InputIt>
                 set(InputIt first, InputIt last,
                     const Compare& comp = Compare(), const Allocator& = Allocator()):_vc(comp), _a(Allocator()), _ta(tree_allocator())
                     { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); insert(first, last); }
-            set(const set& x): _vc(x._vc), _a(x._a), _ta(x._ta) { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); insert(x.begin(), x.end()); }
+            set(const set& x): _vc(x._vc), _a(x._a), _ta(x._ta) { _rbt = _ta.allocate(1); _ta.construct(_rbt, *x._rbt); }
             ~set() { _ta.destroy(_rbt); _ta.deallocate(_rbt, 1); }
 
             set& operator=(const set& x)
