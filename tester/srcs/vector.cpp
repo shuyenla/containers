@@ -1,17 +1,24 @@
 #if !defined(USING_STD)
 # include "vector.hpp"
 # define TESTED_NAMESPACE ft
-# define OW "FT"
 #else
 # include <vector>
 # define TESTED_NAMESPACE std
-# define OW "STD"
 #endif
 
 # include <iostream>
 # include <string>
 # include <list>
 # define TESTED_TYPE int
+
+template <typename T>
+void	printVector(TESTED_NAMESPACE::vector<T> const &vct)
+{
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator it(vct.begin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
+	for (; it != ite; it++)
+		std::cout << *it << std::endl;
+}
 
 int main()
 {
@@ -21,10 +28,10 @@ int main()
 		lst.push_back(i * 3);
 
     TESTED_NAMESPACE::vector<TESTED_TYPE> vct(7);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_2(4);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_3;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_4;
-    TESTED_NAMESPACE::vector<TESTED_TYPE> vct_5(lst.begin(), lst.end());
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2(4);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct3;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct4;
+    TESTED_NAMESPACE::vector<TESTED_TYPE> vct5(lst.begin(), lst.end());
 
 
     TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
@@ -32,32 +39,43 @@ int main()
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)
 		vct[i] = (vct.size() - i) * 3;
-	for (unsigned long int i = 0; i < vct_2.size(); ++i)
-		vct_2[i] = (vct_2.size() - i) * 5;
-    
-	vct_3.assign(vct.begin(), vct.end());
-	vct.assign(vct_2.begin(), vct_2.end());
-	vct_2.assign(2, 42);
-	vct_4.assign(4, 21);
+	for (unsigned long int i = 0; i < vct2.size(); ++i)
+		vct2[i] = (vct2.size() - i) * 5;
+
+	printVector(vct);
+	printVector(vct2);
+
+	vct3.assign(vct.begin(), vct.end());
+	vct.assign(vct2.begin(), vct2.end());
+	vct2.assign(2, 42);
+	vct4.assign(4, 21);
+
+	printVector(vct);
+	printVector(vct2);
+	printVector(vct3);
+	printVector(vct4);
 
 	vct.pop_back();
-	vct_2.pop_back();
+	vct2.pop_back();
 
-    std::cout << "front(): " << vct.front() << " " << vct_2.front() << std::endl;
-	std::cout << "back(): " << vct.back() << " " <<  vct_2.back() << std::endl;
+    std::cout << "front(): " << vct.front() << " " << vct2.front() << std::endl;
+	std::cout << "back(): " << vct.back() << " " <<  vct2.back() << std::endl;
 
     lst_it = lst.begin();
 	for (int i = 1; lst_it != lst.end(); ++i)
 		*lst_it++ = i * 5;
 	vct.assign(lst.begin(), lst.end());
+	printVector(vct);
 
     for (unsigned long int i = 0; i < vct.size(); ++i)
 	{
 		vct.at(i) = (vct.size() - i) * 3;
 		std::cout << "vct[]: " << vct[i] << std::endl;
 	}
-    vct_5.insert(vct_5.end() - 2, 42);
-    vct_5.erase(vct_5.end() - 3, vct_5.end() - 1);
+
+    vct5.insert(vct5.end() - 2, 42);
+    vct5.erase(vct5.end() - 3, vct5.end() - 1);
+	printVector(vct5);
 
 	it = vct.begin();
 	ite = vct.begin();
@@ -81,9 +99,11 @@ int main()
     TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit = vct.begin();
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit(rit);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_(it);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_2(cit);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit2(cit);
 
-    vct.swap(vct_2);
+    vct.swap(vct2);
+	printVector(vct);
+	printVector(vct2);
 
     for (unsigned long int i = 0; i < vct.size(); ++i)
 	{
@@ -91,6 +111,5 @@ int main()
 		std::cout << "vct[]: " << vct[i] << std::endl;
 	}
 
-	// std::cout << "namespace: " <<  OW << std::endl;
-
+	return 0;
 }
