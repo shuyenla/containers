@@ -31,4 +31,4 @@
 *.out
 *.app
 
-containers_test/
+srcs/containers_test/
