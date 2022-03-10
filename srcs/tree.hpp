@@ -37,8 +37,6 @@ namespace ft {
 
 			nodePtr		newNode(P data)
 			{
-				// static int i = 0;
-				// std::cout << "count:" << ++i <<std::endl;
 				nodePtr		n = _allocator.allocate(1);
 				node_type	n_;
 				n_.data = data;
@@ -281,13 +279,8 @@ namespace ft {
 			void		_deleteNode(key_type k)
 			{
 				nodePtr		d = _searchR(_root, k);
-				// std::cout << "searched: " << d->data.first << std::endl;
 				if (d == _TNULL)
-				{
-					// std::cout << k << " not found!" << std::endl;
 						return ;
-				}
-				// printTree();
 				nodePtr		x, y;
 				int			color = d->color;
 				if (d->left == _TNULL)
@@ -318,7 +311,6 @@ namespace ft {
 					y->left->parent = y;
 					y->color = d->color;
 				}
-				// std::cout << std::endl<< "delete: " << k << std::endl<< std::endl;
 				_allocator.destroy(d);
 				_allocator.deallocate(d, 1);
 				_size--;
@@ -437,6 +429,15 @@ namespace ft {
 					return n->data;
 			}
 
+			void	insert(const key_type& x)
+			{
+				nodePtr old = _searchR(_root, x);
+				if (old != _TNULL)
+					return ;
+				else
+					_insert(_root, ft::make_pair(x, x));
+			}
+
 			pair<iterator, bool>	insert(const value_type& x)
 			{
 				nodePtr old = _searchR(_root, x.first);
@@ -460,21 +461,14 @@ namespace ft {
 
 	    	void					erase(iterator first, iterator last)
 			{
-				// static int i = 0;
 				while (first != last)
-				{
-					// std::cout << "in loop count: " << ++i << std::endl;
-						erase((first++).getNode()->data.first);
-				}
+					erase((first++).getNode()->data.first);
 			}
 
 			size_type				erase(const key_type& x)
 			{
 				if (_searchR(_root, x) == _TNULL)
-				{
-					// std::cout << x << " not found!" << std::endl;
 					return 0;
-				}
 				else
 					_deleteNode(x);
 				return 1;
