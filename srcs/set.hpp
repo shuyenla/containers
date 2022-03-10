@@ -28,7 +28,7 @@ namespace ft {
             typedef Key                                                                         value_type;
             typedef Compare                                                                     value_compare;
             typedef Allocator                                                                   allocator_type;
-            typedef ft::pair<Key, value_type>								                 	pair_type;
+            typedef ft::pair<key_type, value_type>								                pair_type;
             typedef ft::value_compare<pair_type, Compare>                                       pair_compare;
 
         public:
@@ -48,21 +48,26 @@ namespace ft {
 
         private:
 			typedef RedBlackTree<pair_type, key_type, key_type, Compare, pair_compare, ft::set<Key, Compare> >		tree_type;
+            typedef std::allocator<tree_type>                                                                       tree_allocator;
 
 		private:
 			tree_type		*_rbt;
 			value_compare	_vc;
 			allocator_type	_a;
+            tree_allocator  _ta;
 
         public:
             // construct/copy/destroy
-            set():_vc(Compare()), _a(Allocator()) { _rbt = new tree_type(); }
-            explicit set(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()) {_rbt = new tree_type(); }
+            set():_vc(Compare()), _a(Allocator()), _ta(tree_allocator())
+            { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
+            explicit set(const Compare& comp, const Allocator& = Allocator()):_vc(comp), _a(Allocator()), _ta(tree_allocator())
+            {_rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); }
             template<class InputIt>
                 set(InputIt first, InputIt last,
-                    const Compare& comp = Compare(), const Allocator& = Allocator()):_vc(comp), _a(Allocator()) { _rbt = new tree_type(); insert(first, last); }
-            set(const set& x): _vc(x._vc), _a(x._a) { _rbt = new tree_type(); insert(x.begin(), x.end()); }
-            ~set() {}
+                    const Compare& comp = Compare(), const Allocator& = Allocator()):_vc(comp), _a(Allocator()), _ta(tree_allocator())
+                    { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); insert(first, last); }
+            set(const set& x): _vc(x._vc), _a(x._a), _ta(x._ta) { _rbt = _ta.allocate(1); _ta.construct(_rbt, tree_type()); insert(x.begin(), x.end()); }
+            ~set() { _ta.destroy(_rbt); _ta.deallocate(_rbt, 1); }
 
             set& operator=(const set& x)
             {

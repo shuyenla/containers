@@ -2,7 +2,7 @@
 
 CC="clang++"
 CFLAGS="-Wall -Wextra -Werror -std=c++98"
-#CFLAGS+=" -fsanitize=address -g3"
+CFLAGS+=" -fsanitize=address -g3"
 
 include="../srcs/"
 srcs="srcs"

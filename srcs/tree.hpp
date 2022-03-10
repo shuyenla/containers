@@ -439,7 +439,7 @@ namespace ft {
 	    		void				insert(InputIt first, InputIt last)
 				{ 
 					for (; first != last; ++first)
-						insert(*first);
+						insert(first.getNode()->data);
 				}
 
 	    	void					erase(iterator pos) { erase(pos.getNode()->data.first); }

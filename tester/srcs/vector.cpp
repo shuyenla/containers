@@ -36,6 +36,7 @@ int main()
     TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
 
+
 	for (unsigned long int i = 0; i < vct.size(); ++i)
 		vct[i] = (vct.size() - i) * 3;
 	for (unsigned long int i = 0; i < vct2.size(); ++i)
@@ -100,7 +101,17 @@ int main()
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_(it);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit2(cit);
 
+	it = vct.begin();
+	ite = vct.begin();
+
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it2(vct2.begin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite2(vct2.end());
+
     vct.swap(vct2);
+
+	std::cout << (it == vct2.begin()) << std::endl;
+	std::cout << (it2 == vct.begin()) << std::endl;
+
 	printVector(vct);
 	printVector(vct2);
 
