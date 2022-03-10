@@ -2,7 +2,7 @@
 
 CC="clang++"
 CFLAGS="-Wall -Wextra -Werror -std=c++98"
-CFLAGS+=" -fsanitize=address -g3"
+#CFLAGS+=" -fsanitize=address -g3"
 
 include="../srcs/"
 srcs="srcs"
@@ -37,7 +37,7 @@ printRet()
         0) output="✅";;
         1) output="❌";;
     esac
-    printf "%-8s: compile: %s diff: %s\n" $1 "$compile" "$output"
+    printf "%-8s: compile: %s diff: %s time diff: %.4s\n" $1 "$compile" "$output" "$4"
 }
 
 different()
@@ -65,16 +65,23 @@ test_one()
 
     > $ft_log; > $std_log;
 	if [ $ft_ret -eq 0 ]; then
+        ft_start=`date +%s.%N`
 		./$ft_bin &>$ft_log; ft_ret=$?
+        ft_end=`date +%s.%N`
 	fi
 	if [ $std_ret -eq 0 ]; then
+        std_start=`date +%s.%N`
 		./$std_bin &>$std_log; std_ret=$?
+        std_end=`date +%s.%N`
 	fi
 
     diff $std_log $ft_log 2>/dev/null 1>"$diff_file";
     different $diff_file; difference=$?
+    ft_runtime=$( echo "$ft_end - $ft_start" | bc -l )
+    std_runtime=$( echo "$std_end - $std_start" | bc -l )
+    time_diff=$( echo "$ft_runtime / $std_runtime" | bc -l )
 
-    printRet $container $compilation $difference
+    printRet $container $compilation $difference $time_diff
 
     #clean
      rm -f $ft_bin $std_bin
