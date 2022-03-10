@@ -10,7 +10,6 @@ srcs="srcs"
 compile () {
 	# 1=file 2=define used {ft/std} 3=output_file 4?=compile_log
 	macro_name=$"USING_${2}"
-    # printf "%s\n" "$macro_name"
 	compile_cmd="$CC $CFLAGS -o ${3} -I./$include -D ${macro_name} ${1}"
 	if [ -n "$4" ]; then
 		compile_cmd+=" &>${4}"
