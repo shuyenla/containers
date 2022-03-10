@@ -77,8 +77,8 @@ test_one()
     printRet $container $compilation $difference
 
     #clean
-     rm -f $ft_bin $std_bin
-	 [ -s "$diff_file" ] || rm -f $diff_file $ft_log $std_log &>/dev/null
+    # rm -f $ft_bin $std_bin
+	# [ -s "$diff_file" ] || rm -f $diff_file $ft_log $std_log &>/dev/null
 	 rmdir $bindir $deepdir $logdir &>/dev/null
 }
 
